@@ -3,135 +3,209 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Edukasi - Kuis Pancasila</title>
+  <title>Portal Edukasi - Dasbor</title>
   <style>
-    /* Reset margin & font dasar */
+    /* Reset CSS */
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
-    }
-    body {
+      box-sizing: border-box;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f8f9fa;
-      color: #333;
-      line-height: 1.6;
     }
 
-    /* Header Website */
-    header {
-      background-color: #b71c1c; /* Merah Indonesia */
-      color: white;
-      padding: 25px 20px;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    header h1 {
-      font-size: 28px;
-      margin-bottom: 5px;
-    }
-    header p {
-      font-size: 16px;
-      opacity: 0.9;
-    }
-
-    /* Layout Utama menggunakan Flexbox */
-    .container {
+    body {
+      background-color: #f4f7f6;
       display: flex;
-      max-width: 1200px;
-      margin: 30px auto;
-      gap: 25px;
-      padding: 0 20px;
+      height: 100vh; /* Memenuhi tinggi layar */
+      overflow: hidden;
     }
 
-    /* Bagian Konten Utama (Kiri) */
-    .main-content {
-      flex: 2; /* Mengambil porsi 2/3 layar */
-      background-color: white;
-      padding: 35px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    /* --- SIDEBAR KIRI --- */
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50; /* Warna gelap profesional */
+      color: white;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      z-index: 10;
     }
-    .main-content h2 {
-      margin-bottom: 20px;
-      color: #b71c1c;
+
+    .sidebar-header {
+      padding: 20px;
+      text-align: center;
+      background-color: #1a252f;
+      border-bottom: 1px solid #34495e;
+    }
+
+    .sidebar-header h2 {
+      font-size: 20px;
+      letter-spacing: 1px;
+    }
+
+    .menu-list {
+      list-style-type: none;
+      padding-top: 20px;
+    }
+
+    .menu-item {
+      padding: 15px 25px;
+      cursor: pointer;
+      font-size: 16px;
+      border-left: 4px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .menu-item:hover {
+      background-color: #34495e;
+      border-left: 4px solid #e74c3c; /* Aksen merah */
+    }
+
+    /* Warna tombol saat sedang aktif/diklik */
+    .menu-item.active {
+      background-color: #e74c3c;
+      color: white;
+      border-left: 4px solid #c0392b;
+      font-weight: bold;
+    }
+
+    /* --- KONTEN KANAN --- */
+    .main-content {
+      flex: 1; /* Mengambil sisa ruang */
+      background-color: #f4f7f6;
+      overflow-y: auto; /* Bisa di-scroll jika konten panjang */
+      padding: 30px;
+    }
+
+    .konten-halaman {
+      display: none; /* Sembunyikan semua konten secara default */
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      animation: fadeIn 0.4s;
+    }
+
+    /* Tampilkan halaman yang memiliki ID 'beranda' di awal */
+    #beranda {
+      display: block;
+    }
+
+    .konten-halaman h1 {
+      color: #2c3e50;
       border-bottom: 2px solid #eee;
       padding-bottom: 10px;
-    }
-    .main-content p {
-      margin-bottom: 18px;
-      text-align: justify;
-      font-size: 16px;
-    }
-
-    /* Bagian Sidebar (Kanan) */
-    .sidebar {
-      flex: 1; /* Mengambil porsi 1/3 layar */
-      background-color: white;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      height: fit-content;
-    }
-    .sidebar h3 {
-      text-align: center;
       margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid #eee;
-      color: #333;
     }
 
-    /* Pengaturan iframe Kuis */
+    .konten-halaman p {
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    /* Iframe Kuis */
     .quiz-frame {
       width: 100%;
-      height: 900px; /* Ditinggikan agar soal dan hasil terlihat penuh */
+      height: 800px;
       border: none;
       border-radius: 8px;
     }
 
-    /* Responsif untuk layar HP (Tumpuk ke bawah) */
+    /* Efek transisi halus */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsif untuk HP */
     @media (max-width: 768px) {
-      .container {
+      body {
         flex-direction: column;
+        overflow: auto;
       }
-      .quiz-frame {
-        height: 1000px; /* Tinggi ekstra di HP */
+      .sidebar {
+        width: 100%;
+        height: auto;
+      }
+      .menu-list {
+        display: flex;
+        overflow-x: auto;
+        padding-top: 0;
+      }
+      .menu-item {
+        flex: 1;
+        text-align: center;
+        border-left: none;
+        border-bottom: 4px solid transparent;
+      }
+      .menu-item:hover, .menu-item.active {
+        border-left: none;
+        border-bottom: 4px solid #e74c3c;
+      }
+      .main-content {
+        padding: 15px;
       }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Portal Belajar Sejarah Indonesia</h1>
-    <p>Memahami dan Mengamalkan Nilai-Nilai Luhur Bangsa</p>
-  </header>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Edukasi<br>Pancasila</h2>
+    </div>
+    <ul class="menu-list">
+      <li class="menu-item active" onclick="bukaMenu(event, 'beranda')">Materi Utama</li>
+      <li class="menu-item" onclick="bukaMenu(event, 'kuis')">Kuis Interaktif</li>
+      <li class="menu-item" onclick="bukaMenu(event, 'tentang')">Tentang Kami</li>
+    </ul>
+  </aside>
 
-  <div class="container">
+  <main class="main-content">
     
-    <div class="main-content">
-      <h2>Pancasila sebagai Dasar Negara</h2>
-      <p>
-        Pancasila adalah dasar negara serta falsafah bangsa dan negara Republik Indonesia yang terdiri atas lima sila. 
-        Mempelajari Pancasila bukan hanya sekadar menghafal, tetapi memahami maknanya untuk diterapkan dalam kehidupan sehari-hari.
-      </p>
-      <p>
-        Sejarah lahirnya Pancasila bermula dari sidang Badan Penyelidik Usaha-usaha Persiapan Kemerdekaan Indonesia (BPUPKI) pada tanggal 1 Juni 1945. Pada momen bersejarah tersebut, Ir. Soekarno pertama kali menyampaikan gagasannya mengenai dasar negara yang kemudian dinamakan Pancasila.
-      </p>
-      <p>
-        Di sebelah kanan halaman ini (atau di bagian bawah jika kamu membuka lewat HP), terdapat kuis interaktif untuk menguji seberapa jauh kamu mengingat sejarah dan lambang-lambang dari Pancasila. Mari uji wawasan kebangsaanmu!
-      </p>
+    <div id="beranda" class="konten-halaman">
+      <h1>Memahami Nilai Pancasila</h1>
+      <p>Selamat datang di Portal Edukasi Pancasila. Di sini kamu bisa mempelajari sejarah dan nilai-nilai luhur bangsa Indonesia.</p>
+      <p>Pancasila adalah dasar negara serta falsafah bangsa dan negara Republik Indonesia yang terdiri atas lima sila. Mempelajari Pancasila bukan hanya sekadar menghafal, tetapi memahami maknanya untuk diterapkan dalam kehidupan sehari-hari.</p>
+      <p>Silakan gunakan menu di sebelah kiri untuk menavigasi ke bagian Kuis atau halaman lainnya.</p>
     </div>
 
-    <div class="sidebar">
-      <h3>Kuis Interaktif</h3>
-      <iframe 
-        class="quiz-frame" 
-        src="https://script.google.com/macros/s/AKfycbzEjzFG0Dy_ezuvWbec29fW3JpkFCjSOFqKbqWrHkGFsS0y_Fo6CmzENATaJqA0w8Mt3w/exec">
-      </iframe>
+    <div id="kuis" class="konten-halaman">
+      <h1>Kuis Pengetahuan</h1>
+      <p>Uji wawasanmu dengan menjawab pertanyaan-pertanyaan di bawah ini. Semoga berhasil!</p>
+      <iframe class="quiz-frame" src="https://script.google.com/macros/s/AKfycbzEjzFG0Dy_ezuvWbec29fW3JpkFCjSOFqKbqWrHkGFsS0y_Fo6CmzENATaJqA0w8Mt3w/exec"></iframe>
     </div>
 
-  </div>
+    <div id="tentang" class="konten-halaman">
+      <h1>Tentang Website Ini</h1>
+      <p>Halaman ini adalah contoh item tambahan di sidebar.</p>
+      <p>Website ini dibuat untuk keperluan edukasi dan dikembangkan sebagai wadah pembelajaran interaktif agar sejarah bangsa tidak dilupakan oleh generasi muda.</p>
+    </div>
+
+  </main>
+
+  <script>
+    function bukaMenu(evt, idHalaman) {
+      // 1. Sembunyikan semua div yang memiliki class 'konten-halaman'
+      var konten = document.getElementsByClassName("konten-halaman");
+      for (var i = 0; i < konten.length; i++) {
+        konten[i].style.display = "none";
+      }
+
+      // 2. Hapus class 'active' dari semua tombol menu sidebar
+      var menu = document.getElementsByClassName("menu-item");
+      for (var i = 0; i < menu.length; i++) {
+        menu[i].className = menu[i].className.replace(" active", "");
+      }
+
+      // 3. Tampilkan halaman yang diklik
+      document.getElementById(idHalaman).style.display = "block";
+
+      // 4. Tambahkan class 'active' pada tombol yang baru saja diklik
+      evt.currentTarget.className += " active";
+    }
+  </script>
 
 </body>
 </html>
