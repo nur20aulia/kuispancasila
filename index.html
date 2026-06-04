@@ -3,209 +3,288 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Edukasi - Dasbor</title>
+  <title>Dashboard Edukasi - Nur Aulia</title>
   <style>
-    /* Reset CSS */
+    /* Reset & Tata Letak Dasar */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
     }
 
     body {
-      background-color: #f4f7f6;
       display: flex;
-      height: 100vh; /* Memenuhi tinggi layar */
+      height: 100vh;
+      background-color: #f0f2f5;
       overflow: hidden;
     }
 
-    /* --- SIDEBAR KIRI --- */
+    /* KOLOM 1: SIDEBAR (Kiri) */
     .sidebar {
-      width: 250px;
-      background-color: #2c3e50; /* Warna gelap profesional */
-      color: white;
+      width: 280px;
+      background-color: #1e293b; /* Biru gelap profesional */
+      color: #f8fafc;
       display: flex;
       flex-direction: column;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-      z-index: 10;
+      flex-shrink: 0;
+      box-shadow: 4px 0 10px rgba(0,0,0,0.1);
     }
 
     .sidebar-header {
-      padding: 20px;
+      padding: 30px 20px;
       text-align: center;
-      background-color: #1a252f;
-      border-bottom: 1px solid #34495e;
+      background-color: #0f172a;
+      border-bottom: 1px solid #334155;
     }
 
     .sidebar-header h2 {
-      font-size: 20px;
+      font-size: 1.2rem;
+      font-weight: 700;
       letter-spacing: 1px;
+      color: #38bdf8;
     }
 
     .menu-list {
-      list-style-type: none;
-      padding-top: 20px;
+      list-style: none;
+      padding: 20px 0;
     }
 
     .menu-item {
       padding: 15px 25px;
+      margin: 4px 15px;
       cursor: pointer;
-      font-size: 16px;
-      border-left: 4px solid transparent;
-      transition: all 0.3s ease;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      color: #cbd5e1;
+      font-weight: 500;
     }
 
     .menu-item:hover {
-      background-color: #34495e;
-      border-left: 4px solid #e74c3c; /* Aksen merah */
+      background-color: #334155;
+      color: #fff;
     }
 
-    /* Warna tombol saat sedang aktif/diklik */
     .menu-item.active {
-      background-color: #e74c3c;
-      color: white;
-      border-left: 4px solid #c0392b;
-      font-weight: bold;
+      background-color: #38bdf8;
+      color: #0f172a;
+      font-weight: 600;
     }
 
-    /* --- KONTEN KANAN --- */
+    /* KOLOM 2: MAIN CONTENT (Kanan) */
     .main-content {
-      flex: 1; /* Mengambil sisa ruang */
-      background-color: #f4f7f6;
-      overflow-y: auto; /* Bisa di-scroll jika konten panjang */
-      padding: 30px;
+      flex-grow: 1;
+      padding: 40px;
+      overflow-y: auto;
+      display: flex;
+      justify-content: center;
     }
 
-    .konten-halaman {
-      display: none; /* Sembunyikan semua konten secara default */
-      background-color: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-      animation: fadeIn 0.4s;
+    /* Kotak Konten */
+    .content-card {
+      width: 100%;
+      max-width: 900px;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      display: none; /* Sembunyikan semua secara default */
+      animation: slideUp 0.4s ease-out;
     }
 
-    /* Tampilkan halaman yang memiliki ID 'beranda' di awal */
-    #beranda {
+    /* Menampilkan halaman aktif */
+    .content-card.active {
       display: block;
     }
 
-    .konten-halaman h1 {
-      color: #2c3e50;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 10px;
-      margin-bottom: 20px;
-    }
-
-    .konten-halaman p {
-      line-height: 1.6;
-      color: #555;
-      margin-bottom: 15px;
-    }
-
-    /* Iframe Kuis */
-    .quiz-frame {
-      width: 100%;
-      height: 800px;
-      border: none;
-      border-radius: 8px;
-    }
-
-    /* Efek transisi halus */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Responsif untuk HP */
+    h1 {
+      color: #1e293b;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 15px;
+    }
+
+    p {
+      line-height: 1.7;
+      color: #475569;
+      margin-bottom: 15px;
+    }
+
+    /* --- GAYA KUIS --- */
+    .question-box {
+      background-color: #f8fafc;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .question {
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #1e293b;
+    }
+
+    .options label {
+      display: block;
+      padding: 12px 15px;
+      background: white;
+      border: 1px solid #cbd5e1;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .options label:hover {
+      border-color: #38bdf8;
+      background-color: #f0f9ff;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      background-color: #1e293b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    #result {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      display: none;
+      font-weight: bold;
+    }
+
+    /* Responsif HP */
     @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-        overflow: auto;
-      }
-      .sidebar {
-        width: 100%;
-        height: auto;
-      }
-      .menu-list {
-        display: flex;
-        overflow-x: auto;
-        padding-top: 0;
-      }
-      .menu-item {
-        flex: 1;
-        text-align: center;
-        border-left: none;
-        border-bottom: 4px solid transparent;
-      }
-      .menu-item:hover, .menu-item.active {
-        border-left: none;
-        border-bottom: 4px solid #e74c3c;
-      }
-      .main-content {
-        padding: 15px;
-      }
+      body { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; }
+      .menu-list { display: flex; padding: 10px; overflow-x: auto; }
+      .menu-item { padding: 10px 15px; margin: 0 5px; white-space: nowrap; }
+      .main-content { padding: 20px; }
     }
   </style>
 </head>
 <body>
 
-  <aside class="sidebar">
+  <!-- KOLOM 1: SIDEBAR -->
+  <nav class="sidebar">
     <div class="sidebar-header">
-      <h2>Edukasi<br>Pancasila</h2>
+      <h2>DASHBOARD EDUKASI</h2>
     </div>
     <ul class="menu-list">
-      <li class="menu-item active" onclick="bukaMenu(event, 'beranda')">Materi Utama</li>
-      <li class="menu-item" onclick="bukaMenu(event, 'kuis')">Kuis Interaktif</li>
-      <li class="menu-item" onclick="bukaMenu(event, 'tentang')">Tentang Kami</li>
+      <li class="menu-item active" onclick="showPage('materi', this)">📖 Materi Utama</li>
+      <li class="menu-item" onclick="showPage('kuis', this)">✍️ Kuis Pancasila</li>
+      <li class="menu-item" onclick="showPage('profil', this)">👤 Profil Akademik</li>
+      <li class="menu-item" onclick="showPage('info', this)">ℹ️ Info Program</li>
     </ul>
-  </aside>
+  </nav>
 
+  <!-- KOLOM 2: KONTEN UTAMA -->
   <main class="main-content">
     
-    <div id="beranda" class="konten-halaman">
-      <h1>Memahami Nilai Pancasila</h1>
-      <p>Selamat datang di Portal Edukasi Pancasila. Di sini kamu bisa mempelajari sejarah dan nilai-nilai luhur bangsa Indonesia.</p>
-      <p>Pancasila adalah dasar negara serta falsafah bangsa dan negara Republik Indonesia yang terdiri atas lima sila. Mempelajari Pancasila bukan hanya sekadar menghafal, tetapi memahami maknanya untuk diterapkan dalam kehidupan sehari-hari.</p>
-      <p>Silakan gunakan menu di sebelah kiri untuk menavigasi ke bagian Kuis atau halaman lainnya.</p>
+    <!-- Halaman: Materi -->
+    <div id="materi" class="content-card active">
+      <h1>Materi Nilai Pancasila</h1>
+      <p>Pancasila merupakan landasan idiil bangsa Indonesia yang mempersatukan keberagaman dari Sabang sampai Merauke. Memahami setiap silanya adalah kunci dalam menjalankan kehidupan berbangsa yang harmonis.</p>
+      <p>Pada dashboard ini, kamu bisa mengakses kuis interaktif untuk menguji pemahamanmu serta melihat detail program akademik yang sedang berjalan.</p>
     </div>
 
-    <div id="kuis" class="konten-halaman">
+    <!-- Halaman: Kuis -->
+    <div id="kuis" class="content-card">
       <h1>Kuis Pengetahuan</h1>
-      <p>Uji wawasanmu dengan menjawab pertanyaan-pertanyaan di bawah ini. Semoga berhasil!</p>
-      <iframe class="quiz-frame" src="https://script.google.com/macros/s/AKfycbzEjzFG0Dy_ezuvWbec29fW3JpkFCjSOFqKbqWrHkGFsS0y_Fo6CmzENATaJqA0w8Mt3w/exec"></iframe>
+      <form id="quizForm">
+        <div class="question-box">
+          <div class="question">1. Sila ketiga Pancasila dilambangkan dengan...</div>
+          <div class="options">
+            <label><input type="radio" name="q1" value="a"> Bintang Emas</label>
+            <label><input type="radio" name="q1" value="b"> Pohon Beringin</label>
+            <label><input type="radio" name="q1" value="c"> Kepala Banteng</label>
+          </div>
+        </div>
+        <div class="question-box">
+          <div class="question">2. Tanggal peringatan Hari Lahir Pancasila adalah...</div>
+          <div class="options">
+            <label><input type="radio" name="q2" value="a"> 1 Juni</label>
+            <label><input type="radio" name="q2" value="b"> 17 Agustus</label>
+            <label><input type="radio" name="q2" value="c"> 1 Oktober</label>
+          </div>
+        </div>
+        <button type="button" class="btn-submit" onclick="cekHasil()">Kirim Jawaban</button>
+      </form>
+      <div id="result"></div>
     </div>
 
-    <div id="tentang" class="konten-halaman">
-      <h1>Tentang Website Ini</h1>
-      <p>Halaman ini adalah contoh item tambahan di sidebar.</p>
-      <p>Website ini dibuat untuk keperluan edukasi dan dikembangkan sebagai wadah pembelajaran interaktif agar sejarah bangsa tidak dilupakan oleh generasi muda.</p>
+    <!-- Halaman: Profil (Data dari NIM kamu) -->
+    <div id="profil" class="content-card">
+      <h1>Profil Mahasiswa</h1>
+      <p><strong>Nama:</strong> Nur Aulia Agustina</p>
+      <p><strong>NIM:</strong> 45223109</p>
+      <p><strong>Kelas:</strong> 3E D4 AB</p>
+      <p><strong>Program:</strong> Administrasi Bisnis / Perkantoran</p>
+    </div>
+
+    <!-- Halaman: Info -->
+    <div id="info" class="content-card">
+      <h1>Informasi Program</h1>
+      <p>Aplikasi ini dikembangkan untuk memfasilitasi pembelajaran mandiri mengenai wawasan kebangsaan. Dengan desain dashboard kolom ganda, diharapkan pengguna dapat menavigasi materi dengan lebih efisien dan profesional.</p>
     </div>
 
   </main>
 
   <script>
-    function bukaMenu(evt, idHalaman) {
-      // 1. Sembunyikan semua div yang memiliki class 'konten-halaman'
-      var konten = document.getElementsByClassName("konten-halaman");
-      for (var i = 0; i < konten.length; i++) {
-        konten[i].style.display = "none";
+    // FUNGSI UTAMA: Pindah Halaman Kolom 2
+    function showPage(pageId, element) {
+      // 1. Sembunyikan semua kartu konten di kolom 2
+      const allPages = document.querySelectorAll('.content-card');
+      allPages.forEach(page => {
+        page.classList.remove('active');
+      });
+
+      // 2. Hilangkan status 'active' di semua menu kolom 1
+      const allMenus = document.querySelectorAll('.menu-item');
+      allMenus.forEach(menu => {
+        menu.classList.remove('active');
+      });
+
+      // 3. Tampilkan halaman yang dipilih berdasarkan ID
+      const targetPage = document.getElementById(pageId);
+      if (targetPage) {
+        targetPage.classList.add('active');
       }
 
-      // 2. Hapus class 'active' dari semua tombol menu sidebar
-      var menu = document.getElementsByClassName("menu-item");
-      for (var i = 0; i < menu.length; i++) {
-        menu[i].className = menu[i].className.replace(" active", "");
-      }
+      // 4. Beri status 'active' pada menu yang diklik
+      element.classList.add('active');
+    }
 
-      // 3. Tampilkan halaman yang diklik
-      document.getElementById(idHalaman).style.display = "block";
+    // Fungsi Logika Kuis
+    function cekHasil() {
+      const form = document.getElementById('quizForm');
+      const res = document.getElementById('result');
+      let score = 0;
 
-      // 4. Tambahkan class 'active' pada tombol yang baru saja diklik
-      evt.currentTarget.className += " active";
+      if(form.q1.value === 'b') score += 50;
+      if(form.q2.value === 'a') score += 50;
+
+      res.style.display = 'block';
+      res.style.backgroundColor = score === 100 ? '#dcfce7' : '#fee2e2';
+      res.style.color = score === 100 ? '#166534' : '#991b1b';
+      res.innerHTML = `Skor Anda: ${score}/100. ${score === 100 ? 'Luar Biasa!' : 'Coba Lagi!'}`;
     }
   </script>
-
 </body>
 </html>
