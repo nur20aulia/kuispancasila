@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Edukasi - Kuis Pancasila</title>
+  <style>
+    /* Reset margin & font dasar */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Header Website */
+    header {
+      background-color: #b71c1c; /* Merah Indonesia */
+      color: white;
+      padding: 25px 20px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+    header p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    /* Layout Utama menggunakan Flexbox */
+    .container {
+      display: flex;
+      max-width: 1200px;
+      margin: 30px auto;
+      gap: 25px;
+      padding: 0 20px;
+    }
+
+    /* Bagian Konten Utama (Kiri) */
+    .main-content {
+      flex: 2; /* Mengambil porsi 2/3 layar */
+      background-color: white;
+      padding: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .main-content h2 {
+      margin-bottom: 20px;
+      color: #b71c1c;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+    .main-content p {
+      margin-bottom: 18px;
+      text-align: justify;
+      font-size: 16px;
+    }
+
+    /* Bagian Sidebar (Kanan) */
+    .sidebar {
+      flex: 1; /* Mengambil porsi 1/3 layar */
+      background-color: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      height: fit-content;
+    }
+    .sidebar h3 {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #eee;
+      color: #333;
+    }
+
+    /* Pengaturan iframe Kuis */
+    .quiz-frame {
+      width: 100%;
+      height: 900px; /* Ditinggikan agar soal dan hasil terlihat penuh */
+      border: none;
+      border-radius: 8px;
+    }
+
+    /* Responsif untuk layar HP (Tumpuk ke bawah) */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .quiz-frame {
+        height: 1000px; /* Tinggi ekstra di HP */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Portal Belajar Sejarah Indonesia</h1>
+    <p>Memahami dan Mengamalkan Nilai-Nilai Luhur Bangsa</p>
+  </header>
+
+  <div class="container">
+    
+    <div class="main-content">
+      <h2>Pancasila sebagai Dasar Negara</h2>
+      <p>
+        Pancasila adalah dasar negara serta falsafah bangsa dan negara Republik Indonesia yang terdiri atas lima sila. 
+        Mempelajari Pancasila bukan hanya sekadar menghafal, tetapi memahami maknanya untuk diterapkan dalam kehidupan sehari-hari.
+      </p>
+      <p>
+        Sejarah lahirnya Pancasila bermula dari sidang Badan Penyelidik Usaha-usaha Persiapan Kemerdekaan Indonesia (BPUPKI) pada tanggal 1 Juni 1945. Pada momen bersejarah tersebut, Ir. Soekarno pertama kali menyampaikan gagasannya mengenai dasar negara yang kemudian dinamakan Pancasila.
+      </p>
+      <p>
+        Di sebelah kanan halaman ini (atau di bagian bawah jika kamu membuka lewat HP), terdapat kuis interaktif untuk menguji seberapa jauh kamu mengingat sejarah dan lambang-lambang dari Pancasila. Mari uji wawasan kebangsaanmu!
+      </p>
+    </div>
+
+    <div class="sidebar">
+      <h3>Kuis Interaktif</h3>
+      <iframe 
+        class="quiz-frame" 
+        src="https://script.google.com/macros/s/AKfycbzEjzFG0Dy_ezuvWbec29fW3JpkFCjSOFqKbqWrHkGFsS0y_Fo6CmzENATaJqA0w8Mt3w/exec">
+      </iframe>
+    </div>
+
+  </div>
+
+</body>
+</html>
