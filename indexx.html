@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Edukasi - Nur Aulia</title>
+  <style>
+    /* Reset & Tata Letak Dasar */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: #f0f2f5;
+      overflow: hidden;
+    }
+
+    /* KOLOM 1: SIDEBAR (Kiri) */
+    .sidebar {
+      width: 280px;
+      background-color: #1e293b; /* Biru gelap profesional */
+      color: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+    }
+
+    .sidebar-header {
+      padding: 30px 20px;
+      text-align: center;
+      background-color: #0f172a;
+      border-bottom: 1px solid #334155;
+    }
+
+    .sidebar-header h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #38bdf8;
+    }
+
+    .menu-list {
+      list-style: none;
+      padding: 20px 0;
+    }
+
+    .menu-item {
+      padding: 15px 25px;
+      margin: 4px 15px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+
+    .menu-item:hover {
+      background-color: #334155;
+      color: #fff;
+    }
+
+    .menu-item.active {
+      background-color: #38bdf8;
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    /* KOLOM 2: MAIN CONTENT (Kanan) */
+    .main-content {
+      flex-grow: 1;
+      padding: 40px;
+      overflow-y: auto;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Kotak Konten */
+    .content-card {
+      width: 100%;
+      max-width: 900px;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      display: none; /* Sembunyikan semua secara default */
+      animation: slideUp 0.4s ease-out;
+    }
+
+    /* Menampilkan halaman aktif */
+    .content-card.active {
+      display: block;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      color: #1e293b;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 15px;
+    }
+
+    p {
+      line-height: 1.7;
+      color: #475569;
+      margin-bottom: 15px;
+    }
+
+    /* --- GAYA KUIS --- */
+    .question-box {
+      background-color: #f8fafc;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .question {
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #1e293b;
+    }
+
+    .options label {
+      display: block;
+      padding: 12px 15px;
+      background: white;
+      border: 1px solid #cbd5e1;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .options label:hover {
+      border-color: #38bdf8;
+      background-color: #f0f9ff;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      background-color: #1e293b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    #result {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      display: none;
+      font-weight: bold;
+    }
+
+    /* Responsif HP */
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; }
+      .menu-list { display: flex; padding: 10px; overflow-x: auto; }
+      .menu-item { padding: 10px 15px; margin: 0 5px; white-space: nowrap; }
+      .main-content { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- KOLOM 1: SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>DASHBOARD EDUKASI</h2>
+    </div>
+    <ul class="menu-list">
+      <li class="menu-item active" onclick="showPage('materi', this)">📖 Materi Utama</li>
+      <li class="menu-item" onclick="showPage('kuis', this)">✍️ Kuis Pancasila</li>
+      <li class="menu-item" onclick="showPage('profil', this)">👤 Profil Akademik</li>
+      <li class="menu-item" onclick="showPage('info', this)">ℹ️ Info Program</li>
+    </ul>
+  </nav>
+
+  <!-- KOLOM 2: KONTEN UTAMA -->
+  <main class="main-content">
+    
+    <!-- Halaman: Materi -->
+    <div id="materi" class="content-card active">
+      <h1>Materi Nilai Pancasila</h1>
+      <p>Pancasila merupakan landasan idiil bangsa Indonesia yang mempersatukan keberagaman dari Sabang sampai Merauke. Memahami setiap silanya adalah kunci dalam menjalankan kehidupan berbangsa yang harmonis.</p>
+      <p>Pada dashboard ini, kamu bisa mengakses kuis interaktif untuk menguji pemahamanmu serta melihat detail program akademik yang sedang berjalan.</p>
+    </div>
+
+    <!-- Halaman: Kuis -->
+    <div id="kuis" class="content-card">
+      <h1>Kuis Pengetahuan</h1>
+      <form id="quizForm">
+        <div class="question-box">
+          <div class="question">1. Sila ketiga Pancasila dilambangkan dengan...</div>
+          <div class="options">
+            <label><input type="radio" name="q1" value="a"> Bintang Emas</label>
+            <label><input type="radio" name="q1" value="b"> Pohon Beringin</label>
+            <label><input type="radio" name="q1" value="c"> Kepala Banteng</label>
+          </div>
+        </div>
+        <div class="question-box">
+          <div class="question">2. Tanggal peringatan Hari Lahir Pancasila adalah...</div>
+          <div class="options">
+            <label><input type="radio" name="q2" value="a"> 1 Juni</label>
+            <label><input type="radio" name="q2" value="b"> 17 Agustus</label>
+            <label><input type="radio" name="q2" value="c"> 1 Oktober</label>
+          </div>
+        </div>
+        <button type="button" class="btn-submit" onclick="cekHasil()">Kirim Jawaban</button>
+      </form>
+      <div id="result"></div>
+    </div>
+
+    <!-- Halaman: Profil (Data dari NIM kamu) -->
+    <div id="profil" class="content-card">
+      <h1>Profil Mahasiswa</h1>
+      <p><strong>Nama:</strong> Nur Aulia Agustina</p>
+      <p><strong>NIM:</strong> 45223109</p>
+      <p><strong>Kelas:</strong> 3E D4 AB</p>
+      <p><strong>Program:</strong> Administrasi Bisnis / Perkantoran</p>
+    </div>
+
+    <!-- Halaman: Info -->
+    <div id="info" class="content-card">
+      <h1>Informasi Program</h1>
+      <p>Aplikasi ini dikembangkan untuk memfasilitasi pembelajaran mandiri mengenai wawasan kebangsaan. Dengan desain dashboard kolom ganda, diharapkan pengguna dapat menavigasi materi dengan lebih efisien dan profesional.</p>
+    </div>
+
+  </main>
+
+  <script>
+    // FUNGSI UTAMA: Pindah Halaman Kolom 2
+    function showPage(pageId, element) {
+      // 1. Sembunyikan semua kartu konten di kolom 2
+      const allPages = document.querySelectorAll('.content-card');
+      allPages.forEach(page => {
+        page.classList.remove('active');
+      });
+
+      // 2. Hilangkan status 'active' di semua menu kolom 1
+      const allMenus = document.querySelectorAll('.menu-item');
+      allMenus.forEach(menu => {
+        menu.classList.remove('active');
+      });
+
+      // 3. Tampilkan halaman yang dipilih berdasarkan ID
+      const targetPage = document.getElementById(pageId);
+      if (targetPage) {
+        targetPage.classList.add('active');
+      }
+
+      // 4. Beri status 'active' pada menu yang diklik
+      element.classList.add('active');
+    }
+
+    // Fungsi Logika Kuis
+    function cekHasil() {
+      const form = document.getElementById('quizForm');
+      const res = document.getElementById('result');
+      let score = 0;
+
+      if(form.q1.value === 'b') score += 50;
+      if(form.q2.value === 'a') score += 50;
+
+      res.style.display = 'block';
+      res.style.backgroundColor = score === 100 ? '#dcfce7' : '#fee2e2';
+      res.style.color = score === 100 ? '#166534' : '#991b1b';
+      res.innerHTML = `Skor Anda: ${score}/100. ${score === 100 ? 'Luar Biasa!' : 'Coba Lagi!'}`;
+    }
+  </script>
+</body>
+</html>
