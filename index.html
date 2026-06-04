@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Edukasi - Nur Aulia</title>
+  <title>Dashboard Edukasi - Nur Aulia Agustina</title>
   <style>
     /* Reset & Tata Letak Dasar */
     * {
@@ -148,6 +148,10 @@
       background-color: #f0f9ff;
     }
 
+    .options input[type="radio"] {
+      margin-right: 10px;
+    }
+
     .btn-submit {
       width: 100%;
       padding: 15px;
@@ -158,6 +162,12 @@
       font-weight: 700;
       cursor: pointer;
       margin-top: 20px;
+      font-size: 16px;
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover {
+      background-color: #0f172a;
     }
 
     #result {
@@ -167,6 +177,7 @@
       text-align: center;
       display: none;
       font-weight: bold;
+      font-size: 18px;
     }
 
     /* Responsif HP */
@@ -181,7 +192,6 @@
 </head>
 <body>
 
-  <!-- KOLOM 1: SIDEBAR -->
   <nav class="sidebar">
     <div class="sidebar-header">
       <h2>DASHBOARD EDUKASI</h2>
@@ -194,60 +204,93 @@
     </ul>
   </nav>
 
-  <!-- KOLOM 2: KONTEN UTAMA -->
   <main class="main-content">
     
-    <!-- Halaman: Materi -->
     <div id="materi" class="content-card active">
       <h1>Materi Nilai Pancasila</h1>
       <p>Pancasila merupakan landasan idiil bangsa Indonesia yang mempersatukan keberagaman dari Sabang sampai Merauke. Memahami setiap silanya adalah kunci dalam menjalankan kehidupan berbangsa yang harmonis.</p>
       <p>Pada dashboard ini, kamu bisa mengakses kuis interaktif untuk menguji pemahamanmu serta melihat detail program akademik yang sedang berjalan.</p>
+      <p>Silakan klik menu <strong>Kuis Pancasila</strong> di sebelah kiri untuk langsung memulai pengujian wawasan.</p>
     </div>
 
-    <!-- Halaman: Kuis -->
     <div id="kuis" class="content-card">
-      <h1>Kuis Pengetahuan</h1>
+      <h1>Kuis Pengetahuan Pancasila</h1>
+      <p>Pilih satu jawaban yang paling tepat untuk setiap pertanyaan di bawah ini.</p>
+      
       <form id="quizForm">
         <div class="question-box">
-          <div class="question">1. Sila ketiga Pancasila dilambangkan dengan...</div>
+          <div class="question">1. Sila pertama Pancasila dilambangkan dengan...</div>
           <div class="options">
-            <label><input type="radio" name="q1" value="a"> Bintang Emas</label>
-            <label><input type="radio" name="q1" value="b"> Pohon Beringin</label>
-            <label><input type="radio" name="q1" value="c"> Kepala Banteng</label>
+            <label><input type="radio" name="q1" value="a"> a. Rantai Emas</label>
+            <label><input type="radio" name="q1" value="b"> b. Bintang Emas</label>
+            <label><input type="radio" name="q1" value="c"> c. Pohon Beringin</label>
+            <label><input type="radio" name="q1" value="d"> d. Kepala Banteng</label>
           </div>
         </div>
+
         <div class="question-box">
-          <div class="question">2. Tanggal peringatan Hari Lahir Pancasila adalah...</div>
+          <div class="question">2. Apa bunyi sila ke-3 Pancasila?</div>
           <div class="options">
-            <label><input type="radio" name="q2" value="a"> 1 Juni</label>
-            <label><input type="radio" name="q2" value="b"> 17 Agustus</label>
-            <label><input type="radio" name="q2" value="c"> 1 Oktober</label>
+            <label><input type="radio" name="q2" value="a"> a. Kemanusiaan yang adil dan beradab</label>
+            <label><input type="radio" name="q2" value="b"> b. Keadilan sosial bagi seluruh rakyat Indonesia</label>
+            <label><input type="radio" name="q2" value="c"> c. Persatuan Indonesia</label>
+            <label><input type="radio" name="q2" value="d"> d. Ketuhanan Yang Maha Esa</label>
           </div>
         </div>
+
+        <div class="question-box">
+          <div class="question">3. Tanggal berapakah Hari Lahir Pancasila diperingati?</div>
+          <div class="options">
+            <label><input type="radio" name="q3" value="a"> a. 1 Juni</label>
+            <label><input type="radio" name="q3" value="b"> b. 17 Agustus</label>
+            <label><input type="radio" name="q3" value="c"> c. 1 Oktober</label>
+            <label><input type="radio" name="q3" value="d"> d. 10 November</label>
+          </div>
+        </div>
+
+        <div class="question-box">
+          <div class="question">4. Tokoh yang pertama kali mengemukakan istilah "Pancasila" pada sidang BPUPKI adalah...</div>
+          <div class="options">
+            <label><input type="radio" name="q4" value="a"> a. Mohammad Hatta</label>
+            <label><input type="radio" name="q4" value="b"> b. Soepomo</label>
+            <label><input type="radio" name="q4" value="c"> c. Ki Hajar Dewantara</label>
+            <label><input type="radio" name="q4" value="d"> d. Ir. Soekarno</label>
+          </div>
+        </div>
+
+        <div class="question-box">
+          <div class="question">5. Lambang Kepala Banteng merupakan representasi dari sila ke...</div>
+          <div class="options">
+            <label><input type="radio" name="q5" value="a"> a. 2 (Dua)</label>
+            <label><input type="radio" name="q5" value="b"> b. 3 (Tiga)</label>
+            <label><input type="radio" name="q5" value="c"> c. 4 (Empat)</label>
+            <label><input type="radio" name="q5" value="d"> d. 5 (Lima)</label>
+          </div>
+        </div>
+
         <button type="button" class="btn-submit" onclick="cekHasil()">Kirim Jawaban</button>
       </form>
+      
       <div id="result"></div>
     </div>
 
-    <!-- Halaman: Profil (Data dari NIM kamu) -->
     <div id="profil" class="content-card">
       <h1>Profil Mahasiswa</h1>
       <p><strong>Nama:</strong> Nur Aulia Agustina</p>
       <p><strong>NIM:</strong> 45223109</p>
       <p><strong>Kelas:</strong> 3E D4 AB</p>
-      <p><strong>Program:</strong> Administrasi Bisnis / Perkantoran</p>
+      <p><strong>Program:</strong> Administrasi Bisnis</p>
     </div>
 
-    <!-- Halaman: Info -->
     <div id="info" class="content-card">
       <h1>Informasi Program</h1>
-      <p>Aplikasi ini dikembangkan untuk memfasilitasi pembelajaran mandiri mengenai wawasan kebangsaan. Dengan desain dashboard kolom ganda, diharapkan pengguna dapat menavigasi materi dengan lebih efisien dan profesional.</p>
+      <p>Aplikasi ini dikembangkan untuk memfasilitasi pembelajaran mandiri mengenai wawasan kebangsaan. Dengan desain dasbor kolom ganda yang dinamis, perpindahan halaman menjadi sangat cepat tanpa memuat ulang (reload) browser.</p>
     </div>
 
   </main>
 
   <script>
-    // FUNGSI UTAMA: Pindah Halaman Kolom 2
+    // FUNGSI UTAMA: Pindah Halaman Kolom 2 saat Sidebar diklik
     function showPage(pageId, element) {
       // 1. Sembunyikan semua kartu konten di kolom 2
       const allPages = document.querySelectorAll('.content-card');
@@ -269,21 +312,50 @@
 
       // 4. Beri status 'active' pada menu yang diklik
       element.classList.add('active');
+      
+      // Scroll otomatis ke atas konten saat pindah halaman
+      document.querySelector('.main-content').scrollTop = 0;
     }
 
-    // Fungsi Logika Kuis
+    // Fungsi Hitung Nilai Kuis (Masing-masing bernilai 20 poin)
     function cekHasil() {
       const form = document.getElementById('quizForm');
       const res = document.getElementById('result');
-      let score = 0;
+      
+      // Kunci jawaban benar
+      const kunciJawaban = { q1: 'b', q2: 'c', q3: 'a', q4: 'd', q5: 'c' };
+      let skor = 0;
 
-      if(form.q1.value === 'b') score += 50;
-      if(form.q2.value === 'a') score += 50;
+      // Periksa isi pilihan user
+      if (form.q1 && form.q1.value === kunciJawaban.q1) skor += 20;
+      if (form.q2 && form.q2.value === kunciJawaban.q2) skor += 20;
+      if (form.q3 && form.q3.value === kunciJawaban.q3) skor += 20;
+      if (form.q4 && form.q4.value === kunciJawaban.q4) skor += 20;
+      if (form.q5 && form.q5.value === kunciJawaban.q5) skor += 20;
 
+      // Tampilkan kontainer hasil
       res.style.display = 'block';
-      res.style.backgroundColor = score === 100 ? '#dcfce7' : '#fee2e2';
-      res.style.color = score === 100 ? '#166534' : '#991b1b';
-      res.innerHTML = `Skor Anda: ${score}/100. ${score === 100 ? 'Luar Biasa!' : 'Coba Lagi!'}`;
+      
+      // Atur warna latar belakang berdasarkan nilai
+      if (skor === 100) {
+        res.style.backgroundColor = '#dcfce7'; // Hijau
+        res.style.color = '#166534';
+        res.innerHTML = `Skor Anda: ${skor}/100. Luar Biasa, Jawaban Anda Sempurna! 🇮🇩`;
+      } else if (skor >= 60) {
+        res.style.backgroundColor = '#fef08a'; // Kuning
+        res.style.color = '#854d0e';
+        res.innerHTML = `Skor Anda: ${skor}/100. Cukup Baik! Tingkatkan lagi belajarnya ya.`;
+      } else {
+        res.style.backgroundColor = '#fee2e2'; // Merah
+        res.style.color = '#991b1b';
+        res.innerHTML = `Skor Anda: ${skor}/100. Jangan berkecil hati, ayo baca lagi materi utama dan coba lagi!`;
+      }
+
+      // Scroll mulus ke bawah agar hasil langsung terlihat oleh user
+      document.querySelector('.main-content').scrollTo({
+        top: document.querySelector('.main-content').scrollHeight,
+        behavior: 'smooth'
+      });
     }
   </script>
 </body>
