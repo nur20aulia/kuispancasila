@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Edukasi - Nur Aulia</title>
+  <title>Dashboard Edukasi & Sertifikasi - Nur Aulia</title>
   <style>
     /* Reset & Tata Letak Dasar */
     * {
@@ -29,6 +29,12 @@
       flex-direction: column;
       flex-shrink: 0;
       box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+      justify-content: space-between;
+    }
+
+    .sidebar-top {
+      display: flex;
+      flex-direction: column;
     }
 
     .sidebar-header {
@@ -51,7 +57,7 @@
     }
 
     .menu-item {
-      padding: 15px 25px;
+      padding: 13px 20px;
       margin: 4px 15px;
       cursor: pointer;
       border-radius: 8px;
@@ -60,6 +66,7 @@
       align-items: center;
       color: #cbd5e1;
       font-weight: 500;
+      font-size: 14px;
     }
 
     .menu-item:hover {
@@ -71,6 +78,27 @@
       background-color: #38bdf8;
       color: #0f172a;
       font-weight: 600;
+    }
+
+    /* Info Ringkas Progress di Sidebar Bawah */
+    .sidebar-footer {
+      padding: 20px;
+      background-color: #0f172a;
+      border-top: 1px solid #334155;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .sidebar-footer h4 {
+      color: #f8fafc;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .progress-track {
+      margin-top: 5px;
+      display: flex;
+      justify-content: space-between;
     }
 
     /* KOLOM 2: MAIN CONTENT (Kanan) */
@@ -111,13 +139,19 @@
       padding-bottom: 15px;
     }
 
+    h2.section-title {
+      color: #0f172a;
+      margin: 25px 0 15px 0;
+      font-size: 1.3rem;
+    }
+
     p {
       line-height: 1.7;
       color: #475569;
       margin-bottom: 15px;
     }
 
-    /* --- GAYA KUIS --- */
+    /* --- GAYA KUIS & FORM --- */
     .question-box {
       background-color: #f8fafc;
       padding: 20px;
@@ -133,7 +167,8 @@
     }
 
     .options label {
-      display: block;
+      display: flex;
+      align-items: center;
       padding: 12px 15px;
       background: white;
       border: 1px solid #cbd5e1;
@@ -149,11 +184,19 @@
     }
 
     .options input[type="radio"] {
-      margin-right: 10px;
+      margin-right: 12px;
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
     }
 
     .btn-submit {
-      width: 100%;
+      flex: 3;
       padding: 15px;
       background-color: #1e293b;
       color: white;
@@ -161,7 +204,6 @@
       border-radius: 8px;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 20px;
       font-size: 16px;
       transition: background 0.2s;
     }
@@ -170,7 +212,24 @@
       background-color: #0f172a;
     }
 
-    #result {
+    .btn-reset {
+      flex: 1;
+      padding: 15px;
+      background-color: #e2e8f0;
+      color: #475569;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.2s;
+    }
+
+    .btn-reset:hover {
+      background-color: #cbd5e1;
+    }
+
+    .result-box {
       margin-top: 20px;
       padding: 20px;
       border-radius: 8px;
@@ -180,12 +239,32 @@
       font-size: 18px;
     }
 
+    /* Gaya Tabel Profil */
+    .profile-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .profile-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .profile-table td:first-child {
+      font-weight: 600;
+      color: #475569;
+      width: 30%;
+    }
+
     /* Responsif HP */
     @media (max-width: 768px) {
       body { flex-direction: column; }
       .sidebar { width: 100%; height: auto; }
+      .sidebar-top { flex-direction: column; }
       .menu-list { display: flex; padding: 10px; overflow-x: auto; }
       .menu-item { padding: 10px 15px; margin: 0 5px; white-space: nowrap; }
+      .sidebar-footer { display: none; }
       .main-content { padding: 20px; }
     }
   </style>
@@ -193,26 +272,49 @@
 <body>
 
   <nav class="sidebar">
-    <div class="sidebar-header">
-      <h2>DASHBOARD EDUKASI</h2>
+    <div class="sidebar-top">
+      <div class="sidebar-header">
+        <h2>DASHBOARD EDUKASI</h2>
+      </div>
+      <ul class="menu-list">
+        <li class="menu-item active" onclick="showPage('materi', this)">📖 Materi Utama</li>
+        <li class="menu-item" onclick="showPage('kuis', this)">✍️ Kuis Pancasila</li>
+        <li class="menu-item" onclick="showPage('officemanager', this)">💼 Skema Office Manager</li>
+        <li class="menu-item" onclick="showPage('profil', this)">👤 Profil Akademik</li>
+        <li class="menu-item" onclick="showPage('info', this)">ℹ️ Info Program</li>
+      </ul>
     </div>
-    <ul class="menu-list">
-      <li class="menu-item active" onclick="showPage('materi', this)">📖 Materi Utama</li>
-      <li class="menu-item" onclick="showPage('kuis', this)">✍️ Kuis Pancasila</li>
-      <li class="menu-item" onclick="showPage('profil', this)">👤 Profil Akademik</li>
-      <li class="menu-item" onclick="showPage('info', this)">ℹ️ Info Program</li>
-    </ul>
+
+    <!-- Fitur Tambahan: Live Tracker Nilai Ringkas -->
+    <div class="sidebar-footer">
+      <h4>Nilai Ujian Kamu:</h4>
+      <div class="progress-track">
+        <span>Kuis Pancasila:</span>
+        <span id="track-pancasila">Belum Ujian</span>
+      </div>
+      <div class="progress-track">
+        <span>Office Manager:</span>
+        <span id="track-office">Belum Ujian</span>
+      </div>
+    </div>
   </nav>
 
   <main class="main-content">
     
+    <!-- HALAMAN 1: MATERI -->
     <div id="materi" class="content-card active">
-      <h1>Materi Nilai Pancasila</h1>
-      <p>Pancasila merupakan landasan idiil bangsa Indonesia yang mempersatukan keberagaman dari Sabang sampai Merauke. Memahami setiap silanya adalah kunci dalam menjalankan kehidupan berbangsa yang harmonis.</p>
-      <p>Pada dashboard ini, kamu bisa mengakses kuis interaktif untuk menguji pemahamanmu serta melihat detail program akademik yang sedang berjalan.</p>
-      <p>Silakan klik menu <strong>Kuis Pancasila</strong> di sebelah kiri untuk langsung memulai pengujian wawasan.</p>
+      <h1>Materi & Pembelajaran</h1>
+      <p>Selamat datang di Media Pembelajaran Mandiri Interaktif. Dashboard ini dirancang untuk membantu memantau kompetensi akademik umum sekaligus kesiapan sertifikasi profesi administrasi.</p>
+      
+      <h2 class="section-title">1. Wawasan Kebangsaan (Pancasila)</h2>
+      <p>Pancasila merupakan landasan idiil bangsa Indonesia yang mempersatukan keberagaman. Memahami setiap silanya serta sejarah pembentukannya adalah kunci dalam menjalankan kehidupan berbangsa yang harmonis.</p>
+      
+      <h2 class="section-title">2. Kompetensi Praktis (Office Manager)</h2>
+      <p>Sebagai mahasiswa Administrasi Bisnis, skema kompetensi <strong>Office Manager</strong> menguji kemampuan taktis Anda dalam mengelola perkantoran modern, sistem kearsipan, manajemen rapat, hingga penanganan dokumen bisnis secara profesional.</p>
+      <p>Silakan gunakan menu navigasi di samping kiri untuk menguji pemahaman Anda pada masing-masing modul kuis yang tersedia.</p>
     </div>
 
+    <!-- HALAMAN 2: KUIS PANCASILA -->
     <div id="kuis" class="content-card">
       <h1>Kuis Pengetahuan Pancasila</h1>
       <p>Pilih satu jawaban yang paling tepat untuk setiap pertanyaan di bawah ini.</p>
@@ -268,23 +370,112 @@
           </div>
         </div>
 
-        <button type="button" class="btn-submit" onclick="cekHasil()">Kirim Jawaban</button>
+        <div class="btn-group">
+          <button type="button" class="btn-submit" onclick="cekHasilPancasila()">Kirim Jawaban</button>
+          <button type="button" class="btn-reset" onclick="resetQuiz('quizForm', 'result')">Reset</button>
+        </div>
       </form>
       
-      <div id="result"></div>
+      <div id="result" class="result-box"></div>
     </div>
 
+    <!-- HALAMAN 3: FITUR BARU - UJI KOMPETENSI OFFICE MANAGER -->
+    <div id="officemanager" class="content-card">
+      <h1>Uji Kompetensi Skema Office Manager</h1>
+      <p>Simulasi ujian sertifikasi profesi untuk mengukur kesiapan manajemen dan operasional kantor administratif.</p>
+      
+      <form id="officeForm">
+        <div class="question-box">
+          <div class="question">1. Metode penyimpanan arsip yang didasarkan pada urutan abjad nama orang, badan, atau organisasi disebut...</div>
+          <div class="options">
+            <label><input type="radio" name="om1" value="a"> a. Chronological System (Sistem Tanggal)</label>
+            <label><input type="radio" name="om1" value="b"> b. Alphabetical System (Sistem Abjad)</label>
+            <label><input type="radio" name="om1" value="c"> c. Subjectical System (Sistem Masalah)</label>
+            <label><input type="radio" name="om1" value="d"> d. Geographical System (Sistem Wilayah)</label>
+          </div>
+        </div>
+
+        <div class="question-box">
+          <div class="question">2. Dokumen resmi yang mencatat seluruh jalannya rapat, keputusan yang diambil, serta daftar hadir peserta disebut...</div>
+          <div class="options">
+            <label><input type="radio" name="om2" value="a"> a. Agenda Rapat</label>
+            <label><input type="radio" name="om2" value="b"> b. Surat Undangan</label>
+            <label><input type="radio" name="om2" value="c"> c. Notulen (Minutes of Meeting)</label>
+            <label><input type="radio" name="om2" value="d"> d. Proposal Kegiatan</label>
+          </div>
+        </div>
+
+        <div class="question-box">
+          <div class="question">3. Kode etik utama seorang Office Manager dalam mengelola arus dokumen penting perusahaan adalah...</div>
+          <div class="options">
+            <label><input type="radio" name="om3" value="a"> a. Menyebarkan data internal ke media sosial</label>
+            <label><input type="radio" name="om3" value="b"> b. Menjaga kerahasiaan informasi (Confidentiality)</label>
+            <label><input type="radio" name="om3" value="c"> c. Membuang arsip lama tanpa proses penyusutan</label>
+            <label><input type="radio" name="om3" value="d"> d. Menunda pengiriman surat masuk operasional</label>
+          </div>
+        </div>
+
+        <div class="question-box">
+          <div class="question">4. Peralatan kantor yang berfungsi untuk menghancurkan dokumen kertas yang sudah tidak terpakai guna menjaga keamanan data disebut...</div>
+          <div class="options">
+            <label><input type="radio" name="om4" value="a"> a. Paper Shredder</label>
+            <label><input type="radio" name="om4" value="b"> b. Laminating Machine</label>
+            <label><input type="radio" name="om4" value="c"> c. Guillotine Paper Cutter</label>
+            <label><input type="radio" name="om4" value="d"> d. Filing Cabinet</label>
+          </div>
+        </div>
+
+        <div class="question-box">
+          <div class="question">5. Salah satu fungsi manajemen perkantoran menurut George R. Terry yang berarti melakukan pengarahan dan penggerakan staf adalah...</div>
+          <div class="options">
+            <label><input type="radio" name="om5" value="a"> a. Planning</label>
+            <label><input type="radio" name="om5" value="b"> b. Organizing</label>
+            <label><input type="radio" name="om5" value="c"> c. Actuating</label>
+            <label><input type="radio" name="om5" value="d"> d. Controlling</label>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button type="button" class="btn-submit" onclick="cekHasilOffice()">Kirim Jawaban Ujian</button>
+          <button type="button" class="btn-reset" onclick="resetQuiz('officeForm', 'officeResult')">Reset</button>
+        </div>
+      </form>
+      
+      <div id="officeResult" class="result-box"></div>
+    </div>
+
+    <!-- HALAMAN 4: PROFIL MAHASISWA (Diperbarui dengan tabel terstruktur) -->
     <div id="profil" class="content-card">
       <h1>Profil Mahasiswa</h1>
-      <p><strong>Nama:</strong> Nur Aulia Agustina</p>
-      <p><strong>NIM:</strong> 45223109</p>
-      <p><strong>Kelas:</strong> 3E D4 AB</p>
-      <p><strong>Program:</strong> Administrasi Bisnis</p>
+      <table class="profile-table">
+        <tr>
+          <td>Nama Lengkap</td>
+          <td>Nur Aulia Agustina</td>
+        </tr>
+        <tr>
+          <td>NIM</td>
+          <td>45223109</td>
+        </tr>
+        <tr>
+          <td>Kelas</td>
+          <td>3E D4 AB</td>
+        </tr>
+        <tr>
+          <td>Program Studi</td>
+          <td>Administrasi Bisnis</td>
+        </tr>
+        <tr>
+          <td>Fokus Kompetensi</td>
+          <td>Manajemen Perkantoran / Office Manager</td>
+        </tr>
+      </table>
     </div>
 
+    <!-- HALAMAN 5: INFO PROGRAM -->
     <div id="info" class="content-card">
       <h1>Informasi Program</h1>
-      <p>Aplikasi ini dikembangkan untuk memfasilitasi pembelajaran mandiri mengenai wawasan kebangsaan. Dengan desain dasbor kolom ganda yang dinamis, perpindahan halaman menjadi sangat cepat tanpa memuat ulang (reload) browser.</p>
+      <p>Aplikasi ini merupakan bentuk pengembangan instrumen evaluasi pembelajaran berbasis web (*Single Page Application*). Menggunakan manipulasi DOM berbasis JavaScript vanilla, transisi antar modul berjalan instan dan ramah sumber daya.</p>
+      <p><strong>Teknologi:</strong> HTML5, CSS3 (Flexbox & Grid Layout), native JavaScript.</p>
     </div>
 
   </main>
@@ -292,70 +483,121 @@
   <script>
     // FUNGSI UTAMA: Pindah Halaman Kolom 2 saat Sidebar diklik
     function showPage(pageId, element) {
-      // 1. Sembunyikan semua kartu konten di kolom 2
       const allPages = document.querySelectorAll('.content-card');
       allPages.forEach(page => {
         page.classList.remove('active');
       });
 
-      // 2. Hilangkan status 'active' di semua menu kolom 1
       const allMenus = document.querySelectorAll('.menu-item');
       allMenus.forEach(menu => {
         menu.classList.remove('active');
       });
 
-      // 3. Tampilkan halaman yang dipilih berdasarkan ID
       const targetPage = document.getElementById(pageId);
       if (targetPage) {
         targetPage.classList.add('active');
       }
 
-      // 4. Beri status 'active' pada menu yang diklik
       element.classList.add('active');
-      
-      // Scroll otomatis ke atas konten saat pindah halaman
       document.querySelector('.main-content').scrollTop = 0;
     }
 
-    // Fungsi Hitung Nilai Kuis (Masing-masing bernilai 20 poin)
-    function cekHasil() {
-      const form = document.getElementById('quizForm');
-      const res = document.getElementById('result');
-      
-      // Kunci jawaban benar
-      const kunciJawaban = { q1: 'b', q2: 'c', q3: 'a', q4: 'd', q5: 'c' };
-      let skor = 0;
-
-      // Periksa isi pilihan user
-      if (form.q1 && form.q1.value === kunciJawaban.q1) skor += 20;
-      if (form.q2 && form.q2.value === kunciJawaban.q2) skor += 20;
-      if (form.q3 && form.q3.value === kunciJawaban.q3) skor += 20;
-      if (form.q4 && form.q4.value === kunciJawaban.q4) skor += 20;
-      if (form.q5 && form.q5.value === kunciJawaban.q5) skor += 20;
-
-      // Tampilkan kontainer hasil
-      res.style.display = 'block';
-      
-      // Atur warna latar belakang berdasarkan nilai
-      if (skor === 100) {
-        res.style.backgroundColor = '#dcfce7'; // Hijau
-        res.style.color = '#166534';
-        res.innerHTML = `Skor Anda: ${skor}/100. Luar Biasa, Jawaban Anda Sempurna! 🇮🇩`;
-      } else if (skor >= 60) {
-        res.style.backgroundColor = '#fef08a'; // Kuning
-        res.style.color = '#854d0e';
-        res.innerHTML = `Skor Anda: ${skor}/100. Cukup Baik! Tingkatkan lagi belajarnya ya.`;
-      } else {
-        res.style.backgroundColor = '#fee2e2'; // Merah
-        res.style.color = '#991b1b';
-        res.innerHTML = `Skor Anda: ${skor}/100. Jangan berkecil hati, ayo baca lagi materi utama dan coba lagi!`;
+    // Fungsi Validasi Pengisian Form Kuis sebelum di-submit
+    function validasiKuis(formObj, keys) {
+      for (let key of keys) {
+        if (!formObj[key] || formObj[key].value === "") {
+          alert("Peringatan: Harap selesaikan semua pertanyaan sebelum mengirim!");
+          return false;
+        }
       }
+      return true;
+    }
 
-      // Scroll mulus ke bawah agar hasil langsung terlihat oleh user
+    // Helper untuk menampilkan kotak skor
+    function cetakSkorKontainer(resElement, skor, pesanSempurna, pesanCukup, pesanKurang) {
+      resElement.style.display = 'block';
+      if (skor === 100) {
+        resElement.style.backgroundColor = '#dcfce7'; 
+        resElement.style.color = '#166534';
+        resElement.innerHTML = `Skor Anda: ${skor}/100. ${pesanSempurna}`;
+      } else if (skor >= 60) {
+        resElement.style.backgroundColor = '#fef08a'; 
+        resElement.style.color = '#854d0e';
+        resElement.innerHTML = `Skor Anda: ${skor}/100. ${pesanCukup}`;
+      } else {
+        resElement.style.backgroundColor = '#fee2e2'; 
+        resElement.style.color = '#991b1b';
+        resElement.innerHTML = `Skor Anda: ${skor}/100. ${pesanKurang}`;
+      }
+      
       document.querySelector('.main-content').scrollTo({
         top: document.querySelector('.main-content').scrollHeight,
         behavior: 'smooth'
       });
+    }
+
+    // 1. Hitung Nilai Kuis Pancasila
+    function cekHasilPancasila() {
+      const form = document.getElementById('quizForm');
+      const res = document.getElementById('result');
+      const keys = ['q1', 'q2', 'q3', 'q4', 'q5'];
+      
+      if (!validasiKuis(form, keys)) return;
+
+      const kunciJawaban = { q1: 'b', q2: 'c', q3: 'a', q4: 'd', q5: 'c' };
+      let skor = 0;
+
+      keys.forEach(k => {
+        if (form[k] && form[k].value === kunciJawaban[k]) skor += 20;
+      });
+
+      // Update Live Tracker di sidebar
+      document.getElementById('track-pancasila').innerText = `${skor}/100`;
+
+      cetakSkorKontainer(
+        res, skor,
+        "Luar Biasa, Jawaban Anda Sempurna! 🇮🇩",
+        "Cukup Baik! Tingkatkan lagi belajarnya ya.",
+        "Jangan berkecil hati, ayo baca lagi materi utama dan coba lagi!"
+      );
+    }
+
+    // 2. Hitung Nilai Kuis Office Manager (Fitur Baru)
+    function cekHasilOffice() {
+      const form = document.getElementById('officeForm');
+      const res = document.getElementById('officeResult');
+      const keys = ['om1', 'om2', 'om3', 'om4', 'om5'];
+
+      if (!validasiKuis(form, keys)) return;
+
+      const kunciJawaban = { om1: 'b', om2: 'c', om3: 'b', om4: 'a', om5: 'c' };
+      let skor = 0;
+
+      keys.forEach(k => {
+        if (form[k] && form[k].value === kunciJawaban[k]) skor += 20;
+      });
+
+      // Update Live Tracker di sidebar
+      document.getElementById('track-office').innerText = `${skor}/100`;
+
+      cetakSkorKontainer(
+        res, skor,
+        "Kompeten! Penguasaan skema manajemen perkantoran Anda luar biasa.",
+        "Cukup Kompeten! Pelajari lagi standar operasional prosedur perkantoran.",
+        "Belum Kompeten. Silakan ulas kembali materi kearsipan dan manajemen dokumen."
+      );
+    }
+
+    // 3. Fitur Baru: Reset Form Kuis & Nilai
+    function resetQuiz(formId, resultId) {
+      document.getElementById(formId).reset();
+      const resBox = document.getElementById(resultId);
+      resBox.style.display = 'none';
+      resBox.innerHTML = '';
+      
+      // Kembalikan tracker sidebar ke semula jika di-reset
+      if (formId === 'quizForm') document.getElementById('track-pancasila').innerText = 'Belum Ujian';
+      if (formId === 'officeForm') document.getElementById('track-office').innerText = 'Belum Ujian';
     }
   </script>
 </body>
