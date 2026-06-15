@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Utama</title>
+  <title>Dashboard Akademik & Uji Kompetensi v4.5</title>
   <style>
-    /* Reset & Variabel Warna */
     :root {
       --primary-dark: #0f172a;
       --sidebar-bg: #1e293b;
@@ -15,6 +14,7 @@
       --text-muted: #64748b;
       --danger: #ef4444;
       --success: #22c55e;
+      --warning: #f59e0b;
     }
 
     * {
@@ -22,7 +22,7 @@
       padding: 0;
       box-sizing: border-box;
       font-family: 'Inter', 'Segoe UI', sans-serif;
-      user-select: none; /* Anti Copy Paste */
+      user-select: none;
     }
 
     body {
@@ -32,40 +32,55 @@
       overflow: hidden;
     }
 
-    /* KOLOM 1: SIDEBAR */
+    /* SIDEBAR NAVIGATION */
     .sidebar {
-      width: 300px;
+      width: 340px;
       background-color: var(--sidebar-bg);
       color: #f8fafc;
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
       box-shadow: 4px 0 10px rgba(0,0,0,0.1);
-      justify-content: space-between;
+    }
+
+    .sidebar-scroll {
+      overflow-y: auto;
+      flex-grow: 1;
     }
 
     .sidebar-header {
-      padding: 25px 20px;
+      padding: 20px;
       text-align: center;
       background-color: var(--primary-dark);
       border-bottom: 1px solid #334155;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     .sidebar-header h2 {
       font-size: 1.1rem;
       font-weight: 700;
-      letter-spacing: 1px;
       color: var(--accent-blue);
+    }
+
+    .menu-category {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #94a3b8;
+      padding: 15px 20px 5px 20px;
+      font-weight: 700;
     }
 
     .menu-list {
       list-style: none;
-      padding: 15px 0;
+      padding: 0;
     }
 
     .menu-item {
-      padding: 12px 20px;
-      margin: 4px 12px;
+      padding: 10px 18px;
+      margin: 2px 12px;
       cursor: pointer;
       border-radius: 8px;
       transition: all 0.2s ease;
@@ -73,7 +88,7 @@
       align-items: center;
       color: #cbd5e1;
       font-weight: 500;
-      font-size: 13.5px;
+      font-size: 13px;
     }
 
     .menu-item:hover {
@@ -88,24 +103,31 @@
     }
 
     .sidebar-footer {
-      padding: 20px;
+      padding: 15px 20px;
       background-color: var(--primary-dark);
       border-top: 1px solid #334155;
-      font-size: 12px;
+      font-size: 11px;
     }
 
-    .cheat-counter {
-      background: rgba(239, 68, 68, 0.2);
-      color: #fca5a5;
+    .security-badge {
+      background: #334155;
+      color: #94a3b8;
       padding: 8px;
       border-radius: 5px;
-      margin-top: 10px;
-      border: 1px solid rgba(239, 68, 68, 0.4);
+      margin-top: 5px;
+      border: 1px solid #475569;
       font-weight: 600;
       text-align: center;
+      transition: all 0.3s ease;
     }
 
-    /* KOLOM 2: MAIN CONTENT */
+    .security-badge.active-alert {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.5);
+    }
+
+    /* MAIN CONTENT */
     .main-content {
       flex-grow: 1;
       padding: 30px;
@@ -137,10 +159,36 @@
       margin-bottom: 15px;
       border-bottom: 2px solid #f1f5f9;
       padding-bottom: 12px;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
     }
 
-    /* TIMER & UTILITY HEADERS */
+    h2.section-subtitle {
+      font-size: 1.1rem;
+      margin: 20px 0 10px 0;
+      color: var(--sidebar-bg);
+    }
+
+    /* TABLES & REKAP */
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 13.5px;
+    }
+
+    .styled-table th, .styled-table td {
+      padding: 12px 15px;
+      border: 1px solid #e2e8f0;
+      text-align: left;
+    }
+
+    .styled-table th {
+      background-color: #f8fafc;
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+
+    /* EXAM & BOX UI */
     .exam-header {
       display: flex;
       justify-content: space-between;
@@ -152,52 +200,48 @@
       border-left: 4px solid var(--accent-blue);
     }
 
+    .exam-header.secure-border {
+      border-left-color: var(--danger);
+      background: #fff5f5;
+    }
+
     .timer-box {
       font-weight: 700;
       color: var(--danger);
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+      font-size: 13.5px;
     }
-
-    /* SOAL & PILIHAN JAWABAN */
-    .question-container { margin-top: 15px; }
 
     .question-box {
       background-color: #ffffff;
-      padding: 20px;
+      padding: 18px;
       border-radius: 10px;
       margin-bottom: 15px;
       border: 1px solid #e2e8f0;
-      transition: border-color 0.2s;
     }
-
-    .question-box:hover { border-color: #cbd5e1; }
 
     .question-text {
       font-weight: 600;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
       color: var(--primary-dark);
-      line-height: 1.5;
+      line-height: 1.4;
     }
 
     .options-group {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
     .option-label {
       display: flex;
       align-items: center;
-      padding: 12px 15px;
+      padding: 10px 14px;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s;
-      font-size: 14px;
+      font-size: 13px;
     }
 
     .option-label:hover {
@@ -207,23 +251,12 @@
 
     .option-label input[type="radio"] {
       margin-right: 12px;
-      width: 17px;
-      height: 17px;
-      accent-color: var(--sidebar-bg);
-    }
-
-    /* PAGINATION BAR */
-    .pagination-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 25px;
-      padding-top: 15px;
-      border-top: 1px solid #f1f5f9;
+      width: 16px;
+      height: 16px;
     }
 
     .btn-page {
-      padding: 8px 16px;
+      padding: 10px 20px;
       background: var(--sidebar-bg);
       color: white;
       border: none;
@@ -231,63 +264,23 @@
       cursor: pointer;
       font-weight: 600;
       font-size: 13px;
-    }
-
-    .btn-page:disabled {
-      background: #cbd5e1;
-      cursor: not-allowed;
-    }
-
-    .result-alert {
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 8px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 16px;
-      display: none;
-    }
-
-    /* PROFIL TABEL */
-    .profile-table {
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
+      margin-top: 10px;
     }
 
-    .profile-table td {
-      padding: 12px 15px;
-      border-bottom: 1px solid #e2e8f0;
-      font-size: 14.5px;
-    }
+    .btn-page:hover { background: var(--primary-dark); }
 
-    .profile-table td:first-child {
-      font-weight: 600;
-      color: var(--text-muted);
-      width: 30%;
-    }
-
-    /* --- FITUR TAMBAHAN: STYLING UPLOAD PDF --- */
+    /* UPLOAD FILE PDF */
     .upload-container {
       border: 2px dashed #cbd5e1;
-      padding: 40px 20px;
+      padding: 30px;
       border-radius: 12px;
       text-align: center;
       background: #f8fafc;
       cursor: pointer;
-      transition: all 0.2s ease;
-      margin-top: 20px;
+      margin-top: 15px;
     }
-    .upload-container:hover, .upload-container.dragover {
-      border-color: var(--accent-blue);
-      background: #f0f9ff;
-    }
-    .upload-icon {
-      font-size: 45px;
-      margin-bottom: 15px;
-      display: inline-block;
-    }
-    #file-input { display: none; }
+    .upload-container.dragover { border-color: var(--accent-blue); background: #f0f9ff; }
     .file-details {
       margin-top: 15px;
       padding: 12px;
@@ -297,433 +290,86 @@
       display: none;
       align-items: center;
       justify-content: space-between;
-      text-align: left;
     }
     .progress-bar-container {
-      width: 100%;
-      background: #e2e8f0;
-      height: 8px;
-      border-radius: 4px;
-      margin-top: 10px;
-      display: none;
-      overflow: hidden;
+      width: 100%; background: #e2e8f0; height: 6px; border-radius: 3px; margin-top: 10px; display: none; overflow: hidden;
     }
-    .progress-bar-fill {
-      height: 100%;
-      background: var(--success);
-      width: 0%;
-      transition: width 0.2s ease;
-    }
-    .upload-msg {
-      margin-top: 10px;
-      font-size: 13.5px;
-      font-weight: 600;
-    }
-
-    @media (max-width: 768px) {
-      body { flex-direction: column; }
-      .sidebar { width: 100%; height: auto; }
-      .menu-list { display: flex; padding: 5px; overflow-x: auto; }
-      .menu-item { white-space: nowrap; margin: 0 4px; }
-      .sidebar-footer { display: none; }
-    }
+    .progress-bar-fill { height: 100%; background: var(--success); width: 0%; transition: width 0.1s; }
   </style>
 </head>
 <body>
 
   <nav class="sidebar">
-    <div>
+    <div class="sidebar-scroll">
       <div class="sidebar-header">
-        <h2>DASHBOARD EVALUASI v2.5</h2>
+        <h2>PORTAL AKADEMIK INTEGRASI</h2>
       </div>
+      
+      <div class="menu-category">Menu Utama</div>
       <ul class="menu-list">
-        <li class="menu-item active" onclick="changeTab('materi', this)">📖 Panduan Utama</li>
-        <li class="menu-item" onclick="changeTab('pancasila-tab', this)">🇮🇩 Kuis Pancasila (200 Soal)</li>
-        <li class="menu-item" onclick="changeTab('officemanager-tab', this)">💼 Soal Uji Kompetensi skema OFFICE MANAGER</li>
+        <li class="menu-item active" onclick="changeTab('beranda', this)">🏠 Beranda</li>
+        <li class="menu-item" onclick="changeTab('rekap-tab', this)">📊 Rekap Nilai Kuis</li>
         <li class="menu-item" onclick="changeTab('upload-tab', this)">🗂️ Pemberkasan & Portofolio</li>
-        <li class="menu-item" onclick="changeTab('profil-tab', this)">👤 Profil Akademik</li>
+        <li class="menu-item" onclick="changeTab('ujikom-tab', this)">🎖️ Uji Kompetensi Office Manager</li>
       </ul>
+
+      <div class="menu-category">📖 10 Materi Kuliah</div>
+      <ul class="menu-list" id="materi-menu-list"></ul>
+
+      <div class="menu-category">📝 10 Kuis Evaluasi</div>
+      <ul class="menu-list" id="kuis-menu-list"></ul>
     </div>
 
     <div class="sidebar-footer">
-      <strong>Live Monitor Status:</strong>
-      <div style="margin-top:8px;">Pancasila: <span id="track-panc" style="color:var(--accent-blue)">Belum Ujian</span></div>
-      <div>Office Manager: <span id="track-off" style="color:var(--accent-blue)">Belum Ujian</span></div>
-      <div>Berkas PDF: <span id="track-pdf" style="color:var(--accent-blue)">Kosong</span></div>
-      <div id="cheat-box" class="cheat-counter" style="display:none;">
-        Deteksi Keluar Tab: <span id="cheat-count">0</span>/3
+      <div id="security-badge" class="security-badge">
+        Sistem Proteksi: <span id="security-status">STANDBY</span>
+        <div id="cheat-warn-text" style="display:none; font-size:10px; margin-top:4px;">
+          Pelanggaran: <span id="cheat-count">0</span> / 3
+        </div>
       </div>
     </div>
   </nav>
 
   <main class="main-content">
 
-    <div id="materi" class="content-card active">
-      <h1>Sistem Evaluasi Komprehensif</h1>
-      <p>Selamat datang di platform evaluasi mandiri terintegrasi. Media ini menguji kompetensi Anda dalam dua pilar utama:</p>
-      <p><strong>1. Kuis Pancasila:</strong> Terdiri dari bank data instrumen soal acak terstruktur guna mendalami nilai falsafah kebangsaan.</p>
-      <p><strong>2. Skema Sertifikasi Office Manager:</strong> Instrumen pengujian berbasis skema okupasi untuk mengukur kesiapan tata kelola kantor dinamis.</p>
-      <p><strong>3. Unggah Berkas:</strong> Validasi kelengkapan syarat administratif atau portofolio pendukung skema profesi berformat PDF.</p>
-      <div style="background:#f0fdf4; border-left:4px solid var(--success); padding:15px; margin-top:20px; border-radius:6px; font-size:14px; color:#166534">
-        ⚠️ <strong>SISTEM INTEGRITAS AKTIF:</strong> Dilarang berpindah tab browser atau meminimalkan jendela selama pengerjaan kuis berlangsung untuk menghindari penalti kunci lembar jawaban otomatis.
-      </div>
-    </div>
-
-    <div id="pancasila-tab" class="content-card">
-      <div class="exam-header">
-        <div><strong>Modul:</strong> Wawasan Kebangsaan Pancasila</div>
-        <div class="timer-box">⏱️ Sisa Waktu: <span id="timer-pancasila">40:00</span></div>
-      </div>
-      <div id="pancasila-questions" class="question-container"></div>
+    <div id="beranda" class="content-card active">
+      <h1>Beranda Akademik</h1>
+      <p>Selamat datang di sistem manajemen pembelajaran terintegrasi. Akses materi perkuliahan, uji pemahaman melalui kuis berkala, dan verifikasi kompetensi Anda.</p>
       
-      <div class="pagination-bar">
-        <button class="btn-page" id="btn-panc-prev" onclick="navigatePanc(-1)">Sebelumnya</button>
-        <span id="page-info-panc" style="font-size:14px; font-weight:600;">Halaman 1</span>
-        <button class="btn-page" id="btn-panc-next" onclick="navigatePanc(1)">Selanjutnya</button>
-      </div>
-      <div id="panc-res" class="result-alert"></div>
-    </div>
-
-    <div id="officemanager-tab" class="content-card">
-      <div class="exam-header">
-        <div><strong>Skema Okupasi:</strong> Office Manager (Klaster Administrasi Perkantoran)</div>
-        <div class="timer-box">⏱️ Sisa Waktu: <span id="timer-office">15:00</span></div>
-      </div>
-      <div id="office-questions" class="question-container"></div>
-      
-      <div class="pagination-bar">
-        <button class="btn-page" id="btn-off-prev" onclick="navigateOff(-1)">Sebelumnya</button>
-        <span id="page-info-off" style="font-size:14px; font-weight:600;">Halaman 1</span>
-        <button class="btn-page" id="btn-off-next" onclick="navigateOff(1)">Selanjutnya</button>
-      </div>
-      <div id="off-res" class="result-alert"></div>
-    </div>
-
-    <div id="upload-tab" class="content-card">
-      <h1>Pengunggahan Berkas & Portofolio</h1>
-      <p>Silakan unggah dokumen pendukung (seperti CV, Laporan Tugas Akhir, Dokumen Asesmen Mandiri APL-01/APL-02) dalam format PDF.</p>
-      
-      <div class="upload-container" id="drop-zone" onclick="document.getElementById('file-input').click()">
-        <span class="upload-icon">📄</span>
-        <h3>Tarik & Lepas File PDF di Sini</h3>
-        <p style="font-size:13px; color:var(--text-muted); margin-top:5px;">atau klik untuk menelusuri penyimpanan lokal (Maks. 5 MB)</p>
-        <input type="file" id="file-input" accept=".pdf" onchange="handleFileSelection(this.files)">
+      <div style="background:#eff6ff; border-left:4px solid var(--accent-blue); padding:15px; margin: 15px 0; border-radius:6px; font-size:13.5px; color:#1e40af">
+        ℹ️ <strong>Informasi Keamanan:</strong> Anda bebas membuka tab luar untuk mencari referensi saat membaca <strong>Materi Kuliah</strong>. Sistem anti-curang hanya akan aktif mengunci browser Anda saat lembar kuis atau uji kompetensi diklik.
       </div>
 
-      <div class="progress-bar-container" id="progress-container">
-        <div class="progress-bar-fill" id="progress-fill"></div>
-      </div>
-      <div id="upload-status-msg" class="upload-msg"></div>
-
-      <div class="file-details" id="file-details-box">
-        <div>
-          <strong id="detail-name" style="color:var(--primary-dark); font-size:14px;">Nama_File.pdf</strong><br>
-          <span id="detail-size" style="font-size:12px; color:var(--text-muted)">0 KB</span>
-        </div>
-        <button type="button" class="btn-page" style="background:var(--danger); padding:6px 12px;" onclick="removeUploadedFile()">Hapus</button>
-      </div>
-    </div>
-
-    <div id="profil-tab" class="content-card">
-      <h1>Profil Academic & Kompetensi</h1>
-      <table class="profile-table">
-        <tr><td>Nama Lengkap</td><td>Nur Aulia Agustina</td></tr>
-        <tr><td>NIM</td><td>45223109</td></tr>
-        <tr><td>Kelas</td><td>3E D4 AB</td></tr>
-        <tr><td>Program Studi</td><td>Administrasi Bisnis</td></tr>
-        <tr><td>Spesialisasi Skema</td><td>Professional Office Manager Executive</td></tr>
+      <h2 class="section-subtitle">Identitas Mahasiswa</h2>
+      <table class="styled-table" style="max-width: 500px;">
+        <tr><td><strong>Nama Lengkap</strong></td><td>Nur Aulia Agustina</td></tr>
+        <tr><td><strong>NIM</strong></td><td>45223109</td></tr>
+        <tr><td><strong>Program Studi</strong></td><td>Administrasi Bisnis</td></tr>
       </table>
     </div>
 
-  </main>
+    <div id="rekap-tab" class="content-card">
+      <h1>Rekapitulasi Nilai Kuis</h1>
+      <p>Berikut adalah lembar ringkasan nilai evaluasi kuis mandiri Anda dari 10 mata kuliah:</p>
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Mata Kuliah</th>
+            <th>Jumlah Soal</th>
+            <th>Status Pengerjaan</th>
+            <th>Nilai Akhir</th>
+          </tr>
+        </thead>
+        <tbody id="rekap-table-body"></tbody>
+      </table>
+    </div>
 
-  <script>
-    /* ==========================================================================
-       1. GENERATOR DATA BANK SOAL
-       ========================================================================== */
-    const pancasilaBank = [];
-    const silaTexts = ["Ketuhanan Yang Maha Esa", "Kemanusiaan yang adil dan beradab", "Persatuan Indonesia", "Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan", "Keadilan sosial bagi seluruh rakyat Indonesia"];
-    const lambangSila = ["Bintang Emas", "Rantai Emas", "Pohon Beringin", "Kepala Banteng", "Padi dan Kapas"];
+    <div id="materi-view" class="content-card">
+      <h1 id="materi-title">Materi</h1>
+      <div id="materi-content" style="line-height: 1.6; color: var(--text-main);"></div>
+    </div>
 
-    for(let i = 1; i <= 200; i++) {
-      let silaTarget = ((i - 1) % 5) + 1;
-      let qText = "";
-      let opt = [];
-      let ans = "a";
-
-      if(i % 4 === 1) {
-        qText = `[Butir Soal ${i}] Implementasi nyata di masyarakat yang paling mencerminkan pengamalan butir nilai-nilai luhur dari Sila ke-${silaTarget} Pancasila adalah...`;
-        opt = [`A. Mengutamakan supremasi hukum yang berkeadilan pada sila ke-${silaTarget}`, `B. Menjalankan aktivitas tanpa memperhatikan struktur sosial`, `C. Memaksakan kehendak minoritas dalam rapat`, `D. Mengabaikan keputusan bersama`];
-      } else if(i % 4 === 2) {
-        qText = `[Butir Soal ${i}] Lambang heraldik pertahanan negara yang merepresentasikan struktur filosofis Sila ke-${silaTarget} ialah...`;
-        opt = [`A. ${lambangSila[silaTarget-1]}`, `B. Tunas Kelapa Nasional`, `C. Bendera Merah Putih Makro`, `D. Burung Garuda Tanpa Semboyan`];
-        ans = "a";
-      } else if(i % 4 === 3) {
-        qText = `[Butir Soal ${i}] Ditinjau dari kronologi historis sidang BPUPKI, rumusan kalimat "${silaTexts[silaTarget-1]}" mengikat secara konstitusional sejak disahkannya UUD 1945 pada tanggal...`;
-        opt = ["A. 17 Agustus 1945", "B. 18 Agustus 1945", "C. 1 Juni 1945", "D. 22 Juni 1945"];
-        ans = "b";
-      } else {
-        qText = `[Butir Soal ${i}] Pelanggaran etika kewarganegaraan seperti penyebaran berita bohong (hoaks) yang memecah belah integrasi horizontal merupakan deviasi langsung terhadap sila bertajuk...`;
-        opt = [`A. ${silaTexts[2]}`, `B. ${silaTexts[0]}`, `C. ${silaTexts[1]}`, `D. ${silaTexts[3]}`];
-        ans = "a";
-      }
-      pancasilaBank.push({ id: i, question: qText, options: opt, answer: ans });
-    }
-
-    const officeBank = [
-      { id: 1, question: "Berdasarkan SKKNI, unit kompetensi penanganan surat masuk dan keluar (Mailing System) mewajibkan pencatatan dokumen menggunakan alat kendali utama berupa...", options: ["A. Lembar Disposisi & Buku Agenda", "B. Flashdisk Eksternal", "C. Kwitansi Keuangan", "D. Nota Kesepahaman / MoU"], answer: "a" },
-      { id: 2, question: "Untuk efisiensi tata ruang kantor (Office Layout) aliran kerja terbuka, jenis penataan meja yang meminimalkan sekat struktural disebut...", options: ["A. Cubicle Layout", "B. Open Plan Office Layout", "C. Closed Office System", "D. Landscape Office Planning"], answer: "b" },
-      { id: 3, question: "Dalam penyelenggaraan Rapat Pemegang Saham, dokumen otentik berkekuatan hukum yang merekam dialektika dan ketetapan mufakat adalah...", options: ["A. Term of Reference (TOR)", "B. Minutes of Meeting (Notulen)", "C. Rundown Acara", "D. Curriculum Vitae Pimpinan"], answer: "b" },
-      { id: 4, question: "Sistem kearsipan dinamis yang mengelompokkan berkas berdasarkan pokok permasalahan atau perihal surat dinamakan...", options: ["A. Alphabetical Filing System", "B. Subjectical Filing System", "C. Chronological System", "D. Numerical System"], answer: "b" },
-      { id: 5, question: "Guna menjamin perlindungan data sensitif perusahaan dari spionase industri, langkah pemusnahan dokumen kertas yang tepat adalah mengeksekusinya dengan mesin...", options: ["A. Paper Shredder Machine", "B. Laminating Pres", "C. Photocopy Flatbed", "D. Scanner Duplex"], answer: "a" }
-    ];
-
-    /* ==========================================================================
-       2. GLOBAL STATE MANAGEMENT & SECURITY
-       ========================================================================== */
-    let currentPancPage = 1;
-    const pancRowsPerPage = 5;
-    let userPancAnswers = {};
-    let userOffAnswers = {};
-    let cheatCount = 0;
-    let timerPancInterval, timerOffInterval;
-    let pancasilaTimeLeft = 40 * 60;
-    let officeTimeLeft = 15 * 60;
-
-    // Anti Tab-Switch System
-    document.addEventListener("visibilitychange", function() {
-      if (document.hidden) {
-        cheatCount++;
-        document.getElementById('cheat-box').style.display = 'block';
-        document.getElementById('cheat-count').innerText = cheatCount;
-        if(cheatCount >= 3) {
-          alert("SISTEM MENGUNCI JAWABAN ANDA! Terdeteksi pelanggaran pemindahan tab browser.");
-          autoSubmitAll();
-        } else {
-          alert(`PERINGATAN INTEGRITAS (${cheatCount}/3)! Jangan tinggalkan halaman kuis.`);
-        }
-      }
-    });
-
-    // Blokir Klik Kanan & Hotkeys devtools
-    document.addEventListener("contextmenu", e => e.preventDefault());
-    document.addEventListener("keydown", e => {
-      if (e.ctrlKey && ['u', 's', 'i', 'c'].includes(e.key.toLowerCase())) e.preventDefault();
-    });
-
-    window.onload = function() {
-      renderPancasilaQuestions();
-      renderOfficeQuestions();
-      startTimerPancasila();
-      startTimerOffice();
-      initDragAndDrop();
-    };
-
-    function changeTab(tabId, menuElement) {
-      document.querySelectorAll('.content-card').forEach(card => card.classList.remove('active'));
-      document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      menuElement.classList.add('active');
-      document.querySelector('.main-content').scrollTop = 0;
-    }
-
-    /* ==========================================================================
-       3. ENGINE KUIS PANCASILA & OFFICE MANAGER
-       ========================================================================== */
-    function renderPancasilaQuestions() {
-      const container = document.getElementById('pancasila-questions');
-      container.innerHTML = "";
-      let start = (currentPancPage - 1) * pancRowsPerPage;
-      let end = start + pancRowsPerPage;
-      let pageItems = pancasilaBank.slice(start, end);
-
-      pageItems.forEach((q) => {
-        let savedAns = userPancAnswers[q.id] || "";
-        let box = document.createElement('div');
-        box.className = 'question-box';
-        let html = `<div class="question-text">${q.id}. ${q.question}</div><div class="options-group">`;
-        let labels = ['a', 'b', 'c', 'd'];
-        q.options.forEach((optStr, index) => {
-          let code = labels[index];
-          let checked = savedAns === code ? "checked" : "";
-          html += `<label class="option-label"><input type="radio" name="panc-${q.id}" value="${code}" ${checked} onchange="savePancAns(${q.id}, '${code}')">${optStr}</label>`;
-        });
-        box.innerHTML = html + `</div>`;
-        container.appendChild(box);
-      });
-
-      document.getElementById('page-info-panc').innerText = `Halaman ${currentPancPage} dari ${Math.ceil(pancasilaBank.length / pancRowsPerPage)}`;
-      document.getElementById('btn-panc-prev').disabled = currentPancPage === 1;
-      
-      const nextBtn = document.getElementById('btn-panc-next');
-      if (currentPancPage === Math.ceil(pancasilaBank.length / pancRowsPerPage)) {
-        nextBtn.innerText = "Kirim Semua Jawaban";
-        nextBtn.style.background = "var(--success)";
-        nextBtn.onclick = submitPancasilaKuis;
-      } else {
-        nextBtn.innerText = "Selanjutnya";
-        nextBtn.style.background = "var(--sidebar-bg)";
-        nextBtn.onclick = function() { navigatePanc(1); };
-      }
-    }
-
-    function savePancAns(qId, val) { userPancAnswers[qId] = val; }
-    function navigatePanc(dir) { currentPancPage += dir; renderPancasilaQuestions(); }
-
-    function submitPancasilaKuis() {
-      let totalDijawab = Object.keys(userPancAnswers).length;
-      if(totalDijawab < 200 && !confirm(`Baru terisi ${totalDijawab} dari 200 soal. Kirim berkas?`)) return;
-
-      clearInterval(timerPancInterval);
-      let benar = 0;
-      pancasilaBank.forEach(q => { if(userPancAnswers[q.id] === q.answer) benar++; });
-      let finalSkor = (benar / 200) * 100;
-      document.getElementById('track-panc').innerText = `${finalSkor.toFixed(1)}/100`;
-      showResultAlert(document.getElementById('panc-res'), finalSkor);
-    }
-
-    function renderOfficeQuestions() {
-      const container = document.getElementById('office-questions');
-      container.innerHTML = "";
-      officeBank.forEach((q) => {
-        let savedAns = userOffAnswers[q.id] || "";
-        let box = document.createElement('div');
-        box.className = 'question-box';
-        let html = `<div class="question-text">${q.id}. ${q.question}</div><div class="options-group">`;
-        let labels = ['a', 'b', 'c', 'd'];
-        q.options.forEach((optStr, index) => {
-          let code = labels[index];
-          let checked = savedAns === code ? "checked" : "";
-          html += `<label class="option-label"><input type="radio" name="off-${q.id}" value="${code}" ${checked} onchange="saveOffAns(${q.id}, '${code}')">${optStr}</label>`;
-        });
-        box.innerHTML = html + `</div>`;
-        container.appendChild(box);
-      });
-      document.getElementById('page-info-off').innerText = "Halaman 1 dari 1 (All Units)";
-      document.getElementById('btn-off-prev').disabled = true;
-      document.getElementById('btn-off-next').onclick = submitOfficeKuis;
-    }
-
-    function saveOffAns(qId, val) { userOffAnswers[qId] = val; }
-
-    function submitOfficeKuis() {
-      if(Object.keys(userOffAnswers).length < officeBank.length) {
-        alert("Validasi Gagal: Selesaikan seluruh soal skema Office Manager!"); return;
-      }
-      clearInterval(timerOffInterval);
-      let benar = 0;
-      officeBank.forEach(q => { if(userOffAnswers[q.id] === q.answer) benar++; });
-      let finalSkor = (benar / officeBank.length) * 100;
-      document.getElementById('track-off').innerText = finalSkor === 100 ? "KOMPETEN (100)" : `${finalSkor.toFixed(0)}/100`;
-      showResultAlert(document.getElementById('off-res'), finalSkor);
-    }
-
-    function showResultAlert(el, skor) {
-      el.style.display = "block";
-      if(skor >= 75) {
-        el.style.backgroundColor = "#dcfce7"; el.style.color = "#166534";
-        el.innerHTML = `Selesai! Skor Akhir Evaluasi: ${skor.toFixed(1)} / 100.`;
-      } else {
-        el.style.backgroundColor = "#fee2e2"; el.style.color = "#991b1b";
-        el.innerHTML = `Selesai! Skor Akhir Evaluasi: ${skor.toFixed(1)} / 100. Perlu perbaikan.`;
-      }
-    }
-
-    /* ==========================================================================
-       4. REALTIME FILE UPLOAD ENGINE (FITUR BARU)
-       ========================================================================== */
-    function initDragAndDrop() {
-      const dropZone = document.getElementById('drop-zone');
-      ['dragenter', 'dragover'].forEach(eventName => {
-        dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.classList.add('dragover'); }, false);
-      });
-      ['dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); }, false);
-      });
-      dropZone.addEventListener('drop', (e) => { handleFileSelection(e.dataTransfer.files); }, false);
-    }
-
-    function handleFileSelection(files) {
-      if(files.length === 0) return;
-      const file = files[0];
-      
-      // Validasi Ekstensi Dokumen (.pdf)
-      if (file.type !== "application/pdf" && !file.name.endsWith('.pdf')) {
-        alert("Gagal Validasi: Berkas wajib berformat PDF!");
-        return;
-      }
-      // Validasi Ukuran File (Maksimal 5 MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Gagal Validasi: Ukuran file melebihi batas maksimal 5 MB!");
-        return;
-      }
-
-      // Animasi Simulai Upload Realtime
-      const progressContainer = document.getElementById('progress-container');
-      const progressFill = document.getElementById('progress-fill');
-      const statusMsg = document.getElementById('upload-status-msg');
-      
-      progressContainer.style.display = "block";
-      statusMsg.style.color = "var(--primary-dark)";
-      statusMsg.innerText = "Mengunggah berkas...";
-
-      let progress = 0;
-      let interval = setInterval(() => {
-        progress += 10;
-        progressFill.style.width = progress + "%";
-        if(progress >= 100) {
-          clearInterval(interval);
-          statusMsg.style.color = "var(--success)";
-          statusMsg.innerText = "✓ Dokumen PDF Berhasil Diverifikasi & Diunggah!";
-          
-          // Tampilkan Detail File
-          document.getElementById('detail-name').innerText = file.name;
-          document.getElementById('detail-size').innerText = (file.size / 1024).toFixed(1) + " KB";
-          document.getElementById('file-details-box').style.display = "flex";
-          
-          // Sinkronisasi status monitor di sidebar
-          document.getElementById('track-pdf').innerText = "Tersimpan";
-          document.getElementById('track-pdf').style.color = "var(--success)";
-        }
-      }, 100);
-    }
-
-    function removeUploadedFile() {
-      document.getElementById('file-input').value = "";
-      document.getElementById('file-details-box').style.display = "none";
-      document.getElementById('progress-container').style.display = "none";
-      document.getElementById('progress-fill').style.width = "0%";
-      document.getElementById('upload-status-msg').innerText = "";
-      document.getElementById('track-pdf').innerText = "Kosong";
-      document.getElementById('track-pdf').style.color = "var(--accent-blue)";
-    }
-
-    /* ==========================================================================
-       5. TIMERS CONTROL
-       ========================================================================== */
-    function startTimerPancasila() {
-      timerPancInterval = setInterval(() => {
-        if(pancasilaTimeLeft <= 0) { clearInterval(timerPancInterval); autoSubmitAll(); }
-        else {
-          pancasilaTimeLeft--;
-          let m = Math.floor(pancasilaTimeLeft / 60); let s = pancasilaTimeLeft % 60;
-          document.getElementById('timer-pancasila').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-        }
-      }, 1000);
-    }
-
-    function startTimerOffice() {
-      timerOffInterval = setInterval(() => {
-        if(officeTimeLeft <= 0) { clearInterval(timerOffInterval); autoSubmitAll(); }
-        else {
-          officeTimeLeft--;
-          let m = Math.floor(officeTimeLeft / 60); let s = officeTimeLeft % 60;
-          document.getElementById('timer-office').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-        }
-      }, 1000);
-    }
-
-    function autoSubmitAll() { submitPancasilaKuis(); submitOfficeKuis(); }
-  </script>
-</body>
-</html>
+    <div id="kuis-view" class="content-card">
+      <div class="exam-header secure-border">
+        <div>
