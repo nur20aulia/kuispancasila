@@ -6,12 +6,13 @@
   <title>Dashboard Portal Academic - Nur Aulia Agustina</title>
   <style>
     :root {
-      /* PERMINTAAN 4: MENGUBAH TEMA WARNA MENJADI SOFT PINK */
       --primary-dark: #4c2e35;
       --sidebar-bg: #fae1e6;
       --sidebar-hover: #f3c1cb;
       --sidebar-text: #5c3a41;
       --accent-pink: #f0a3b3;
+      /* PERMINTAAN 2: Warna indikator aktif yang jauh lebih mencolok (Deep Rose Pink) */
+      --active-highlight: #d47285;
       --accent-blue: #cbdcf7;
       --bg-main: #fff5f6;
       --text-main: #2e1f22;
@@ -98,9 +99,16 @@
       transition: all 0.2s;
     }
 
-    .btn-dashboard-portal:hover, .btn-dashboard-portal.active {
+    .btn-dashboard-portal:hover {
       background: var(--accent-pink);
-      color: var(--primary-dark);
+    }
+
+    /* PERMINTAAN 2: Style pencahayaan tombol utama sidebar saat aktif */
+    .btn-dashboard-portal.active {
+      background: var(--active-highlight) !important;
+      color: white !important;
+      border-color: var(--primary-dark);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .menu-category {
@@ -146,12 +154,19 @@
       color: var(--sidebar-text);
       cursor: pointer;
       transition: all 0.2s;
+      border-left: 3px solid transparent;
     }
 
-    .dropdown-item:hover, .dropdown-item.active {
+    .dropdown-item:hover {
       background-color: var(--accent-pink);
-      color: var(--primary-dark);
-      font-weight: 600;
+    }
+
+    /* PERMINTAAN 2: Style item menu dropdown saat aktif (Mencolok & kontras) */
+    .dropdown-item.active {
+      background-color: var(--active-highlight) !important;
+      color: #ffffff !important;
+      font-weight: 700;
+      border-left: 5px solid var(--primary-dark);
     }
 
     .sidebar-footer {
@@ -325,6 +340,46 @@
       font-size: 13px;
       color: var(--text-main);
     }
+
+    /* PERMINTAAN 3: STYLING HALAMAN LOGIN KUIS */
+    .login-kuis-container {
+      max-width: 450px;
+      margin: 30px auto;
+      padding: 30px;
+      background: #fffbfb;
+      border: 1px solid #f0d5da;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    }
+    .form-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 6px;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #f0d5da;
+      border-radius: 6px;
+      font-size: 13.5px;
+      background-color: #fff;
+      color: var(--text-main);
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: var(--active-highlight);
+    }
+    .token-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
@@ -357,11 +412,11 @@
         <span>📄 Silabus & Modul</span> <span>▼</span>
       </button>
       <ul id="drop-silabus" class="dropdown-container">
-        <li class="dropdown-item" onclick="openSilabusGeneral()">Silabus Akademik 2026</li>
-        <li class="dropdown-item" onclick="openModulGeneral()">E-Modul & Bahan Ajar</li>
+        <li id="item-silabus-file" class="dropdown-item" onclick="openSilabusGeneral()">Silabus Akademik 2026</li>
+        <li id="item-modul-file" class="dropdown-item" onclick="openModulGeneral()">E-Modul & Bahan Ajar</li>
       </ul>
 
-      <!-- DROPDOWN 3: KUIS MATA KULIAH (PERMINTAAN 3) -->
+      <!-- DROPDOWN 3: KUIS MATA KULIAH -->
       <button class="dropdown-btn" onclick="toggleDropdown('drop-kuis')">
         <span>📝 Kuis Mata Kuliah</span> <span>▼</span>
       </button>
@@ -372,7 +427,7 @@
         <span>📊 Rekap & Penilaian</span> <span>▼</span>
       </button>
       <ul id="drop-rekap" class="dropdown-container">
-        <li class="dropdown-item" onclick="openRekapNilaiTab()">Daftar Nilai Kuis</li>
+        <li id="item-rekap-tab" class="dropdown-item" onclick="openRekapNilaiTab()">Daftar Nilai Kuis</li>
       </ul>
     </div>
 
@@ -389,7 +444,7 @@
 
     <main class="main-content">
 
-      <!-- TAB 1: PORTAL HOME (PERMINTAAN 1: MODIFIKASI DASHBOARD & HAPUS IDENTITAS) -->
+      <!-- TAB 1: PORTAL HOME -->
       <div id="portal-root-tab" class="content-card active">
         <div class="portal-welcome-box">
           <div class="grad-cap">🎓</div>
@@ -400,7 +455,7 @@
         </div>
       </div>
 
-      <!-- TAB 2: MATERI VIEW WITH DETAILED EXPLANATIONS (PERMINTAAN 2) -->
+      <!-- TAB 2: MATERI VIEW -->
       <div id="materi-tab" class="content-card">
         <h1 id="materi-title">Mata Kuliah</h1>
         <div id="materi-desc-container" style="line-height:1.6; font-size:14px; color:var(--text-main)"></div>
@@ -409,31 +464,64 @@
       <!-- TAB 3: SILABUS & MODUL -->
       <div id="silabus-tab" class="content-card">
         <h1>Silabus & Bahan Ajar Elektronik</h1>
-        <p>Akses berkas kurikulum semester berjalan untuk skema Administrasi Perkantoran Digital:</p>
+        <!-- PERMINTAAN 1: Mengubah teks skema menjadi Skema Administrasi Bisnis -->
+        <p>Akses berkas kurikulum semester berjalan untuk skema <strong>Administrasi Bisnis</strong>:</p>
         <table class="styled-table">
           <thead>
             <tr><th>Jenis Berkas</th><th>Deskripsi Fungsi</th><th>Tautan Unduhan</th></tr>
           </thead>
           <tbody>
-            <tr><td>Rencana Pembelajaran Semester (RPS)</td><td>Silabus Terintegrasi 10 Mata Kuliah Pokok</td><td><a href="#" onclick="alert('Mengunduh Silabus PDF...')">Download Silabus.pdf</a></td></tr>
-            <tr><td>Bahan Ajar Utama</td><td>E-Book Modul Operasional Kantor Modern</td><td><a href="#" onclick="alert('Mengunduh Modul...')">Download Modul_Utama.pdf</a></td></tr>
+            <tr><td>Rencana Pembelajaran Semester (RPS)</td><td>Silabus Operasional Korporasi & Manajemen Administrasi Bisnis</td><td><a href="#" onclick="alert('Mengunduh Silabus Administrasi Bisnis PDF...')">Download Silabus_Bisnis.pdf</a></td></tr>
+            <tr><td>Bahan Ajar Utama</td><td>E-Book Modul Pengelolaan Usaha Terpadu</td><td><a href="#" onclick="alert('Mengunduh Modul Administrasi Bisnis...')">Download Modul_Bisnis_Utama.pdf</a></td></tr>
           </tbody>
         </table>
       </div>
 
-      <!-- TAB 4: EVALUASI KUIS -->
+      <!-- TAB 4: EVALUASI KUIS (DENGAN INTEGRASI HALAMAN LOGIN KUIS) -->
       <div id="kuis-tab" class="content-card">
-        <div class="exam-header">
-          <div><strong id="kuis-headline-title">Kuis Perkuliahan</strong> — Mode Peninjauan Hasil</div>
+        <div id="kuis-headline-wrapper" class="exam-header">
+          <div><strong id="kuis-headline-title">Kuis Perkuliahan</strong> — Gerbang Verifikasi Mahasiswa</div>
         </div>
-        <div id="questions-box-loader"></div>
-        <button class="btn-action" style="background:var(--success);" onclick="processSubmitKuis()">Kirim Form Jawaban</button>
+
+        <!-- PERMINTAAN 3: Tampilan Form Halaman Login Sebelum Kuis -->
+        <div id="kuis-login-gate" class="login-kuis-container">
+          <h3 style="text-align: center; margin-bottom: 20px; color: var(--primary-dark);">Autentikasi Ujian Kuis</h3>
+          <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input type="text" id="quiz-student-name" placeholder="Contoh: Nur Aulia Agustina">
+          </div>
+          <div class="form-group">
+            <label>NIM (Nomor Induk Mahasiswa)</label>
+            <input type="text" id="quiz-student-nim" placeholder="Contoh: 45223109">
+          </div>
+          <div class="form-group">
+            <label>Kelas / Angkatan</label>
+            <select id="quiz-student-class">
+              <option value="">-- Pilih Kelas Anda --</option>
+              <option value="AB-A">Administrasi Bisnis - Kelas A</option>
+              <option value="AB-B">Administrasi Bisnis - Kelas B</option>
+              <option value="AB-C">Administrasi Bisnis - Kelas C</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Token Ujian Kuis</label>
+            <input type="text" id="quiz-token" placeholder="Masukkan token">
+            <div class="token-hint">*Gunakan token simulasi standar: <strong>BISNIS2026</strong></div>
+          </div>
+          <button class="btn-action" onclick="validateQuizAccess()">Mulai Mengerjakan Ujian</button>
+        </div>
+
+        <!-- Wadah Soal Kuis (Disembunyikan sebelum login sukses) -->
+        <div id="quiz-main-questions-panel" style="display: none;">
+          <div id="questions-box-loader"></div>
+          <button class="btn-action" style="background:var(--success);" onclick="processSubmitKuis()">Kirim Form Jawaban</button>
+        </div>
       </div>
 
       <!-- TAB 5: REKAP NILAI KUIS -->
       <div id="rekap-tab" class="content-card">
         <h1>Daftar Nilai Kuis Mandiri</h1>
-        <p>Rekapitulasi nilai perolehan ujian objektif mahasiswa Nur Aulia Agustina secara otomatis:</p>
+        <p>Rekapitulasi nilai perolehan ujian objektif mahasiswa Administrasi Bisnis secara otomatis:</p>
         <table class="styled-table">
           <thead>
             <tr>
@@ -452,7 +540,7 @@
   </div>
 
   <script>
-    // DATA 10 MATA KULIAH DENGAN PENJELASAN RINGKAS DAN MATERI JELAS (PERMINTAAN 2)
+    // DATA MATA KULIAH ADMINISTRASI BISNIS
     const dataMataKuliah = [
       { 
         nama: "Aplikasi Komputer Bisnis", 
@@ -561,9 +649,9 @@
       const kuisMenu = document.getElementById('drop-kuis');
       
       dataMataKuliah.forEach((mk, index) => {
-        mkMenu.innerHTML += `<li class="dropdown-item" onclick="openMataKuliah(${index})">📘 ${mk.nama}</li>`;
-        // PERMINTAAN 3: MENGGANTI NAMA KUIS MENGIKUTI NAMA MATA KULIAHNYA
-        kuisMenu.innerHTML += `<li class="dropdown-item" onclick="openKuisUjian(${index})">➔ Kuis ${mk.nama}</li>`;
+        // Penambahan id unik pada setiap li agar manipulasi highlight aktif di JavaScript bekerja akurat
+        mkMenu.innerHTML += `<li id="item-mk-${index}" class="dropdown-item" onclick="openMataKuliah(${index})">📘 ${mk.nama}</li>`;
+        kuisMenu.innerHTML += `<li id="item-kuis-${index}" class="dropdown-item" onclick="openKuisUjian(${index})">➔ Kuis ${mk.nama}</li>`;
       });
     }
 
@@ -577,7 +665,20 @@
       el.style.display = (el.style.display === "block") ? "none" : "block";
     }
 
-    function switchActiveTabView(tabId, icon, title) {
+    // PERMINTAAN 2: Manajemen status kelas aktif yang dibersihkan dan dipasang secara kontras mencolok
+    function highlightActiveSidebarItem(activeId) {
+      // Hapus seluruh class active dari menu manapun di sidebar
+      document.getElementById('btn-portal-root').classList.remove('active');
+      document.querySelectorAll('.dropdown-item').forEach(item => item.classList.remove('active'));
+      
+      // Pasang class active ke elemen yang sedang diakses saat ini
+      if(activeId) {
+        const targetElement = document.getElementById(activeId);
+        if(targetElement) targetElement.classList.add('active');
+      }
+    }
+
+    function switchActiveTabView(tabId, icon, title, sidebarItemId) {
       currentTabId = tabId;
       document.querySelectorAll('.content-card').forEach(card => card.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
@@ -585,20 +686,15 @@
       document.getElementById('top-nav-icon').innerText = icon;
       document.getElementById('top-nav-title').innerText = title;
 
-      if(tabId !== 'portal-root-tab') {
-        document.getElementById('btn-portal-root').classList.remove('active');
-      } else {
-        document.getElementById('btn-portal-root').classList.add('active');
-      }
+      highlightActiveSidebarItem(sidebarItemId);
     }
 
     function openPortalRoot() {
-      switchActiveTabView('portal-root-tab', '💻', 'Dashboard Portal');
+      switchActiveTabView('portal-root-tab', '💻', 'Dashboard Portal', 'btn-portal-root');
     }
 
-    // PERMINTAAN 2: INTEGRASI PENJELASAN MATERI DI SETIAP MATA KULIAH
     function openMataKuliah(idx) {
-      switchActiveTabView('materi-tab', '📘', `Mata Kuliah: ${dataMataKuliah[idx].nama}`);
+      switchActiveTabView('materi-tab', '📘', `Mata Kuliah: ${dataMataKuliah[idx].nama}`, `item-mk-${idx}`);
       document.getElementById('materi-title').innerText = dataMataKuliah[idx].nama;
       
       let materiHtml = "";
@@ -632,34 +728,76 @@
     }
 
     function openSilabusGeneral() {
-      switchActiveTabView('silabus-tab', '📄', 'Silabus Kurikulum');
+      switchActiveTabView('silabus-tab', '📄', 'Silabus Kurikulum', 'item-silabus-file');
     }
 
     function openModulGeneral() {
-      switchActiveTabView('silabus-tab', '📚', 'Bahan Ajar Digital');
+      switchActiveTabView('silabus-tab', '📚', 'Bahan Ajar Digital', 'item-modul-file');
     }
 
-    // GENERATOR KUIS
+    // PERMINTAAN 3: Membuka Kuis dengan mereset / menampilkan Gerbang Login Terlebih Dahulu
     function openKuisUjian(idx) {
       activeKuisIndex = idx;
-      switchActiveTabView('kuis-tab', '📝', `Evaluasi Kuis: ${dataMataKuliah[idx].nama}`);
-      document.getElementById('kuis-headline-title').innerText = `Kuis Aktif: ${dataMataKuliah[idx].nama}`;
+      switchActiveTabView('kuis-tab', '📝', `Evaluasi Kuis: ${dataMataKuliah[idx].nama}`, `item-kuis-${idx}`);
       
+      document.getElementById('kuis-headline-title').innerText = `Kuis Aktif: ${dataMataKuliah[idx].nama} — Registrasi`;
+      
+      // Reset form login kuis
+      document.getElementById('quiz-student-name').value = "";
+      document.getElementById('quiz-student-nim').value = "";
+      document.getElementById('quiz-student-class').value = "";
+      document.getElementById('quiz-token').value = "";
+      
+      // Pastikan gate login tampil dan isi panel soal disembunyikan
+      document.getElementById('kuis-login-gate').style.display = "block";
+      document.getElementById('quiz-main-questions-panel').style.display = "none";
+    }
+
+    // PERMINTAAN 3: Logika Validasi Form Login dan Token Kuis
+    function validateQuizAccess() {
+      const nama = document.getElementById('quiz-student-name').value.trim();
+      const nim = document.getElementById('quiz-student-nim').value.trim();
+      const kelas = document.getElementById('quiz-student-class').value;
+      const token = document.getElementById('quiz-token').value.trim();
+
+      if (!nama || !nim || !kelas || !token) {
+        alert("Peringatan: Mohon lengkapi semua data identitas dan token kuis terlebih dahulu!");
+        return;
+      }
+
+      // Validasi token kuis sederhana (contoh standar: BISNIS2026)
+      if (token.toUpperCase() !== "BISNIS2026") {
+        alert("Akses Ditolak: Token kuis yang Anda masukkan salah atau kadaluwarsa!");
+        return;
+      }
+
+      // Jika berhasil login, load soal kuis
+      alert(`Autentikasi Berhasil!\nSelamat mengerjakan, ${nama} (Kelas: ${kelas})`);
+      document.getElementById('kuis-headline-title').innerText = `Kuis Aktif: ${dataMataKuliah[activeKuisIndex].nama} — Selamat Mengerjakan`;
+      
+      document.getElementById('kuis-login-gate').style.display = "none";
+      document.getElementById('quiz-main-questions-panel').style.display = "block";
+      
+      buildQuizQuestions();
+    }
+
+    // GENERATOR SOAL KUIS
+    function buildQuizQuestions() {
       const qContainer = document.getElementById('questions-box-loader');
       qContainer.innerHTML = "";
       
       for(let i = 1; i <= 20; i++) {
-        let answerKey = `mk-${idx}-soal-${i}`;
+        let answerKey = `mk-${activeKuisIndex}-soal-${i}`;
         let previousSelection = userAnswers[answerKey] || "";
 
         let block = document.createElement('div');
         block.className = "question-box";
         block.innerHTML = `
-          <div class="question-text">${i}. Berikut ini yang termasuk ke dalam implementasi praktis atau landasan operasional utama pada subjek ${dataMataKuliah[idx].nama} butir ke-${i} adalah...</div>
+          <div class="question-text">${i}. Berikut ini yang termasuk ke dalam implementasi praktis atau landasan operasional utama pada subjek ${dataMataKuliah[activeKuisIndex].nama} butir ke-${i} adalah...</div>
           <div class="options-group">
             <label class="option-label"><input type="radio" name="${answerKey}" value="A" ${previousSelection === 'A'?'checked':''} onchange="recordUserResponse('${answerKey}','A')"> A. Prosedur Standard Operating Procedure (SOP) Terverifikasi Industri</label>
             <label class="option-label"><input type="radio" name="${answerKey}" value="B" ${previousSelection === 'B'?'checked':''} onchange="recordUserResponse('${answerKey}','B')"> B. Metode Alternatif Eksperimental Tanpa Mitigasi Risiko</label>
-            <label class="option-label"><input type="radio" name="${answerKey}" value="C" ${previousSelection === 'C'?'checked':''} onchange="replaceUserResponse('${answerKey}','C')"> C. Konsep Teoritis Pengenalan Tanpa Pengujian Kuantitatif</label>
+            <label class="option-label"><input type="radio" name="${answerKey}" value="C" ${previousSelection === 'C'?'checked':''} onchange="recordUserResponse('${answerKey}','C')"> C. Konsep Teoritis Pengenalan Tanpa Pengujian Kuantitatif</label>
             <label class="option-label"><input type="radio" name="${answerKey}" value="D" ${previousSelection === 'D'?'checked':''} onchange="recordUserResponse('${answerKey}','D')"> D. Asumsi Hipotesis Dasar Berdasarkan Pengamatan Kasual</label>
           </div>
         `;
@@ -688,7 +826,7 @@
 
     // REKAP HASIL KUIS
     function openRekapNilaiTab() {
-      switchActiveTabView('rekap-tab', '📊', 'Rekap Hasil Evaluasi');
+      switchActiveTabView('rekap-tab', '📊', 'Rekap Hasil Evaluasi', 'item-rekap-tab');
     }
 
     function buildRekapTableRows() {
