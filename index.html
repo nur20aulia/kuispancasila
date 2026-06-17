@@ -345,11 +345,11 @@
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 5px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      white-space: nowrap;
     }
     .btn-cert:hover {
       filter: brightness(1.1);
@@ -400,7 +400,7 @@
       margin-top: 4px;
     }
 
-    /* AREA STRUKTUR STRIP KHUSUS CETAK SERTIFIKAT */
+    /* AREA CETAK SERTIFIKAT */
     #print-certificate-zone {
       display: none;
     }
@@ -448,11 +448,10 @@
       <ul id="drop-mk" class="dropdown-container"></ul>
 
       <button class="dropdown-btn" onclick="toggleDropdown('drop-silabus')">
-        <span>📄 Silabus & Modul</span> <span>▼</span>
+        <span>📄 Silabus & Kurikulum</span> <span>▼</span>
       </button>
       <ul id="drop-silabus" class="dropdown-container">
-        <li id="item-silabus-file" class="dropdown-item" onclick="openSilabusGeneral()">Silabus Akademik 2026</li>
-        <li id="item-modul-file" class="dropdown-item" onclick="openModulGeneral()">E-Modul & Bahan Ajar</li>
+        <li id="item-silabus-file" class="dropdown-item" onclick="openSilabusGeneral()">Silabus Akademik 2026b</li>
       </ul>
 
       <button class="dropdown-btn" onclick="toggleDropdown('drop-kuis')">
@@ -498,17 +497,16 @@
         <div id="materi-desc-container" style="line-height:1.6; font-size:14px; color:var(--text-main)"></div>
       </div>
 
-      <!-- TAB 3: SILABUS & MODUL -->
+      <!-- TAB 3: SILABUS -->
       <div id="silabus-tab" class="content-card">
-        <h1>Silabus & Bahan Ajar Elektronik</h1>
+        <h1>Silabus Akademik 2026b</h1>
         <p>Akses berkas kurikulum semester berjalan untuk skema <strong>Administrasi Bisnis</strong>:</p>
         <table class="styled-table">
           <thead>
             <tr><th>Jenis Berkas</th><th>Deskripsi Fungsi</th><th>Tautan Unduhan</th></tr>
           </thead>
           <tbody>
-            <tr><td>Rencana Pembelajaran Semester (RPS)</td><td>Silabus Operasional Korporasi & Manajemen Administrasi Bisnis</td><td><a href="#" onclick="alert('Mengunduh Silabus...')">Download Silabus_Bisnis.pdf</a></td></tr>
-            <tr><td>Bahan Ajar Utama</td><td>E-Book Modul Pengelolaan Usaha Terpadu</td><td><a href="#" onclick="alert('Mengunduh Modul...')">Download Modul_Bisnis_Utama.pdf</a></td></tr>
+            <tr><td>Rencana Pembelajaran Semester (RPS) 2026b</td><td>Silabus Operasional Korporasi & Manajemen Administrasi Bisnis Terbaru</td><td><a href="#" onclick="alert('Mengunduh Silabus...')">Download Silabus_Bisnis_2026b.pdf</a></td></tr>
           </tbody>
         </table>
       </div>
@@ -572,12 +570,13 @@
         <table class="styled-table">
           <thead>
             <tr>
-              <th>No</th>
+              <th style="text-align:center; width:40px;">No</th>
               <th>Identitas Mahasiswa</th>
               <th>Nama Mata Kuliah</th>
-              <th>Beban Evaluasi</th>
-              <th>Status Kelulusan</th>
-              <th>Nilai Hasil & Sertifikat</th>
+              <th style="text-align:center; width:120px;">Beban Evaluasi</th>
+              <th style="text-align:center; width:150px;">Status</th>
+              <th style="text-align:center; width:110px;">Nilai Hasil</th>
+              <th style="text-align:center; width:150px;">Sertifikat</th>
             </tr>
           </thead>
           <tbody id="table-rekap-rows"></tbody>
@@ -587,7 +586,7 @@
     </main>
   </div>
 
-  <!-- CONTAINER PRINT OVERLAY CANVAS (HIDDEN FROM STANDALONE SCREEN VIEW) -->
+  <!-- CONTAINER CANVAS SERTIFIKAT -->
   <div id="print-certificate-zone">
     <canvas id="cert-canvas" width="1120" height="792"></canvas>
   </div>
@@ -674,7 +673,6 @@
 
     function openPortalRoot() { switchActiveTabView('portal-root-tab', '💻', 'Dashboard Portal', 'btn-portal-root'); }
     function openSilabusGeneral() { switchActiveTabView('silabus-tab', '📄', 'Silabus Kurikulum', 'item-silabus-file'); }
-    function openModulGeneral() { switchActiveTabView('silabus-tab', '📚', 'Bahan Ajar Digital', 'item-modul-file'); }
 
     function openMataKuliah(idx) {
       switchActiveTabView('materi-tab', '📘', `Mata Kuliah: ${dataMataKuliah[idx].nama}`, `item-mk-${idx}`);
@@ -690,7 +688,7 @@
       }
       activeKuisIndex = idx;
       switchActiveTabView('kuis-tab', '📝', `Evaluasi Kuis: ${dataMataKuliah[idx].nama}`, `item-kuis-${idx}`);
-      document.getElementById('kuis-headline-title').innerText = `Kuis Aktif: ${dataMataKuliah[idx].nama} — Registrasi`;
+      document.getElementById('kuis-headline-title').innerText = `Kuis Aktif: ${dataMataKuliah[activeKuisIndex].nama} — Registrasi`;
       
       document.getElementById('quiz-student-name').value = "";
       document.getElementById('quiz-student-nim').value = "";
@@ -788,7 +786,7 @@
       isExamActive = false;
 
       scoresDatabase[activeKuisIndex].skor = calculatedScore;
-      alert(`Kuis Berhasil Dikirim!\n\nSkor Akhir Anda: ${calculatedScore}\nSertifikat kelulusan Anda sekarang dapat diunduh di tabel rekap.`);
+      alert(`Kuis Berhasil Dikirim!\n\nSkor Akhir Anda: ${calculatedScore}`);
       
       buildRekapTableRows();
       openRekapNilaiTab();
@@ -796,7 +794,6 @@
 
     function openRekapNilaiTab() { switchActiveTabView('rekap-tab', '📊', 'Rekap Hasil Evaluasi', 'item-rekap-tab'); }
 
-    // RENDER REKAP TABEL + TOMBOL GENERATE SERTIFIKAT DINAMIS
     function buildRekapTableRows() {
       const targetBody = document.getElementById('table-rekap-rows');
       targetBody.innerHTML = "";
@@ -805,27 +802,26 @@
         let record = scoresDatabase[idx];
         let statusDisplay = "-";
         let gradeDisplay = "-";
+        let certDisplay = "-";
         let identitasDisplay = `<span style="color: var(--text-muted); font-style: italic;">Belum ada data</span>`;
 
         if (record && record.nama !== "-") {
           identitasDisplay = `
-            <div style="font-size: 13px; font-weight: 600; color: var(--primary-dark);">${record.nama}</div>
-            <div style="font-size: 11px; color: var(--text-muted);">NIM: ${record.nim} | Kelas: ${record.kelas}</div>
+            <div style="font-size: 13px; font-weight: 600; color: var(--primary-dark); margin-bottom: 2px;">${record.nama}</div>
+            <div style="font-size: 12px; color: var(--text-main); margin-bottom: 2px;">${record.nim}</div>
+            <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">[${record.kelas}]</div>
           `;
 
           if (record.skor === "Mengerjakan") {
             let cheatWarning = record.pelanggaran > 0 ? `<br><small style="color:var(--danger); font-weight:bold;">⚠️ Curang: ${record.pelanggaran}x</small>` : '';
             statusDisplay = `<span style="color: var(--warning); font-weight:700; animation: blink 1s infinite;">⏳ Sedang Ujian</span>${cheatWarning}`;
-            gradeDisplay = `<span style="color: var(--text-muted); font-style: italic;">Menghitung...</span>`;
+            gradeDisplay = `<span style="color: var(--text-muted); font-style: italic; font-size:12px;">Menghitung...</span>`;
+            certDisplay = `<span style="color: var(--text-muted); font-style: italic; font-size:12px;">Terkunci</span>`;
           } 
           else if (record.skor !== null) {
-            statusDisplay = `<span style="color:var(--success); font-weight:700;">✓ Selesai</span><br><small style="color:var(--text-muted);">Keluar Tab: ${record.pelanggaran}x</small>`;
-            
-            // Tambahan Tombol Unduh Sertifikat Elektronik Langsung Di Sini
-            gradeDisplay = `
-              <strong>${record.skor} / 100</strong><br>
-              <button class="btn-cert" onclick="generateAndPrintCertificate(${idx})">📜 Unduh Sertifikat</button>
-            `;
+            statusDisplay = `<span style="color:var(--success); font-weight:700;">✓ Selesai</span><br><small style="color:var(--text-muted); font-size:10px;">Keluar Tab: ${record.pelanggaran}x</small>`;
+            gradeDisplay = `<strong style="font-size:14px;">${record.skor} / 100</strong>`;
+            certDisplay = `<button class="btn-cert" onclick="generateAndPrintCertificate(${idx})">📜 Unduh Sertifikat</button>`;
           }
         } else {
           statusDisplay = `<span style="color: #b0b0b0;">Belum Diuji</span>`;
@@ -833,18 +829,19 @@
         
         targetBody.innerHTML += `
           <tr>
-            <td style="text-align:center; width:40px;">${idx + 1}</td>
+            <td style="text-align:center;">${idx + 1}</td>
             <td>${identitasDisplay}</td>
             <td><strong>${mk.nama}</strong></td>
             <td style="text-align:center;">20 Soal PG</td>
             <td style="text-align:center;">${statusDisplay}</td>
             <td style="text-align:center; color:var(--primary-dark)">${gradeDisplay}</td>
+            <td style="text-align:center;">${certDisplay}</td>
           </tr>
         `;
       });
     }
 
-    // ENGINE STRUKTUR AUTOMATION CANVAS SERTIFIKAT DIGITAL
+    // ENGINE STRUKTUR CANVAS SERTIFIKAT (ADAPTASI BERDASARKAN LAYOUT sertifikat.jpg + TEMA SOFT PINK)
     function generateAndPrintCertificate(idx) {
       const studentData = scoresDatabase[idx];
       const courseName = dataMataKuliah[idx].nama;
@@ -852,83 +849,140 @@
       const canvas = document.getElementById("cert-canvas");
       const ctx = canvas.getContext("2d");
       
-      // 1. Gambar Background Utama
-      ctx.fillStyle = "#ffffff";
+      // 1. BACKGROUND UTAMA (Soft Pink Cerah)
+      ctx.fillStyle = "#fff2f4";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // 2. Ornamen Border Bingkai Luar (Tema Burgundy & Rose Gold)
-      ctx.lineWidth = 20;
-      ctx.strokeStyle = "#4c2e35"; // Primary Burgundy
-      ctx.strokeRect(25, 25, canvas.width - 50, canvas.height - 50);
+      // 2. BINGKAI LUAR TEBAL (Warna Dark Pink/Maroon pekat pengganti Navy Blue)
+      ctx.lineWidth = 24;
+      ctx.strokeStyle = "#4c2e35"; 
+      ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
       
-      ctx.lineWidth = 4;
-      ctx.strokeStyle = "#f0a3b3"; // Accent Pink Gold
-      ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+      // 3. BINGKAI DALAM AKSEN EMAS (Sesuai Ornamen sertifikat.jpg)
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "#d4af37"; 
+      const marginDalam = 54;
+      ctx.strokeRect(marginDalam, marginDalam, canvas.width - (marginDalam * 2), canvas.height - (marginDalam * 2));
       
-      // Corner Badges Ornamen Sederhana
-      ctx.fillStyle = "#fae1e6";
-      ctx.fillRect(44, 44, 40, 40);
-      ctx.fillRect(canvas.width - 84, 44, 40, 40);
-      ctx.fillRect(44, canvas.height - 84, 40, 40);
-      ctx.fillRect(canvas.width - 84, canvas.height - 84, 40, 40);
+      // Sudut Lengkung Ornamen
+      const sudutR = 25;
+      const lokasiSudut = [
+        {x: marginDalam, y: marginDalam},
+        {x: canvas.width - marginDalam, y: marginDalam},
+        {x: marginDalam, y: canvas.height - marginDalam},
+        {x: canvas.width - marginDalam, y: canvas.height - marginDalam}
+      ];
+      
+      ctx.lineWidth = 2;
+      lokasiSudut.forEach((pos) => {
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, sudutR, 0, Math.PI * 2);
+        ctx.fillStyle = "#fff2f4";
+        ctx.fill();
+        ctx.stroke();
+      });
 
-      // 3. Render Tulisan Header Sertifikat
       ctx.textAlign = "center";
       
-      ctx.fillStyle = "#8c7377";
-      ctx.font = "bold 18px 'Segoe UI', sans-serif";
-      ctx.fillText("PORTAL AKADEMIK UTAMA KAMPUS DIGITAL", canvas.width / 2, 110);
+      // 4. EMBLEM EMBOSS LOGO ATAS (Simulasi Logo Emas di sertifikat.jpg)
+      const logoY = 150;
+      ctx.fillStyle = "#d4af37";
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, logoY - 20, 25, 0, Math.PI * 2);
+      ctx.fill();
       
-      ctx.fillStyle = "#4c2e35";
-      ctx.font = "bold 46px 'Georgia', serif";
-      ctx.fillText("CERTIFICATE OF ACHIEVEMENT", canvas.width / 2, 180);
-      
-      ctx.fillStyle = "#2e1f22";
-      ctx.font = "italic 16px 'Segoe UI', sans-serif";
-      ctx.fillText("Sertifikat ini diberikan secara resmi kepada mahasiswa di bawah ini:", canvas.width / 2, 240);
-      
-      // 4. Render Nama Mahasiswa (Dicetak Besar & Jelas)
-      ctx.fillStyle = "#d47285";
-      ctx.font = "bold 38px 'Segoe UI', sans-serif";
-      ctx.fillText(studentData.nama.toUpperCase(), canvas.width / 2, 310);
+      ctx.font = "bold 14px 'Segoe UI'";
+      ctx.fillText("★ ★ ★", canvas.width / 2, logoY - 55);
       
       ctx.fillStyle = "#5c3a41";
-      ctx.font = "600 16px 'Segoe UI', sans-serif";
-      ctx.fillText(`Nomor Induk Mahasiswa (NIM): ${studentData.nim}  |  Kelas: ${studentData.kelas}`, canvas.width / 2, 350);
+      ctx.font = "bold 11px 'Segoe UI', sans-serif";
+      ctx.fillText("LEMBAGA SERTIFIKASI KOMPETENSI AKADEMIK", canvas.width / 2, logoY + 22);
+      ctx.fillText("PORTAL DIKTI UTAMA", canvas.width / 2, logoY + 37);
+
+      // 5. JUDUL UTAMA (Font Serif Klasik)
+      ctx.fillStyle = "#4c2e35";
+      ctx.font = "bold 44px 'Georgia', serif";
+      ctx.fillText("Sertifikat Uji Kompetensi", canvas.width / 2, 260);
       
-      // Garis Batas Tengah
+      ctx.fillStyle = "#8c7377";
+      ctx.font = "bold 11px 'Segoe UI', sans-serif";
+      ctx.fillText("SERTIFIKAT INI DIANUGERAHKAN SECARA RESMI KEPADA:", canvas.width / 2, 305);
+      
+      // 6. NAMA MAHASISWA (Gaya Tulisan Tangan Indah)
+      ctx.fillStyle = "#d47285"; 
+      ctx.font = "italic bold 42px 'Brush Script MT', 'Zapfino', 'Segoe Script', cursive";
+      ctx.fillText(studentData.nama, canvas.width / 2, 365);
+      
+      // Garis Dekoratif Bawah Nama
       ctx.beginPath();
-      ctx.moveTo(350, 390);
-      ctx.lineTo(770, 390);
-      ctx.strokeStyle = "#f0d5da";
-      ctx.lineWidth = 2;
+      ctx.moveTo(canvas.width / 2 - 180, 385);
+      ctx.lineTo(canvas.width / 2 + 180, 385);
+      ctx.strokeStyle = "#d4af37";
+      ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // 5. Informasi Mata Kuliah
+      // Identitas NIM & Kelas
       ctx.fillStyle = "#2e1f22";
-      ctx.font = "16px 'Segoe UI', sans-serif";
-      ctx.fillText("Atas kelulusan dan keberhasilan menyelesaikan evaluasi kompetensi kuis mandiri:", canvas.width / 2, 440);
+      ctx.font = "600 14px 'Segoe UI', sans-serif";
+      ctx.fillText(`NIM: ${studentData.nim}   •   Kelas: ${studentData.kelas}`, canvas.width / 2, 412);
+
+      // 7. KETERANGAN MATA KULIAH KUIS (Dinamis)
+      ctx.fillStyle = "#5c3a41";
+      ctx.font = "14px 'Segoe UI', sans-serif";
+      ctx.fillText("Dinyatakan telah menyelesaikan evaluasi uji kompetensi akademik berkala pada mata kuliah:", canvas.width / 2, 465);
       
+      // Highlight Nama Kuis Mata Kuliah
       ctx.fillStyle = "#4c2e35";
-      ctx.font = "bold 26px 'Segoe UI', sans-serif";
-      ctx.fillText(courseName, canvas.width / 2, 490);
+      ctx.font = "bold 24px 'Georgia', serif";
+      ctx.fillText(`[ Kuis ${courseName} ]`, canvas.width / 2, 505);
       
-      // 6. Pencetakan Nilai Skor Kompetensi
       ctx.fillStyle = "#2e1f22";
-      ctx.font = "15px 'Segoe UI', sans-serif";
-      ctx.fillText("Dengan Pencapaian Kualifikasi Nilai Hasil:", canvas.width / 2, 550);
+      ctx.font = "14px 'Segoe UI', sans-serif";
+      ctx.fillText(`Dengan raihan parameter kelulusan predikat Nilai Hasil Efektif: ${studentData.skor} / 100`, canvas.width / 2, 545);
+
+      // 8. DATA VALIDASI PENANDATANGAN (Revisi Jabatan: Ketua Jurusan & Kaprodi)
+      const footerY = 660;
       
-      ctx.fillStyle = "#6ba67e"; // Hijau Success
-      ctx.font = "bold 52px 'Segoe UI', sans-serif";
-      ctx.fillText(`${studentData.skor} / 100`, canvas.width / 2, 620);
-      
-      // 7. Footer & Penanda Tangan Elektronik
+      // Sisi Kiri: Ketua Jurusan
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#2e1f22";
+      ctx.font = "italic 22px 'Brush Script MT', cursive";
+      ctx.fillText("Dr. Budiman, M.T.", 260, footerY - 20); 
+      ctx.font = "bold 13px 'Segoe UI', sans-serif";
+      ctx.fillText("DR. BUDIMAN, M.T.", 260, footerY);
+      ctx.font = "11px 'Segoe UI', sans-serif";
       ctx.fillStyle = "#8c7377";
-      ctx.font = "12px 'Segoe UI', sans-serif";
-      ctx.fillText("Diterbitkan secara sah oleh Sistem Aplikasi Akademik Utama.", canvas.width / 2, 690);
-      ctx.fillText("ID Sertifikasi: ACAD-CERT/2026/" + idx + studentData.nim, canvas.width / 2, 710);
+      ctx.fillText("Ketua Jurusan", 260, footerY + 16);
+      ctx.beginPath(); ctx.moveTo(160, footerY - 5); ctx.lineTo(360, footerY - 5); ctx.strokeStyle = "#f0d5da"; ctx.lineWidth = 1; ctx.stroke();
+
+      // Tengah: Stempel Bulat Merah (Original Quality Seal dari sertifikat.jpg)
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, footerY, 32, 0, Math.PI * 2);
+      ctx.strokeStyle = "#d9534f";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      ctx.fillStyle = "#d9534f";
+      ctx.font = "bold 9px 'Segoe UI'";
+      ctx.fillText("PASSED", canvas.width / 2, footerY - 3);
+      ctx.fillText("COMPETENT", canvas.width / 2, footerY + 10);
+
+      // Sisi Kanan: Ketua Program Studi
+      ctx.fillStyle = "#2e1f22";
+      ctx.font = "italic 22px 'Brush Script MT', cursive";
+      ctx.fillText("Hartati, S.E., M.M.", canvas.width - 260, footerY - 20); 
+      ctx.font = "bold 13px 'Segoe UI', sans-serif";
+      ctx.fillText("HARTATI, S.E., M.M.", canvas.width - 260, footerY);
+      ctx.font = "11px 'Segoe UI', sans-serif";
+      ctx.fillStyle = "#8c7377";
+      ctx.fillText("Ketua Program Studi", canvas.width - 260, footerY + 16);
+      ctx.beginPath(); ctx.moveTo(canvas.width - 360, footerY - 5); ctx.lineTo(canvas.width - 160, footerY - 5); ctx.strokeStyle = "#f0d5da"; ctx.lineWidth = 1; ctx.stroke();
+
+      // Kode Seri Sertifikat Keamanan
+      ctx.fillStyle = "#8c7377";
+      ctx.font = "10px monospace";
+      ctx.fillText(`Sistem Verifikasi Digital Keamanan - ID: CERT/2026/PRODI-AB/${idx}/${studentData.nim}`, canvas.width / 2, 750);
       
-      // Tampilkan Perintah Cetak Otomatis di Device Browser Pengguna
+      // Triger Cetak Halaman
       setTimeout(() => {
         window.print();
       }, 300);
