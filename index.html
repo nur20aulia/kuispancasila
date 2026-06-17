@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Akademik & Uji Kompetensi v4.5</title>
+  <title>Dashboard Portal Academic - Nur Aulia Agustina</title>
   <style>
     :root {
-      --primary-dark: #0f172a;
-      --sidebar-bg: #1e293b;
+      --primary-dark: #001e42;
+      --sidebar-bg: #002d62;
+      --sidebar-hover: #003a80;
+      --accent-green: #22c55e;
       --accent-blue: #38bdf8;
-      --bg-main: #f0f2f5;
+      --bg-main: #f4f6f9;
       --text-main: #1e293b;
       --text-muted: #64748b;
-      --danger: #ef4444;
       --success: #22c55e;
       --warning: #f59e0b;
     }
@@ -22,7 +23,6 @@
       padding: 0;
       box-sizing: border-box;
       font-family: 'Inter', 'Segoe UI', sans-serif;
-      user-select: none;
     }
 
     body {
@@ -32,344 +32,570 @@
       overflow: hidden;
     }
 
-    /* SIDEBAR NAVIGATION */
+    /* SIDEBAR NAVIGATION (STYLE BERDASARKAN SCREENSHOT 2026-06-18 004240.png) */
     .sidebar {
-      width: 340px;
+      width: 320px;
       background-color: var(--sidebar-bg);
       color: #f8fafc;
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
-      box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+      box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+    }
+
+    .sidebar-profile {
+      padding: 25px 20px;
+      text-align: center;
+      background-color: var(--primary-dark);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-profile .icon {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .sidebar-profile h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-profile p {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 4px;
     }
 
     .sidebar-scroll {
       overflow-y: auto;
       flex-grow: 1;
+      padding: 15px 0;
     }
 
-    .sidebar-header {
-      padding: 20px;
-      text-align: center;
-      background-color: var(--primary-dark);
-      border-bottom: 1px solid #334155;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+    .btn-portal-container {
+      padding: 0 15px 15px 15px;
     }
 
-    .sidebar-header h2 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--accent-blue);
+    .btn-dashboard-portal {
+      width: 100%;
+      background: transparent;
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      color: #fff;
+      padding: 12px;
+      border-radius: 6px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 13.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+
+    .btn-dashboard-portal:hover, .btn-dashboard-portal.active {
+      background: rgba(34, 197, 94, 0.15);
+      border-color: var(--accent-green);
     }
 
     .menu-category {
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #94a3b8;
-      padding: 15px 20px 5px 20px;
+      letter-spacing: 1.5px;
+      color: #64748b;
+      padding: 10px 20px 5px 20px;
       font-weight: 700;
     }
 
-    .menu-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .menu-item {
-      padding: 10px 18px;
-      margin: 2px 12px;
-      cursor: pointer;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
+    /* DROPDOWN MENU ACCORDION */
+    .dropdown-btn {
+      width: 100%;
+      background: none;
+      border: none;
       color: #cbd5e1;
+      padding: 12px 20px;
+      text-align: left;
+      font-size: 13.5px;
       font-weight: 500;
-      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
     }
 
-    .menu-item:hover {
-      background-color: #334155;
+    .dropdown-btn:hover {
+      background-color: var(--sidebar-hover);
       color: #fff;
     }
 
-    .menu-item.active {
-      background-color: var(--accent-blue);
-      color: var(--primary-dark);
-      font-weight: 600;
+    .dropdown-container {
+      display: none;
+      background-color: rgba(0, 0, 0, 0.15);
+      list-style: none;
+      padding: 5px 0;
+    }
+
+    .dropdown-item {
+      padding: 9px 20px 9px 35px;
+      font-size: 12.5px;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .dropdown-item:hover, .dropdown-item.active {
+      color: #fff;
+      background-color: rgba(255,255,255,0.05);
     }
 
     .sidebar-footer {
-      padding: 15px 20px;
+      padding: 15px;
       background-color: var(--primary-dark);
-      border-top: 1px solid #334155;
-      font-size: 11px;
-    }
-
-    .security-badge {
-      background: #334155;
-      color: #94a3b8;
-      padding: 8px;
-      border-radius: 5px;
-      margin-top: 5px;
-      border: 1px solid #475569;
-      font-weight: 600;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 10.5px;
       text-align: center;
-      transition: all 0.3s ease;
+      color: #64748b;
     }
 
-    .security-badge.active-alert {
-      background: rgba(239, 68, 68, 0.2);
-      color: #fca5a5;
-      border-color: rgba(239, 68, 68, 0.5);
-    }
-
-    /* MAIN CONTENT */
-    .main-content {
+    /* MAIN CONTENT AREA */
+    .main-wrapper {
       flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-header {
+      background: #fff;
+      padding: 18px 30px;
+      border-bottom: 1px solid #e2e8f0;
+      font-weight: 600;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .main-content {
       padding: 30px;
       overflow-y: auto;
+      flex-grow: 1;
       display: flex;
       justify-content: center;
+      align-items: flex-start;
     }
 
     .content-card {
       width: 100%;
-      max-width: 950px;
+      max-width: 1000px;
       background: white;
-      padding: 35px;
+      padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 4px 25px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+      border-top: 5px solid var(--accent-green);
       display: none;
-      animation: slideUp 0.3s ease-out;
+      animation: fadeIn 0.3s ease-out;
     }
 
     .content-card.active { display: block; }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(15px); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* PORTAL HOMEPAGE UI */
+    .portal-welcome-box {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .portal-welcome-box .grad-cap {
+      font-size: 4.5rem;
+      color: var(--accent-green);
+      margin-bottom: 15px;
+    }
+    .portal-welcome-box h1 {
+      font-size: 2.2rem;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+      border: none; padding: 0;
     }
 
     h1 {
       color: var(--primary-dark);
-      margin-bottom: 15px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
       border-bottom: 2px solid #f1f5f9;
-      padding-bottom: 12px;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
     }
 
-    h2.section-subtitle {
-      font-size: 1.1rem;
-      margin: 20px 0 10px 0;
-      color: var(--sidebar-bg);
-    }
-
-    /* TABLES & REKAP */
+    /* TABLES */
     .styled-table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 15px;
       font-size: 13.5px;
     }
-
     .styled-table th, .styled-table td {
       padding: 12px 15px;
       border: 1px solid #e2e8f0;
-      text-align: left;
     }
-
     .styled-table th {
       background-color: #f8fafc;
       color: var(--primary-dark);
+      text-align: left;
       font-weight: 600;
     }
 
-    /* EXAM & BOX UI */
+    /* MATERI & EXAM UI */
     .exam-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      background: #f8fafc;
+      background: #eff6ff;
       padding: 12px 20px;
       border-radius: 8px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       border-left: 4px solid var(--accent-blue);
-    }
-
-    .exam-header.secure-border {
-      border-left-color: var(--danger);
-      background: #fff5f5;
-    }
-
-    .timer-box {
-      font-weight: 700;
-      color: var(--danger);
       font-size: 13.5px;
+      color: #1e40af;
     }
-
     .question-box {
-      background-color: #ffffff;
-      padding: 18px;
-      border-radius: 10px;
+      background-color: #f8fafc;
+      padding: 20px;
+      border-radius: 8px;
       margin-bottom: 15px;
       border: 1px solid #e2e8f0;
     }
-
     .question-text {
       font-weight: 600;
       margin-bottom: 12px;
-      color: var(--primary-dark);
-      line-height: 1.4;
     }
-
     .options-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
-
     .option-label {
       display: flex;
       align-items: center;
-      padding: 10px 14px;
-      background: #f8fafc;
+      padding: 10px;
+      background: white;
       border: 1px solid #e2e8f0;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: all 0.2s;
       font-size: 13px;
     }
+    .option-label input { margin-right: 10px; }
 
-    .option-label:hover {
-      border-color: var(--accent-blue);
-      background-color: #f0f9ff;
-    }
-
-    .option-label input[type="radio"] {
-      margin-right: 12px;
-      width: 16px;
-      height: 16px;
-    }
-
-    .btn-page {
-      padding: 10px 20px;
+    .btn-action {
+      padding: 12px;
       background: var(--sidebar-bg);
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 13px;
       width: 100%;
-      margin-top: 10px;
     }
-
-    .btn-page:hover { background: var(--primary-dark); }
-
-    /* UPLOAD FILE PDF */
-    .upload-container {
-      border: 2px dashed #cbd5e1;
-      padding: 30px;
-      border-radius: 12px;
-      text-align: center;
-      background: #f8fafc;
-      cursor: pointer;
-      margin-top: 15px;
-    }
-    .upload-container.dragover { border-color: var(--accent-blue); background: #f0f9ff; }
-    .file-details {
-      margin-top: 15px;
-      padding: 12px;
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .progress-bar-container {
-      width: 100%; background: #e2e8f0; height: 6px; border-radius: 3px; margin-top: 10px; display: none; overflow: hidden;
-    }
-    .progress-bar-fill { height: 100%; background: var(--success); width: 0%; transition: width 0.1s; }
+    .btn-action:hover { background: var(--primary-dark); }
   </style>
 </head>
 <body>
 
+  <!-- SIDEBAR NAVIGATION -->
   <nav class="sidebar">
+    <div class="sidebar-profile">
+      <div class="icon">🏛️</div>
+      <h2>Nur Aulia Agustina</h2>
+      <p>Admin Perkantoran Digital - PNUP</p>
+    </div>
+    
     <div class="sidebar-scroll">
-      <div class="sidebar-header">
-        <h2>PORTAL AKADEMIK INTEGRASI</h2>
+      <div class="btn-portal-container">
+        <button class="btn-dashboard-portal active" id="btn-portal-root" onclick="openPortalRoot()">
+          💻 Dashboard Portal
+        </button>
       </div>
+
+      <div class="menu-category">Akademik & Pembelajaran</div>
       
-      <div class="menu-category">Menu Utama</div>
-      <ul class="menu-list">
-        <li class="menu-item active" onclick="changeTab('beranda', this)">🏠 Beranda</li>
-        <li class="menu-item" onclick="changeTab('rekap-tab', this)">📊 Rekap Nilai Kuis</li>
-        <li class="menu-item" onclick="changeTab('upload-tab', this)">🗂️ Pemberkasan & Portofolio</li>
-        <li class="menu-item" onclick="changeTab('ujikom-tab', this)">🎖️ Uji Kompetensi Office Manager</li>
+      <!-- DROPDOWN 1: MATA KULIAH -->
+      <button class="dropdown-btn" onclick="toggleDropdown('drop-mk')">
+        <span>🎓 Mata Kuliah</span> <span>▼</span>
+      </button>
+      <ul id="drop-mk" class="dropdown-container"></ul>
+
+      <!-- DROPDOWN 2: SILABUS & MODUL -->
+      <button class="dropdown-btn" onclick="toggleDropdown('drop-silabus')">
+        <span>📄 Silabus & Modul</span> <span>▼</span>
+      </button>
+      <ul id="drop-silabus" class="dropdown-container">
+        <li class="dropdown-item" onclick="openSilabusGeneral()">Silabus Akademik 2026</li>
+        <li class="dropdown-item" onclick="openModulGeneral()">E-Modul & Bahan Ajar</li>
       </ul>
 
-      <div class="menu-category">📖 10 Materi Kuliah</div>
-      <ul class="menu-list" id="materi-menu-list"></ul>
+      <!-- DROPDOWN 3: KUIS & EVALUASI -->
+      <button class="dropdown-btn" onclick="toggleDropdown('drop-kuis')">
+        <span>📝 Kuis Mandiri</span> <span>▼</span>
+      </button>
+      <ul id="drop-kuis" class="dropdown-container"></ul>
 
-      <div class="menu-category">📝 10 Kuis Evaluasi</div>
-      <ul class="menu-list" id="kuis-menu-list"></ul>
+      <!-- DROPDOWN 4: REKAPITULASI -->
+      <button class="dropdown-btn" onclick="toggleDropdown('drop-rekap')">
+        <span>📊 Rekap & Penilaian</span> <span>▼</span>
+      </button>
+      <ul id="drop-rekap" class="dropdown-container">
+        <li class="dropdown-item" onclick="openRekapNilaiTab()">Daftar Nilai Kuis</li>
+      </ul>
     </div>
 
     <div class="sidebar-footer">
-      <div id="security-badge" class="security-badge">
-        Sistem Proteksi: <span id="security-status">STANDBY</span>
-        <div id="cheat-warn-text" style="display:none; font-size:10px; margin-top:4px;">
-          Pelanggaran: <span id="cheat-count">0</span> / 3
-        </div>
-      </div>
+      © 2026 - Nur Aulia Agustina<br>APD - PNUP
     </div>
   </nav>
 
-  <main class="main-content">
+  <!-- MAIN WRAPPER FRAMEWORK -->
+  <div class="main-wrapper">
+    <header class="top-header">
+      <span id="top-nav-icon">💻</span> <span id="top-nav-title">Dashboard Portal</span>
+    </header>
 
-    <div id="beranda" class="content-card active">
-      <h1>Beranda Akademik</h1>
-      <p>Selamat datang di sistem manajemen pembelajaran terintegrasi. Akses materi perkuliahan, uji pemahaman melalui kuis berkala, dan verifikasi kompetensi Anda.</p>
-      
-      <div style="background:#eff6ff; border-left:4px solid var(--accent-blue); padding:15px; margin: 15px 0; border-radius:6px; font-size:13.5px; color:#1e40af">
-        ℹ️ <strong>Informasi Keamanan:</strong> Anda bebas membuka tab luar untuk mencari referensi saat membaca <strong>Materi Kuliah</strong>. Sistem anti-curang hanya akan aktif mengunci browser Anda saat lembar kuis atau uji kompetensi diklik.
+    <main class="main-content">
+
+      <!-- TAB 1: PORTAL HOME (BERANDA SEPERTI SCREENSHOT 2026-06-18 004020.png) -->
+      <div id="portal-root-tab" class="content-card active">
+        <div class="portal-welcome-box">
+          <div class="grad-cap">🎓</div>
+          <h1>Selamat Datang</h1>
+          <p style="color: var(--text-muted); font-size:14px; margin-bottom: 25px;">
+            Portal Akademik, Asesor Kompetensi, & Portofolio P3M Mahasiswa Nur Aulia Agustina.
+          </p>
+          <p style="font-size: 13px; color: var(--sidebar-bg); font-weight: 600;">Digital Class | Professional Portfolio</p>
+        </div>
+
+        <h2 style="font-size:14px; margin-bottom:10px; color:var(--primary-dark)">Identitas Mahasiswa</h2>
+        <table class="styled-table">
+          <tr><td><strong>Nama Lengkap</strong></td><td>Nur Aulia Agustina</td></tr>
+          <tr><td><strong>NIM</strong></td><td>45223109</td></tr>
+          <tr><td><strong>Program Studi</strong></td><td>Administrasi Bisnis</td></tr>
+        </table>
       </div>
 
-      <h2 class="section-subtitle">Identitas Mahasiswa</h2>
-      <table class="styled-table" style="max-width: 500px;">
-        <tr><td><strong>Nama Lengkap</strong></td><td>Nur Aulia Agustina</td></tr>
-        <tr><td><strong>NIM</strong></td><td>45223109</td></tr>
-        <tr><td><strong>Program Studi</strong></td><td>Administrasi Bisnis</td></tr>
-      </table>
-    </div>
+      <!-- TAB 2: MATERI VIEW (10 MK DENGAN PENJELASAN RINGKAS) -->
+      <div id="materi-tab" class="content-card">
+        <h1 id="materi-title">Mata Kuliah</h1>
+        <div id="materi-desc-container" style="line-height:1.6; font-size:14px; color:var(--text-main)"></div>
+      </div>
 
-    <div id="rekap-tab" class="content-card">
-      <h1>Rekapitulasi Nilai Kuis</h1>
-      <p>Berikut adalah lembar ringkasan nilai evaluasi kuis mandiri Anda dari 10 mata kuliah:</p>
-      <table class="styled-table">
-        <thead>
+      <!-- TAB 3: SILABUS & MODUL -->
+      <div id="silabus-tab" class="content-card">
+        <h1>Silabus & Bahan Ajar Elektronik</h1>
+        <p>Akses berkas kurikulum semester berjalan untuk skema Administrasi Perkantoran Digital:</p>
+        <table class="styled-table">
+          <thead>
+            <tr><th>Jenis Berkas</th><th>Deskripsi Fungsi</th><th>Tautan Unduhan</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Rencana Pembelajaran Semester (RPS)</td><td>Silabus Terintegrasi 10 Mata Kuliah Pokok</td><td><a href="#" onclick="alert('Mengunduh Silabus PDF...')">Download Silabus.pdf</a></td></tr>
+            <tr><td>Bahan Ajar Utama</td><td>E-Book Modul Operasional Kantor Modern</td><td><a href="#" onclick="alert('Mengunduh Modul...')">Download Modul_Utama.pdf</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TAB 4: EVALUASI KUIS (20 SOAL PER MK) -->
+      <div id="kuis-tab" class="content-card">
+        <div class="exam-header">
+          <div><strong id="kuis-headline-title">Kuis Perkuliahan</strong> — Mode Peninjauan Hasil (Bebas Navigasi)</div>
+        </div>
+        <div id="questions-box-loader"></div>
+        <button class="btn-action" style="background:var(--success);" onclick="processSubmitKuis()">Kirim Form Jawaban</button>
+      </div>
+
+      <!-- TAB 5: REKAP NILAI KUIS -->
+      <div id="rekap-tab" class="content-card">
+        <h1>Daftar Nilai Kuis Mandiri</h1>
+        <p>Rekapitulasi nilai perolehan ujian objektif mahasiswa Nur Aulia Agustina secara otomatis:</p>
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama Mata Kuliah</th>
+              <th>Beban Evaluasi</th>
+              <th>Status Kelulusan</th>
+              <th>Nilai Hasil</th>
+            </tr>
+          </thead>
+          <tbody id="table-rekap-rows"></tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    // DATA 10 MATA KULIAH DENGAN PENJELASAN RINGKAS (INSTRUKSI 3)
+    const dataMataKuliah = [
+      { nama: "Aplikasi Komputer Bisnis", desc: "Studi mengenai integrasi perangkat lunak perkantoran tingkat lanjut untuk otomatisasi administrasi, pengolahan data numerik finansial, dan penyusunan pelaporan korporasi secara digital." },
+      { nama: "English for Business Correspondence", desc: "Pengembangan keahlian komunikasi tertulis profesional dalam bahasa Inggris, mencakup penyusunan korespondensi formal, email bisnis, surat penawaran, serta pembuatan memorandum internal." },
+      { nama: "Kebijakan Bisnis", desc: "Analisis pengambilan keputusan strategis, formulasi arah kebijakan perusahaan, perencanaan jangka panjang, serta mitigasi risiko terhadap perubahan regulasi ekonomi makro." },
+      { nama: "Kepemimpinan", desc: "Kajian kepemimpinan organisasional, teknik pendelegasian tugas, manajemen konflik intern, strategi motivasi tim, dan pembentukan tata kelola budaya kerja yang inklusif." },
+      { nama: "Manajemen Portofolio dan Investasi", desc: "Pemahaman instrumen pasar modal, mekanisme valuasi aset keuangan, teori diversifikasi investasi modal, serta kalkulasi rasio pengembalian risiko portofolio saham." },
+      { nama: "Manajemen Sistem Informasi", desc: "Penerapan sistem basis data operasional, audit infrastruktur digital jaringan, proteksi tata kelola keamanan cyber informasi, serta pemanfaatan big data untuk kebutuhan ekspansi bisnis." },
+      { nama: "Pelayanan Prima", desc: "Standarisasi pelayanan kepuasan pelanggan (Service Excellence), teknik penanganan keluhan eksternal, manajemen komunikasi asertif, serta etika representasi citra korporasi." },
+      { nama: "Pendidikan Kewarganegaraan", desc: "Internalisasi nilai ideologi kebangsaan, wawasan geopolitik nusantara, hak dan kewajiban konstitusional warga negara, serta penguatan etika moral aparatur perkantoran." },
+      { nama: "Perilaku Konsumen", desc: "Analisis psikologis motivasi pembelian pasar, segmentasi target demografis, studi pola retensi loyalitas pelanggan, serta pemetaan tren perilaku pasar digital kontemporer." },
+      { nama: "Simulasi Bisnis", desc: "Praktek integratif simulasi pendirian model usaha, pengelolaan rantai pasok (supply chain), pengujian strategi pemasaran langsung, dan simulasi neraca keuangan operasional." }
+    ];
+
+    let currentTabId = "portal-root-tab";
+    let activeKuisIndex = 0;
+    let userAnswers = {};
+    let scoresDatabase = {};
+
+    window.onload = function() {
+      initSidebarMenus();
+      initScoreEngine();
+    };
+
+    function initSidebarMenus() {
+      const mkMenu = document.getElementById('drop-mk');
+      const kuisMenu = document.getElementById('drop-kuis');
+      
+      dataMataKuliah.forEach((mk, index) => {
+        mkMenu.innerHTML += `<li class="dropdown-item" onclick="openMataKuliah(${index})">📘 ${mk.nama}</li>`;
+        kuisMenu.innerHTML += `<li class="dropdown-item" onclick="openKuisUjian(${index})">➔ Kuis ${index + 1}</li>`;
+      });
+    }
+
+    function initScoreEngine() {
+      dataMataKuliah.forEach((_, idx) => { scoresDatabase[idx] = null; });
+      buildRekapTableRows();
+    }
+
+    function toggleDropdown(id) {
+      const el = document.getElementById(id);
+      el.style.display = (el.style.display === "block") ? "none" : "block";
+    }
+
+    function switchActiveTabView(tabId, icon, title) {
+      currentTabId = tabId;
+      document.querySelectorAll('.content-card').forEach(card => card.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      
+      document.getElementById('top-nav-icon').innerText = icon;
+      document.getElementById('top-nav-title').innerText = title;
+
+      if(tabId !== 'portal-root-tab') {
+        document.getElementById('btn-portal-root').classList.remove('active');
+      } else {
+        document.getElementById('btn-portal-root').classList.add('active');
+      }
+    }
+
+    function openPortalRoot() {
+      switchActiveTabView('portal-root-tab', '💻', 'Dashboard Portal');
+    }
+
+    function openMataKuliah(idx) {
+      switchActiveTabView('materi-tab', '📘', `Mata Kuliah: ${dataMataKuliah[idx].nama}`);
+      document.getElementById('materi-title').innerText = dataMataKuliah[idx].nama;
+      document.getElementById('materi-desc-container').innerHTML = `
+        <div style="background:#f8fafc; padding:20px; border-radius:8px; border-left:4px solid var(--sidebar-bg)">
+          <strong>Deskripsi Pokok Bahasan Kursus:</strong><br><br>
+          ${dataMataKuliah[idx].desc}
+        </div>
+        <br>
+        <h3>Rencana Target Capaian Pembelajaran:</h3><br>
+        <ul>
+          <li>Mampu menguasai terminologi teoretis dasar subjek bahasan perkuliahan secara mandiri.</li>
+          <li>Mampu menyusun rekomendasi pemecahan masalah operasional industri berlandaskan kajian modul terkait.</li>
+          <li>Menyelesaikan evaluasi ujian dengan menjunjung tinggi integritas akademik.</li>
+        </ul>
+      `;
+    }
+
+    function openSilabusGeneral() {
+      switchActiveTabView('silabus-tab', '📄', 'Silabus Kurikulum');
+    }
+
+    function openModulGeneral() {
+      switchActiveTabView('silabus-tab', '📚', 'Bahan Ajar Digital');
+    }
+
+    // GENERATOR 20 SOAL KUIS PER MATA KULIAH
+    function openKuisUjian(idx) {
+      activeKuisIndex = idx;
+      switchActiveTabView('kuis-tab', '📝', `Evaluasi Kuis: ${dataMataKuliah[idx].nama}`);
+      document.getElementById('kuis-headline-title').innerText = `Kuis Aktif: ${dataMataKuliah[idx].nama}`;
+      
+      const qContainer = document.getElementById('questions-box-loader');
+      qContainer.innerHTML = "";
+      
+      for(let i = 1; i <= 20; i++) {
+        let answerKey = `mk-${idx}-soal-${i}`;
+        let previousSelection = userAnswers[answerKey] || "";
+
+        let block = document.createElement('div');
+        block.className = "question-box";
+        block.innerHTML = `
+          <div class="question-text">${i}. Berikut ini yang termasuk ke dalam implementasi praktis atau landasan operasional utama pada subjek ${dataMataKuliah[idx].nama} butir ke-${i} adalah...</div>
+          <div class="options-group">
+            <label class="option-label"><input type="radio" name="${answerKey}" value="A" ${previousSelection === 'A'?'checked':''} onchange="recordUserResponse('${answerKey}','A')"> A. Prosedur Standard Operating Procedure (SOP) Terverifikasi Industri</label>
+            <label class="option-label"><input type="radio" name="${answerKey}" value="B" ${previousSelection === 'B'?'checked':''} onchange="recordUserResponse('${answerKey}','B')"> B. Metode Alternatif Eksperimental Tanpa Mitigasi Risiko</label>
+            <label class="option-label"><input type="radio" name="${answerKey}" value="C" ${previousSelection === 'C'?'checked':''} onchange="recordUserResponse('${answerKey}','C')"> C. Konsep Teoritis Pengenalan Tanpa Pengujian Kuantitatif</label>
+            <label class="option-label"><input type="radio" name="${answerKey}" value="D" ${previousSelection === 'D'?'checked':''} onchange="recordUserResponse('${answerKey}','D')"> D. Asumsi Hipotesis Dasar Berdasarkan Pengamatan Kasual</label>
+          </div>
+        `;
+        qContainer.appendChild(block);
+      }
+    }
+
+    function recordUserResponse(key, val) {
+      userAnswers[key] = val;
+    }
+
+    function processSubmitKuis() {
+      let correctCounter = 0;
+      for(let i = 1; i <= 20; i++) {
+        let answerKey = `mk-${activeKuisIndex}-soal-${i}`;
+        if(userAnswers[answerKey] === "A") correctCounter++; 
+      }
+      
+      let calculatedScore = (correctCounter / 20) * 100;
+      scoresDatabase[activeKuisIndex] = calculatedScore;
+      
+      alert(`Kuis Berhasil Dikirim!\n\nAnda menjawab benar ${correctCounter} dari 20 soal.\nSkor Akhir Anda: ${calculatedScore}`);
+      buildRekapTableRows();
+      openRekapNilaiTab();
+    }
+
+    // REKAP HASIL KUIS
+    function openRekapNilaiTab() {
+      switchActiveTabView('rekap-tab', '📊', 'Rekap Hasil Evaluasi');
+    }
+
+    function buildRekapTableRows() {
+      const targetBody = document.getElementById('table-rekap-rows');
+      targetBody.innerHTML = "";
+      
+      dataMataKuliah.forEach((mk, idx) => {
+        let rawScore = scoresDatabase[idx];
+        let statusDisplay = rawScore !== null ? `<span style="color:var(--success); font-weight:700;">✓ Selesai</span>` : `<span style="color:var(--warning)">Belum Diuji</span>`;
+        let gradeDisplay = rawScore !== null ? `<strong>${rawScore} / 100</strong>` : "-";
+        
+        targetBody.innerHTML += `
           <tr>
-            <th>No</th>
-            <th>Mata Kuliah</th>
-            <th>Jumlah Soal</th>
-            <th>Status Pengerjaan</th>
-            <th>Nilai Akhir</th>
+            <td style="text-align:center; width:50px;">${idx + 1}</td>
+            <td><strong>${mk.nama}</strong></td>
+            <td style="text-align:center;">20 Soal PG</td>
+            <td style="text-align:center;">${statusDisplay}</td>
+            <td style="text-align:center; color:var(--primary-dark)">${gradeDisplay}</td>
           </tr>
-        </thead>
-        <tbody id="rekap-table-body"></tbody>
-      </table>
-    </div>
-
-    <div id="materi-view" class="content-card">
-      <h1 id="materi-title">Materi</h1>
-      <div id="materi-content" style="line-height: 1.6; color: var(--text-main);"></div>
-    </div>
-
-    <div id="kuis-view" class="content-card">
-      <div class="exam-header secure-border">
-        <div>
+        `;
+      });
+    }
+  </script>
+</body>
+</html>
