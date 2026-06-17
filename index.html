@@ -11,7 +11,6 @@
       --sidebar-hover: #f3c1cb;
       --sidebar-text: #5c3a41;
       --accent-pink: #f0a3b3;
-      /* PERMINTAAN 2: Warna indikator aktif yang jauh lebih mencolok (Deep Rose Pink) */
       --active-highlight: #d47285;
       --accent-blue: #cbdcf7;
       --bg-main: #fff5f6;
@@ -19,6 +18,7 @@
       --text-muted: #8c7377;
       --success: #6ba67e;
       --warning: #e0a96d;
+      --danger: #d9534f;
     }
 
     * {
@@ -103,7 +103,6 @@
       background: var(--accent-pink);
     }
 
-    /* PERMINTAAN 2: Style pencahayaan tombol utama sidebar saat aktif */
     .btn-dashboard-portal.active {
       background: var(--active-highlight) !important;
       color: white !important;
@@ -120,7 +119,6 @@
       font-weight: 700;
     }
 
-    /* DROPDOWN MENU ACCORDION */
     .dropdown-btn {
       width: 100%;
       background: none;
@@ -161,7 +159,6 @@
       background-color: var(--accent-pink);
     }
 
-    /* PERMINTAAN 2: Style item menu dropdown saat aktif (Mencolok & kontras) */
     .dropdown-item.active {
       background-color: var(--active-highlight) !important;
       color: #ffffff !important;
@@ -225,7 +222,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* PORTAL HOMEPAGE UI */
     .portal-welcome-box {
       text-align: center;
       padding: 60px 20px;
@@ -239,7 +235,6 @@
       font-size: 2.2rem;
       color: var(--primary-dark);
       margin-bottom: 10px;
-      border: none; padding: 0;
     }
 
     h1 {
@@ -280,13 +275,32 @@
       font-size: 13.5px;
       color: var(--primary-dark);
     }
+    
+    .student-badge-card {
+      background: linear-gradient(135deg, var(--sidebar-bg), #fff);
+      border: 1px dashed var(--active-highlight);
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     .question-box {
       background-color: #fffbfb;
       padding: 20px;
       border-radius: 8px;
       margin-bottom: 15px;
       border: 1px solid #f0d5da;
+      transition: border 0.3s;
     }
+    
+    .question-box.answered {
+      border-left: 5px solid var(--success);
+      background-color: #f7fdf9;
+    }
+
     .question-text {
       font-weight: 600;
       margin-bottom: 12px;
@@ -305,7 +319,9 @@
       border-radius: 6px;
       cursor: pointer;
       font-size: 13px;
+      transition: background 0.2s;
     }
+    .option-label:hover { background: var(--sidebar-bg); }
     .option-label input { margin-right: 10px; }
 
     .btn-action {
@@ -320,28 +336,31 @@
     }
     .btn-action:hover { background: #331e22; }
 
-    /* MATERI STYLING */
-    .materi-section {
-      margin-top: 25px;
+    .btn-cert {
+      padding: 6px 12px;
+      background: linear-gradient(135deg, #a3707c, var(--primary-dark));
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    .materi-bab {
-      background: #fffbfb;
-      border: 1px solid #f0d5da;
-      padding: 15px;
-      border-radius: 6px;
-      margin-bottom: 12px;
-    }
-    .materi-bab h4 {
-      color: var(--primary-dark);
-      margin-bottom: 6px;
-      font-size: 14px;
-    }
-    .materi-bab p {
-      font-size: 13px;
-      color: var(--text-main);
+    .btn-cert:hover {
+      filter: brightness(1.1);
     }
 
-    /* PERMINTAAN 3: STYLING HALAMAN LOGIN KUIS */
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
     .login-kuis-container {
       max-width: 450px;
       margin: 30px auto;
@@ -380,6 +399,28 @@
       color: var(--text-muted);
       margin-top: 4px;
     }
+
+    /* AREA STRUKTUR STRIP KHUSUS CETAK SERTIFIKAT */
+    #print-certificate-zone {
+      display: none;
+    }
+
+    @media print {
+      body * { display: none !important; }
+      #print-certificate-zone { 
+        display: block !important; 
+        width: 100vw; 
+        height: 100vh;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        background: white;
+      }
+      #cert-canvas {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -401,13 +442,11 @@
 
       <div class="menu-category">Akademik & Pembelajaran</div>
       
-      <!-- DROPDOWN 1: MATA KULIAH -->
       <button class="dropdown-btn" onclick="toggleDropdown('drop-mk')">
         <span>🎓 Mata Kuliah</span> <span>▼</span>
       </button>
       <ul id="drop-mk" class="dropdown-container"></ul>
 
-      <!-- DROPDOWN 2: SILABUS & MODUL -->
       <button class="dropdown-btn" onclick="toggleDropdown('drop-silabus')">
         <span>📄 Silabus & Modul</span> <span>▼</span>
       </button>
@@ -416,13 +455,11 @@
         <li id="item-modul-file" class="dropdown-item" onclick="openModulGeneral()">E-Modul & Bahan Ajar</li>
       </ul>
 
-      <!-- DROPDOWN 3: KUIS MATA KULIAH -->
       <button class="dropdown-btn" onclick="toggleDropdown('drop-kuis')">
         <span>📝 Kuis Mata Kuliah</span> <span>▼</span>
       </button>
       <ul id="drop-kuis" class="dropdown-container"></ul>
 
-      <!-- DROPDOWN 4: REKAPITULASI -->
       <button class="dropdown-btn" onclick="toggleDropdown('drop-rekap')">
         <span>📊 Rekap & Penilaian</span> <span>▼</span>
       </button>
@@ -464,26 +501,25 @@
       <!-- TAB 3: SILABUS & MODUL -->
       <div id="silabus-tab" class="content-card">
         <h1>Silabus & Bahan Ajar Elektronik</h1>
-        <!-- PERMINTAAN 1: Mengubah teks skema menjadi Skema Administrasi Bisnis -->
         <p>Akses berkas kurikulum semester berjalan untuk skema <strong>Administrasi Bisnis</strong>:</p>
         <table class="styled-table">
           <thead>
             <tr><th>Jenis Berkas</th><th>Deskripsi Fungsi</th><th>Tautan Unduhan</th></tr>
           </thead>
           <tbody>
-            <tr><td>Rencana Pembelajaran Semester (RPS)</td><td>Silabus Operasional Korporasi & Manajemen Administrasi Bisnis</td><td><a href="#" onclick="alert('Mengunduh Silabus Administrasi Bisnis PDF...')">Download Silabus_Bisnis.pdf</a></td></tr>
-            <tr><td>Bahan Ajar Utama</td><td>E-Book Modul Pengelolaan Usaha Terpadu</td><td><a href="#" onclick="alert('Mengunduh Modul Administrasi Bisnis...')">Download Modul_Bisnis_Utama.pdf</a></td></tr>
+            <tr><td>Rencana Pembelajaran Semester (RPS)</td><td>Silabus Operasional Korporasi & Manajemen Administrasi Bisnis</td><td><a href="#" onclick="alert('Mengunduh Silabus...')">Download Silabus_Bisnis.pdf</a></td></tr>
+            <tr><td>Bahan Ajar Utama</td><td>E-Book Modul Pengelolaan Usaha Terpadu</td><td><a href="#" onclick="alert('Mengunduh Modul...')">Download Modul_Bisnis_Utama.pdf</a></td></tr>
           </tbody>
         </table>
       </div>
 
-      <!-- TAB 4: EVALUASI KUIS (DENGAN INTEGRASI HALAMAN LOGIN KUIS) -->
+      <!-- TAB 4: EVALUASI KUIS -->
       <div id="kuis-tab" class="content-card">
         <div id="kuis-headline-wrapper" class="exam-header">
           <div><strong id="kuis-headline-title">Kuis Perkuliahan</strong> — Gerbang Verifikasi Mahasiswa</div>
         </div>
 
-        <!-- PERMINTAAN 3: Tampilan Form Halaman Login Sebelum Kuis -->
+        <!-- FORM LOGIN KUIS -->
         <div id="kuis-login-gate" class="login-kuis-container">
           <h3 style="text-align: center; margin-bottom: 20px; color: var(--primary-dark);">Autentikasi Ujian Kuis</h3>
           <div class="form-group">
@@ -511,10 +547,21 @@
           <button class="btn-action" onclick="validateQuizAccess()">Mulai Mengerjakan Ujian</button>
         </div>
 
-        <!-- Wadah Soal Kuis (Disembunyikan sebelum login sukses) -->
+        <!-- PANEL SOAL KUIS -->
         <div id="quiz-main-questions-panel" style="display: none;">
+          <div class="student-badge-card">
+            <div>
+              <div style="font-weight: 700; color: var(--primary-dark);" id="badge-name">Nama</div>
+              <div style="font-size: 12px; color: var(--text-muted);" id="badge-nim-class">NIM | Kelas</div>
+            </div>
+            <div style="text-align: right;">
+              <div id="live-progress-counter" style="font-weight: 700; color: var(--active-highlight); font-size: 14px;">Terjawab: 0 / 20 Soal</div>
+              <div id="anti-cheat-status" style="font-size: 11px; font-weight: 600; color: var(--success);">🛡️ Sistem Keamanan Aktif</div>
+            </div>
+          </div>
+
           <div id="questions-box-loader"></div>
-          <button class="btn-action" style="background:var(--success);" onclick="processSubmitKuis()">Kirim Form Jawaban</button>
+          <button class="btn-action" style="background:var(--success); margin-top:15px;" onclick="processSubmitKuis()">Kirim Form Jawaban</button>
         </div>
       </div>
 
@@ -526,10 +573,11 @@
           <thead>
             <tr>
               <th>No</th>
+              <th>Identitas Mahasiswa</th>
               <th>Nama Mata Kuliah</th>
               <th>Beban Evaluasi</th>
               <th>Status Kelulusan</th>
-              <th>Nilai Hasil</th>
+              <th>Nilai Hasil & Sertifikat</th>
             </tr>
           </thead>
           <tbody id="table-rekap-rows"></tbody>
@@ -539,125 +587,66 @@
     </main>
   </div>
 
+  <!-- CONTAINER PRINT OVERLAY CANVAS (HIDDEN FROM STANDALONE SCREEN VIEW) -->
+  <div id="print-certificate-zone">
+    <canvas id="cert-canvas" width="1120" height="792"></canvas>
+  </div>
+
   <script>
-    // DATA MATA KULIAH ADMINISTRASI BISNIS
     const dataMataKuliah = [
-      { 
-        nama: "Aplikasi Komputer Bisnis", 
-        desc: "Studi mengenai integrasi perangkat lunak perkantoran tingkat lanjut untuk otomatisasi administrasi, pengolahan data numerik finansial, dan penyusunan pelaporan korporasi secara digital.",
-        materi: [
-          { bab: "Bab 1: Otomatisasi Dokumen Kantor", isi: "Mempelajari teknik pembuatan dokumen massal (Mail Merge), pembuatan format dokumen formal, sitasi otomatis, dan pengelolaan dokumen skala besar secara efisien." },
-          { bab: "Bab 2: Manajemen Data & Formula Spreadsheet", isi: "Penerapan logika advanced (VLOOKUP, INDEX-MATCH, IF Bertingkat) untuk pengolahan data mentah menjadi informasi bisnis yang siap pakai." },
-          { bab: "Bab 3: Analisis Data Finansial & Pivot Table", isi: "Teknik merangkum ribuan baris data transaksi penjualan, pembuatan grafik interaktif, dan summary report menggunakan fungsi Pivot Tables." }
-        ]
-      },
-      { 
-        nama: "English for Business Correspondence", 
-        desc: "Pengembangan keahlian komunikasi tertulis profesional dalam bahasa Inggris, mencakup penyusunan korespondensi formal, email bisnis, surat penawaran, serta pembuatan memorandum internal.",
-        materi: [
-          { bab: "Bab 1: Dasar-dasar Surel Bisnis Formal", isi: "Aturan penulisan subjek surel, sapaan formal, teknik menyampaikan maksud pesan secara direct, dan penutupan korespondensi yang sopan." },
-          { bab: "Bab 2: Surat Penawaran dan Negosiasi Dagang", isi: "Struktur penyusunan 'Inquiry Letter', 'Reply to Inquiry', serta penyusunan lembar penawaran harga produk/jasa (Quotation) untuk klien luar negeri." },
-          { bab: "Bab 3: Pembuatan Memorandum & Laporan Internal", isi: "Format penulisan memo antar divisi, pemberitahuan kebijakan internal perusahaan, dan struktur summary report mingguan dalam bahasa Inggris baku." }
-        ]
-      },
-      { 
-        nama: "Kebijakan Bisnis", 
-        desc: "Analisis pengambilan keputusan strategis, formulasi arah kebijakan perusahaan, perencanaan jangka panjang, serta mitigasi risiko terhadap perubahan regulasi ekonomi makro.",
-        materi: [
-          { bab: "Bab 1: Formulasi Strategi Korporat", isi: "Analisis lingkungan makro menggunakan metode PESTEL dan pemetaan internal kekuatan-kelemahan melalui matriks SWOT." },
-          { bab: "Bab 2: Struktur Regulasi & Kebijakan Pasar", isi: "Memahami dampak regulasi hukum pemerintah, undang-undang ketenagakerjaan, dan aturan pajak terhadap profitabilitas operasional bisnis." },
-          { bab: "Bab 3: Manajemen Krisis & Mitigasi Risiko Strategis", isi: "Langkah penanganan ketika terjadi disrupsi pasar, penyusunan rencana cadangan bisnis (Contingency Plan), dan evaluasi performa manajemen jangka panjang." }
-        ]
-      },
-      { 
-        nama: "Kepemimpinan", 
-        desc: "Kajian kepemimpinan organisasional, teknik pendelegasian tugas, manajemen konflik intern, strategi motivasi tim, dan pembentukan tata kelola budaya kerja yang inklusif.",
-        materi: [
-          { bab: "Bab 1: Teori dan Gaya Kepemimpinan", isi: "Eksplorasi gaya kepemimpinan Transformasional, Transaksional, Situasional, serta implementasi kecerdasan emosional dalam memimpin organisasi." },
-          { bab: "Bab 2: Resolusi Konflik dan Manajemen Tim", isi: "Teknik pemecahan perselisihan antar karyawan, metode negosiasi win-win solution, dan penentuan indikator performa tim (KPI)." },
-          { bab: "Bab 3: Komunikasi Strategis & Delegasi", isi: "Seni mendelegasikan wewenang tanpa kehilangan kontrol operasional, serta taktik komunikasi asertif untuk memotivasi produktivitas kerja." }
-        ]
-      },
-      { 
-        nama: "Manajemen Portofolio dan Investasi", 
-        desc: "Pemahaman instrumen pasar modal, mekanisme valuasi aset keuangan, teori diversifikasi investasi modal, serta kalkulasi rasio pengembalian risiko portofolio saham.",
-        materi: [
-          { bab: "Bab 1: Pengenalan Instrumen Pasar Modal", isi: "Perbedaan karakteristik investasi Saham, Obligasi, Reksa Dana, instrumen derivatif, serta cara kerja bursa efek nasional maupun global." },
-          { bab: "Bab 2: Analisis Fundamental & Teknikal Saham", isi: "Membaca laporan keuangan korporasi (Rasio PER, PBV, ROE) dan memanfaatkan grafik pergerakan harga historis untuk menentukan momentum beli/jual." },
-          { bab: "Bab 3: Teori Portofolio Modern (Diversifikasi)", isi: "Penerapan strategi investasi 'Don't put all your eggs in one basket' guna meminimalkan risiko pasar dan mengoptimalkan return portofolio." }
-        ]
-      },
-      { 
-        nama: "Manajemen Sistem Informasi", 
-        desc: "Penerapan sistem basis data operasional, audit infrastruktur digital jaringan, proteksi tata kelola keamanan cyber informasi, serta pemanfaatan big data untuk kebutuhan ekspansi bisnis.",
-        materi: [
-          { bab: "Bab 1: Arsitektur Sistem Informasi Perusahaan", isi: "Mengenal sistem ERP (Enterprise Resource Planning), CRM (Customer Relationship Management), dan peran basis data relasional dalam integrasi bisnis." },
-          { bab: "Bab 2: Keamanan Cyber & Tata Kelola Data", isi: "Prinsip perlindungan data sensitif perusahaan, enkripsi informasi, protokol pencegahan kebocoran data, dan manajemen hak akses pengguna." },
-          { bab: "Bab 3: Big Data & Pengambilan Keputusan Bisnis", isi: "Mempelajari bagaimana data log transaksi diolah menggunakan Business Intelligence (BI) untuk membaca tren pasar masa depan." }
-        ]
-      },
-      { 
-        nama: "Pelayanan Prima", 
-        desc: "Standarisasi pelayanan kepuasan pelanggan (Service Excellence), teknik penanganan keluhan eksternal, manajemen komunikasi asertif, serta etika representasi citra korporasi.",
-        materi: [
-          { bab: "Bab 1: Konsep Service Excellence", isi: "Prinsip dasar pelayanan prima berdasarkan aspek penampilan (appearance), sikap (attitude), perhatian (attention), dan tindakan (action)." },
-          { bab: "Bab 2: Penanganan Keluhan (Complaint Handling)", isi: "Metode meredam amarah konsumen, teknik mendengar aktif, pemberian solusi kompensasi, dan retensi agar pelanggan tetap loyal." },
-          { bab: "Bab 3: Pengukuran Indeks Kepuasan Konsumen", isi: "Pembuatan survei kepuasan pelanggan, metode Net Promoter Score (NPS), dan evaluasi feedback untuk peningkatan SOP layanan." }
-        ]
-      },
-      { 
-        nama: "Pendidikan Kewarganegaraan", 
-        desc: "Internalisasi nilai ideologi kebangsaan, wawasan geopolitik nusantara, hak dan kewajiban konstitusional warga negara, serta penguatan etika moral aparatur perkantoran.",
-        materi: [
-          { bab: "Bab 1: Geopolitik dan Wawasan Nusantara", isi: "Memahami posisi strategis wilayah Indonesia, integrasi nasional, serta tantangan dalam mempertahankan kedaulatan di era globalisasi." },
-          { bab: "Bab 2: Hak dan Kewajiban Konstitusional", isi: "Kajian mendalam mengenai UUD 1945, implementasi hak asasi manusia, serta tanggung jawab warga negara dalam ranah sosial-ekonomi." },
-          { bab: "Bab 3: Etika Moral Profesi dan Hukum", isi: "Penerapan nilai integritas, antikorupsi, dan kesadaran hukum dalam menjalankan aktivitas bisnis profesional." }
-        ]
-      },
-      { 
-        nama: "Perilaku Konsumen", 
-        desc: "Analisis psikologis motivasi pembelian pasar, segmentasi target demografis, studi pola retensi loyalitas pelanggan, serta pemetaan tren perilaku pasar digital kontemporer.",
-        materi: [
-          { bab: "Bab 1: Faktor Psikologis Pembelian", isi: "Menganalisis persepsi, motivasi internal, proses pembelajaran, dan sikap konsumen yang memicu keputusan membeli suatu produk." },
-          { bab: "Bab 2: Pengaruh Lingkungan dan Budaya", isi: "Studi mengenai bagaimana kelas sosial, kelompok referensi (influencer), dan sub-kebudayaan memengaruhi gaya hidup belanja masyarakat." },
-          { bab: "Bab 3: Model Pengambilan Keputusan Konsumen", isi: "Tahapan pengenalan masalah, pencarian informasi, evaluasi alternatif produk, transaksi pembelian, hingga perilaku pasca-pembelian." }
-        ]
-      },
-      { 
-        nama: "Simulasi Bisnis", 
-        desc: "Praktek integratif simulasi pendirian model usaha, pengelolaan rantai pasok (supply chain), pengujian strategi pemasaran langsung, dan simulasi neraca keuangan operasional.",
-        materi: [
-          { bab: "Bab 1: Perencanaan Model Bisnis Kanvas (BMC)", isi: "Menyusun peta rancangan bisnis mencakup value proposition, segmen pelanggan, jalur distribusi, hingga struktur biaya produksi." },
-          { bab: "Bab 2: Manajemen Operasional & Supply Chain", isi: "Simulasi pengelolaan stok bahan baku, proses produksi, negosiasi dengan vendor supply, dan manajemen distribusi barang jadi." },
-          { bab: "Bab 3: Analisis Laporan Laba Rugi Simulasi", isi: "Praktek pencatatan arus kas (Cash Flow) masuk-keluar, menghitung Break-Even Point (BEP), dan presentasi performa bisnis kepada investor." }
-        ]
-      }
+      { nama: "Aplikasi Komputer Bisnis", desc: "Studi mengenai integrasi perangkat lunak perkantoran tingkat lanjut...", materi: [{ bab: "Bab 1: Otomatisasi Dokumen Kantor", isi: "Mempelajari teknik pembuatan..." }] },
+      { nama: "English for Business Correspondence", desc: "Pengembangan keahlian komunikasi tertulis profesional...", materi: [{ bab: "Bab 1: Dasar-dasar Surel Bisnis Formal", isi: "Aturan penulisan..." }] },
+      { nama: "Kebijakan Bisnis", desc: "Analisis pengambilan keputusan strategis...", materi: [{ bab: "Bab 1: Formulasi Strategi Korporat", isi: "Analisis lingkungan..." }] },
+      { nama: "Kepemimpinan", desc: "Kajian kepemimpinan organisasional...", materi: [{ bab: "Bab 1: Teori dan Gaya Kepemimpinan", isi: "Eksplorasi gaya..." }] },
+      { nama: "Manajemen Portofolio dan Investasi", desc: "Pemahaman instrumen pasar modal...", materi: [{ bab: "Bab 1: Pengenalan Instrumen Pasar Modal", isi: "Perbedaan..." }] },
+      { nama: "Manajemen Sistem Informasi", desc: "Penerapan sistem basis data operasional...", materi: [{ bab: "Bab 1: Arsitektur Sistem Informasi", isi: "Mengenal sistem ERP..." }] },
+      { nama: "Pelayanan Prima", desc: "Standarisasi pelayanan kepuasan pelanggan...", materi: [{ bab: "Bab 1: Konsep Service Excellence", isi: "Prinsip dasar..." }] },
+      { nama: "Pendidikan Kewarganegaraan", desc: "Internalisasi nilai ideologi kebangsaan...", materi: [{ bab: "Bab 1: Geopolitik dan Nusantara", isi: "Memahami..." }] },
+      { nama: "Perilaku Konsumen", desc: "Analisis psikologis motivasi pembelian...", materi: [{ bab: "Bab 1: Faktor Psikologis Pembelian", isi: "Menganalisis..." }] },
+      { nama: "Simulasi Bisnis", desc: "Praktek integratif simulasi pendirian usaha...", materi: [{ bab: "Bab 1: Perencanaan BMC", isi: "Menyusun peta..." }] }
     ];
 
     let currentTabId = "portal-root-tab";
     let activeKuisIndex = 0;
     let userAnswers = {};
     let scoresDatabase = {};
+    let isExamActive = false;
+    let cheatCount = 0;
 
     window.onload = function() {
       initSidebarMenus();
       initScoreEngine();
+      initAntiCheatEngine();
     };
 
     function initSidebarMenus() {
       const mkMenu = document.getElementById('drop-mk');
       const kuisMenu = document.getElementById('drop-kuis');
-      
       dataMataKuliah.forEach((mk, index) => {
-        // Penambahan id unik pada setiap li agar manipulasi highlight aktif di JavaScript bekerja akurat
         mkMenu.innerHTML += `<li id="item-mk-${index}" class="dropdown-item" onclick="openMataKuliah(${index})">📘 ${mk.nama}</li>`;
         kuisMenu.innerHTML += `<li id="item-kuis-${index}" class="dropdown-item" onclick="openKuisUjian(${index})">➔ Kuis ${mk.nama}</li>`;
       });
     }
 
     function initScoreEngine() {
-      dataMataKuliah.forEach((_, idx) => { scoresDatabase[idx] = null; });
+      dataMataKuliah.forEach((_, idx) => { 
+        scoresDatabase[idx] = { skor: null, nama: "-", nim: "-", kelas: "-", pelanggaran: 0 }; 
+      });
       buildRekapTableRows();
+    }
+
+    function initAntiCheatEngine() {
+      document.addEventListener("visibilitychange", function() {
+        if (isExamActive && document.hidden) {
+          cheatCount++;
+          scoresDatabase[activeKuisIndex].pelanggaran = cheatCount;
+          const statusBox = document.getElementById('anti-cheat-status');
+          statusBox.innerText = `⚠️ Terdeteksi Keluar Halaman (${cheatCount}x)`;
+          statusBox.style.color = "var(--danger)";
+          buildRekapTableRows();
+          alert(`PERINGATAN ANTI-CURANG!\nAnda terdeteksi meninggalkan halaman kuis.\nTindakan ini dicatat ke sistem rekap nilai dosen! (Pelanggaran ke-${cheatCount})`);
+        }
+      });
     }
 
     function toggleDropdown(id) {
@@ -665,13 +654,9 @@
       el.style.display = (el.style.display === "block") ? "none" : "block";
     }
 
-    // PERMINTAAN 2: Manajemen status kelas aktif yang dibersihkan dan dipasang secara kontras mencolok
     function highlightActiveSidebarItem(activeId) {
-      // Hapus seluruh class active dari menu manapun di sidebar
       document.getElementById('btn-portal-root').classList.remove('active');
       document.querySelectorAll('.dropdown-item').forEach(item => item.classList.remove('active'));
-      
-      // Pasang class active ke elemen yang sedang diakses saat ini
       if(activeId) {
         const targetElement = document.getElementById(activeId);
         if(targetElement) targetElement.classList.add('active');
@@ -682,78 +667,40 @@
       currentTabId = tabId;
       document.querySelectorAll('.content-card').forEach(card => card.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
-      
       document.getElementById('top-nav-icon').innerText = icon;
       document.getElementById('top-nav-title').innerText = title;
-
       highlightActiveSidebarItem(sidebarItemId);
     }
 
-    function openPortalRoot() {
-      switchActiveTabView('portal-root-tab', '💻', 'Dashboard Portal', 'btn-portal-root');
-    }
+    function openPortalRoot() { switchActiveTabView('portal-root-tab', '💻', 'Dashboard Portal', 'btn-portal-root'); }
+    function openSilabusGeneral() { switchActiveTabView('silabus-tab', '📄', 'Silabus Kurikulum', 'item-silabus-file'); }
+    function openModulGeneral() { switchActiveTabView('silabus-tab', '📚', 'Bahan Ajar Digital', 'item-modul-file'); }
 
     function openMataKuliah(idx) {
       switchActiveTabView('materi-tab', '📘', `Mata Kuliah: ${dataMataKuliah[idx].nama}`, `item-mk-${idx}`);
       document.getElementById('materi-title').innerText = dataMataKuliah[idx].nama;
-      
-      let materiHtml = "";
-      dataMataKuliah[idx].materi.forEach(mat => {
-        materiHtml += `
-          <div class="materi-bab">
-            <h4>${mat.bab}</h4>
-            <p>${mat.isi}</p>
-          </div>
-        `;
-      });
-
-      document.getElementById('materi-desc-container').innerHTML = `
-        <div style="background:#fff5f6; padding:20px; border-radius:8px; border-left:4px solid var(--accent-pink); margin-bottom: 20px;">
-          <strong>Deskripsi Pokok Bahasan Kursus:</strong><br>
-          ${dataMataKuliah[idx].desc}
-        </div>
-        
-        <h3>Materi Pembelajaran Berjalan:</h3>
-        <div class="materi-section">
-          ${materiHtml}
-        </div>
-        <br>
-        <h3>Rencana Target Capaian Pembelajaran:</h3><br>
-        <ul>
-          <li>Mampu menguasai terminologi teoretis dasar subjek bahasan perkuliahan secara mandiri.</li>
-          <li>Mampu menyusun rekomendasi pemecahan masalah operasional industri berlandaskan kajian modul terkait.</li>
-          <li>Menyelesaikan evaluasi ujian dengan menjunjung tinggi integritas akademik.</li>
-        </ul>
-      `;
+      let materiHtml = `<div class="materi-bab"><h4>${dataMataKuliah[idx].materi[0].bab}</h4><p>${dataMataKuliah[idx].materi[0].isi}</p></div>`;
+      document.getElementById('materi-desc-container').innerHTML = `<div style="background:#fff5f6; padding:20px; border-radius:8px; border-left:4px solid var(--accent-pink); margin-bottom: 20px;"><strong>Deskripsi:</strong><br>${dataMataKuliah[idx].desc}</div><h3>Materi Pembelajaran:</h3><div class="materi-section">${materiHtml}</div>`;
     }
 
-    function openSilabusGeneral() {
-      switchActiveTabView('silabus-tab', '📄', 'Silabus Kurikulum', 'item-silabus-file');
-    }
-
-    function openModulGeneral() {
-      switchActiveTabView('silabus-tab', '📚', 'Bahan Ajar Digital', 'item-modul-file');
-    }
-
-    // PERMINTAAN 3: Membuka Kuis dengan mereset / menampilkan Gerbang Login Terlebih Dahulu
     function openKuisUjian(idx) {
+      if(isExamActive) {
+        alert("Sistem Mengunci: Selesaikan kuis yang sedang berjalan terlebih dahulu!");
+        return;
+      }
       activeKuisIndex = idx;
       switchActiveTabView('kuis-tab', '📝', `Evaluasi Kuis: ${dataMataKuliah[idx].nama}`, `item-kuis-${idx}`);
-      
       document.getElementById('kuis-headline-title').innerText = `Kuis Aktif: ${dataMataKuliah[idx].nama} — Registrasi`;
       
-      // Reset form login kuis
       document.getElementById('quiz-student-name').value = "";
       document.getElementById('quiz-student-nim').value = "";
       document.getElementById('quiz-student-class').value = "";
       document.getElementById('quiz-token').value = "";
       
-      // Pastikan gate login tampil dan isi panel soal disembunyikan
       document.getElementById('kuis-login-gate').style.display = "block";
       document.getElementById('quiz-main-questions-panel').style.display = "none";
     }
 
-    // PERMINTAAN 3: Logika Validasi Form Login dan Token Kuis
     function validateQuizAccess() {
       const nama = document.getElementById('quiz-student-name').value.trim();
       const nim = document.getElementById('quiz-student-nim').value.trim();
@@ -761,55 +708,76 @@
       const token = document.getElementById('quiz-token').value.trim();
 
       if (!nama || !nim || !kelas || !token) {
-        alert("Peringatan: Mohon lengkapi semua data identitas dan token kuis terlebih dahulu!");
+        alert("Peringatan: Mohon lengkapi seluruh form identitas dan Token!");
         return;
       }
 
-      // Validasi token kuis sederhana (contoh standar: BISNIS2026)
       if (token.toUpperCase() !== "BISNIS2026") {
-        alert("Akses Ditolak: Token kuis yang Anda masukkan salah atau kadaluwarsa!");
+        alert("Akses Ditolak: Token ujian kuis salah!");
         return;
       }
 
-      // Jika berhasil login, load soal kuis
-      alert(`Autentikasi Berhasil!\nSelamat mengerjakan, ${nama} (Kelas: ${kelas})`);
-      document.getElementById('kuis-headline-title').innerText = `Kuis Aktif: ${dataMataKuliah[activeKuisIndex].nama} — Selamat Mengerjakan`;
+      alert(`Autentikasi Berhasil!\nSelamat bekerja, ${nama}`);
+      document.getElementById('kuis-headline-title').innerText = `Kuis Aktif: ${dataMataKuliah[activeKuisIndex].nama} — Lembar Ujian`;
       
+      document.getElementById('badge-name').innerText = nama;
+      document.getElementById('badge-nim-class').innerText = `NIM: ${nim} | Kelas: ${kelas}`;
+      document.getElementById('live-progress-counter').innerText = "Terjawab: 0 / 20 Soal";
+      
+      cheatCount = 0;
+      isExamActive = true;
+      document.getElementById('anti-cheat-status').innerText = "🛡️ Sistem Keamanan Aktif";
+      document.getElementById('anti-cheat-status').style.color = "var(--success)";
+
       document.getElementById('kuis-login-gate').style.display = "none";
       document.getElementById('quiz-main-questions-panel').style.display = "block";
       
+      scoresDatabase[activeKuisIndex] = { skor: "Mengerjakan", nama: nama, nim: nim, kelas: kelas, pelanggaran: 0 };
+      buildRekapTableRows();
       buildQuizQuestions();
     }
 
-    // GENERATOR SOAL KUIS
     function buildQuizQuestions() {
       const qContainer = document.getElementById('questions-box-loader');
       qContainer.innerHTML = "";
-      
       for(let i = 1; i <= 20; i++) {
         let answerKey = `mk-${activeKuisIndex}-soal-${i}`;
-        let previousSelection = userAnswers[answerKey] || "";
-
         let block = document.createElement('div');
         block.className = "question-box";
+        block.id = `box-q-${i}`;
         block.innerHTML = `
           <div class="question-text">${i}. Berikut ini yang termasuk ke dalam implementasi praktis atau landasan operasional utama pada subjek ${dataMataKuliah[activeKuisIndex].nama} butir ke-${i} adalah...</div>
           <div class="options-group">
-            <label class="option-label"><input type="radio" name="${answerKey}" value="A" ${previousSelection === 'A'?'checked':''} onchange="recordUserResponse('${answerKey}','A')"> A. Prosedur Standard Operating Procedure (SOP) Terverifikasi Industri</label>
-            <label class="option-label"><input type="radio" name="${answerKey}" value="B" ${previousSelection === 'B'?'checked':''} onchange="recordUserResponse('${answerKey}','B')"> B. Metode Alternatif Eksperimental Tanpa Mitigasi Risiko</label>
-            <label class="option-label"><input type="radio" name="${answerKey}" value="C" ${previousSelection === 'C'?'checked':''} onchange="recordUserResponse('${answerKey}','C')"> C. Konsep Teoritis Pengenalan Tanpa Pengujian Kuantitatif</label>
-            <label class="option-label"><input type="radio" name="${answerKey}" value="D" ${previousSelection === 'D'?'checked':''} onchange="recordUserResponse('${answerKey}','D')"> D. Asumsi Hipotesis Dasar Berdasarkan Pengamatan Kasual</label>
+            <label class="option-label"><input type="radio" name="${answerKey}" value="A" onchange="recordUserResponse(${i}, '${answerKey}','A')"> A. Prosedur Standard Operating Procedure (SOP) Terverifikasi Industri</label>
+            <label class="option-label"><input type="radio" name="${answerKey}" value="B" onchange="recordUserResponse(${i}, '${answerKey}','B')"> B. Metode Alternatif Eksperimental Tanpa Mitigasi Risiko</label>
+            <label class="option-label"><input type="radio" name="${answerKey}" value="C" onchange="recordUserResponse(${i}, '${answerKey}','C')"> C. Konsep Teoritis Pengenalan Tanpa Pengujian Kuantitatif</label>
+            <label class="option-label"><input type="radio" name="${answerKey}" value="D" onchange="recordUserResponse(${i}, '${answerKey}','D')"> D. Asumsi Hipotesis Dasar Berdasarkan Pengamatan Kasual</label>
           </div>
         `;
         qContainer.appendChild(block);
       }
     }
 
-    function recordUserResponse(key, val) {
+    function recordUserResponse(soalNo, key, val) {
       userAnswers[key] = val;
+      document.getElementById(`box-q-${soalNo}`).classList.add('answered');
+      let answeredCount = 0;
+      for(let i = 1; i <= 20; i++) {
+        if(userAnswers[`mk-${activeKuisIndex}-soal-${i}`]) answeredCount++;
+      }
+      document.getElementById('live-progress-counter').innerText = `Terjawab: ${answeredCount} / 20 Soal`;
     }
 
     function processSubmitKuis() {
+      let answeredCount = 0;
+      for(let i = 1; i <= 20; i++) {
+        if(userAnswers[`mk-${activeKuisIndex}-soal-${i}`]) answeredCount++;
+      }
+
+      if(answeredCount < 20) {
+        if(!confirm(`Anda baru menjawab ${answeredCount} dari 20 soal. Yakin ingin mengumpulkan?`)) return;
+      }
+
       let correctCounter = 0;
       for(let i = 1; i <= 20; i++) {
         let answerKey = `mk-${activeKuisIndex}-soal-${i}`;
@@ -817,30 +785,56 @@
       }
       
       let calculatedScore = (correctCounter / 20) * 100;
-      scoresDatabase[activeKuisIndex] = calculatedScore;
+      isExamActive = false;
+
+      scoresDatabase[activeKuisIndex].skor = calculatedScore;
+      alert(`Kuis Berhasil Dikirim!\n\nSkor Akhir Anda: ${calculatedScore}\nSertifikat kelulusan Anda sekarang dapat diunduh di tabel rekap.`);
       
-      alert(`Kuis Berhasil Dikirim!\n\nAnda menjawab benar ${correctCounter} dari 20 soal.\nSkor Akhir Anda: ${calculatedScore}`);
       buildRekapTableRows();
       openRekapNilaiTab();
     }
 
-    // REKAP HASIL KUIS
-    function openRekapNilaiTab() {
-      switchActiveTabView('rekap-tab', '📊', 'Rekap Hasil Evaluasi', 'item-rekap-tab');
-    }
+    function openRekapNilaiTab() { switchActiveTabView('rekap-tab', '📊', 'Rekap Hasil Evaluasi', 'item-rekap-tab'); }
 
+    // RENDER REKAP TABEL + TOMBOL GENERATE SERTIFIKAT DINAMIS
     function buildRekapTableRows() {
       const targetBody = document.getElementById('table-rekap-rows');
       targetBody.innerHTML = "";
       
       dataMataKuliah.forEach((mk, idx) => {
-        let rawScore = scoresDatabase[idx];
-        let statusDisplay = rawScore !== null ? `<span style="color:var(--success); font-weight:700;">✓ Selesai</span>` : `<span style="color:var(--warning)">Belum Diuji</span>`;
-        let gradeDisplay = rawScore !== null ? `<strong>${rawScore} / 100</strong>` : "-";
+        let record = scoresDatabase[idx];
+        let statusDisplay = "-";
+        let gradeDisplay = "-";
+        let identitasDisplay = `<span style="color: var(--text-muted); font-style: italic;">Belum ada data</span>`;
+
+        if (record && record.nama !== "-") {
+          identitasDisplay = `
+            <div style="font-size: 13px; font-weight: 600; color: var(--primary-dark);">${record.nama}</div>
+            <div style="font-size: 11px; color: var(--text-muted);">NIM: ${record.nim} | Kelas: ${record.kelas}</div>
+          `;
+
+          if (record.skor === "Mengerjakan") {
+            let cheatWarning = record.pelanggaran > 0 ? `<br><small style="color:var(--danger); font-weight:bold;">⚠️ Curang: ${record.pelanggaran}x</small>` : '';
+            statusDisplay = `<span style="color: var(--warning); font-weight:700; animation: blink 1s infinite;">⏳ Sedang Ujian</span>${cheatWarning}`;
+            gradeDisplay = `<span style="color: var(--text-muted); font-style: italic;">Menghitung...</span>`;
+          } 
+          else if (record.skor !== null) {
+            statusDisplay = `<span style="color:var(--success); font-weight:700;">✓ Selesai</span><br><small style="color:var(--text-muted);">Keluar Tab: ${record.pelanggaran}x</small>`;
+            
+            // Tambahan Tombol Unduh Sertifikat Elektronik Langsung Di Sini
+            gradeDisplay = `
+              <strong>${record.skor} / 100</strong><br>
+              <button class="btn-cert" onclick="generateAndPrintCertificate(${idx})">📜 Unduh Sertifikat</button>
+            `;
+          }
+        } else {
+          statusDisplay = `<span style="color: #b0b0b0;">Belum Diuji</span>`;
+        }
         
         targetBody.innerHTML += `
           <tr>
-            <td style="text-align:center; width:50px;">${idx + 1}</td>
+            <td style="text-align:center; width:40px;">${idx + 1}</td>
+            <td>${identitasDisplay}</td>
             <td><strong>${mk.nama}</strong></td>
             <td style="text-align:center;">20 Soal PG</td>
             <td style="text-align:center;">${statusDisplay}</td>
@@ -848,6 +842,96 @@
           </tr>
         `;
       });
+    }
+
+    // ENGINE STRUKTUR AUTOMATION CANVAS SERTIFIKAT DIGITAL
+    function generateAndPrintCertificate(idx) {
+      const studentData = scoresDatabase[idx];
+      const courseName = dataMataKuliah[idx].nama;
+      
+      const canvas = document.getElementById("cert-canvas");
+      const ctx = canvas.getContext("2d");
+      
+      // 1. Gambar Background Utama
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // 2. Ornamen Border Bingkai Luar (Tema Burgundy & Rose Gold)
+      ctx.lineWidth = 20;
+      ctx.strokeStyle = "#4c2e35"; // Primary Burgundy
+      ctx.strokeRect(25, 25, canvas.width - 50, canvas.height - 50);
+      
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = "#f0a3b3"; // Accent Pink Gold
+      ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+      
+      // Corner Badges Ornamen Sederhana
+      ctx.fillStyle = "#fae1e6";
+      ctx.fillRect(44, 44, 40, 40);
+      ctx.fillRect(canvas.width - 84, 44, 40, 40);
+      ctx.fillRect(44, canvas.height - 84, 40, 40);
+      ctx.fillRect(canvas.width - 84, canvas.height - 84, 40, 40);
+
+      // 3. Render Tulisan Header Sertifikat
+      ctx.textAlign = "center";
+      
+      ctx.fillStyle = "#8c7377";
+      ctx.font = "bold 18px 'Segoe UI', sans-serif";
+      ctx.fillText("PORTAL AKADEMIK UTAMA KAMPUS DIGITAL", canvas.width / 2, 110);
+      
+      ctx.fillStyle = "#4c2e35";
+      ctx.font = "bold 46px 'Georgia', serif";
+      ctx.fillText("CERTIFICATE OF ACHIEVEMENT", canvas.width / 2, 180);
+      
+      ctx.fillStyle = "#2e1f22";
+      ctx.font = "italic 16px 'Segoe UI', sans-serif";
+      ctx.fillText("Sertifikat ini diberikan secara resmi kepada mahasiswa di bawah ini:", canvas.width / 2, 240);
+      
+      // 4. Render Nama Mahasiswa (Dicetak Besar & Jelas)
+      ctx.fillStyle = "#d47285";
+      ctx.font = "bold 38px 'Segoe UI', sans-serif";
+      ctx.fillText(studentData.nama.toUpperCase(), canvas.width / 2, 310);
+      
+      ctx.fillStyle = "#5c3a41";
+      ctx.font = "600 16px 'Segoe UI', sans-serif";
+      ctx.fillText(`Nomor Induk Mahasiswa (NIM): ${studentData.nim}  |  Kelas: ${studentData.kelas}`, canvas.width / 2, 350);
+      
+      // Garis Batas Tengah
+      ctx.beginPath();
+      ctx.moveTo(350, 390);
+      ctx.lineTo(770, 390);
+      ctx.strokeStyle = "#f0d5da";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // 5. Informasi Mata Kuliah
+      ctx.fillStyle = "#2e1f22";
+      ctx.font = "16px 'Segoe UI', sans-serif";
+      ctx.fillText("Atas kelulusan dan keberhasilan menyelesaikan evaluasi kompetensi kuis mandiri:", canvas.width / 2, 440);
+      
+      ctx.fillStyle = "#4c2e35";
+      ctx.font = "bold 26px 'Segoe UI', sans-serif";
+      ctx.fillText(courseName, canvas.width / 2, 490);
+      
+      // 6. Pencetakan Nilai Skor Kompetensi
+      ctx.fillStyle = "#2e1f22";
+      ctx.font = "15px 'Segoe UI', sans-serif";
+      ctx.fillText("Dengan Pencapaian Kualifikasi Nilai Hasil:", canvas.width / 2, 550);
+      
+      ctx.fillStyle = "#6ba67e"; // Hijau Success
+      ctx.font = "bold 52px 'Segoe UI', sans-serif";
+      ctx.fillText(`${studentData.skor} / 100`, canvas.width / 2, 620);
+      
+      // 7. Footer & Penanda Tangan Elektronik
+      ctx.fillStyle = "#8c7377";
+      ctx.font = "12px 'Segoe UI', sans-serif";
+      ctx.fillText("Diterbitkan secara sah oleh Sistem Aplikasi Akademik Utama.", canvas.width / 2, 690);
+      ctx.fillText("ID Sertifikasi: ACAD-CERT/2026/" + idx + studentData.nim, canvas.width / 2, 710);
+      
+      // Tampilkan Perintah Cetak Otomatis di Device Browser Pengguna
+      setTimeout(() => {
+        window.print();
+      }, 300);
     }
   </script>
 </body>
