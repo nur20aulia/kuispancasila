@@ -6,16 +6,18 @@
   <title>Dashboard Portal Academic - Nur Aulia Agustina</title>
   <style>
     :root {
-      --primary-dark: #001e42;
-      --sidebar-bg: #002d62;
-      --sidebar-hover: #003a80;
-      --accent-green: #22c55e;
-      --accent-blue: #38bdf8;
-      --bg-main: #f4f6f9;
-      --text-main: #1e293b;
-      --text-muted: #64748b;
-      --success: #22c55e;
-      --warning: #f59e0b;
+      /* PERMINTAAN 4: MENGUBAH TEMA WARNA MENJADI SOFT PINK */
+      --primary-dark: #4c2e35;
+      --sidebar-bg: #fae1e6;
+      --sidebar-hover: #f3c1cb;
+      --sidebar-text: #5c3a41;
+      --accent-pink: #f0a3b3;
+      --accent-blue: #cbdcf7;
+      --bg-main: #fff5f6;
+      --text-main: #2e1f22;
+      --text-muted: #8c7377;
+      --success: #6ba67e;
+      --warning: #e0a96d;
     }
 
     * {
@@ -32,40 +34,41 @@
       overflow: hidden;
     }
 
-    /* SIDEBAR NAVIGATION (STYLE BERDASARKAN SCREENSHOT 2026-06-18 004240.png) */
+    /* SIDEBAR NAVIGATION */
     .sidebar {
       width: 320px;
       background-color: var(--sidebar-bg);
-      color: #f8fafc;
+      color: var(--sidebar-text);
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
-      box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+      box-shadow: 4px 0 15px rgba(76, 46, 53, 0.05);
     }
 
     .sidebar-profile {
       padding: 25px 20px;
       text-align: center;
-      background-color: var(--primary-dark);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      background-color: var(--sidebar-hover);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
     }
 
     .sidebar-profile .icon {
       font-size: 2.2rem;
       margin-bottom: 8px;
-      color: #fff;
     }
 
     .sidebar-profile h2 {
       font-size: 1.15rem;
       font-weight: 700;
       letter-spacing: 0.5px;
+      color: var(--primary-dark);
     }
 
     .sidebar-profile p {
       font-size: 11px;
-      color: #94a3b8;
+      color: var(--text-muted);
       margin-top: 4px;
+      font-weight: 600;
     }
 
     .sidebar-scroll {
@@ -81,8 +84,8 @@
     .btn-dashboard-portal {
       width: 100%;
       background: transparent;
-      border: 1px solid rgba(34, 197, 94, 0.5);
-      color: #fff;
+      border: 1px solid var(--accent-pink);
+      color: var(--sidebar-text);
       padding: 12px;
       border-radius: 6px;
       text-align: left;
@@ -96,15 +99,15 @@
     }
 
     .btn-dashboard-portal:hover, .btn-dashboard-portal.active {
-      background: rgba(34, 197, 94, 0.15);
-      border-color: var(--accent-green);
+      background: var(--accent-pink);
+      color: var(--primary-dark);
     }
 
     .menu-category {
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      color: #64748b;
+      color: var(--text-muted);
       padding: 10px 20px 5px 20px;
       font-weight: 700;
     }
@@ -114,11 +117,11 @@
       width: 100%;
       background: none;
       border: none;
-      color: #cbd5e1;
+      color: var(--sidebar-text);
       padding: 12px 20px;
       text-align: left;
       font-size: 13.5px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
@@ -128,12 +131,11 @@
 
     .dropdown-btn:hover {
       background-color: var(--sidebar-hover);
-      color: #fff;
     }
 
     .dropdown-container {
       display: none;
-      background-color: rgba(0, 0, 0, 0.15);
+      background-color: rgba(255, 255, 255, 0.4);
       list-style: none;
       padding: 5px 0;
     }
@@ -141,23 +143,25 @@
     .dropdown-item {
       padding: 9px 20px 9px 35px;
       font-size: 12.5px;
-      color: #94a3b8;
+      color: var(--sidebar-text);
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .dropdown-item:hover, .dropdown-item.active {
-      color: #fff;
-      background-color: rgba(255,255,255,0.05);
+      background-color: var(--accent-pink);
+      color: var(--primary-dark);
+      font-weight: 600;
     }
 
     .sidebar-footer {
       padding: 15px;
-      background-color: var(--primary-dark);
-      border-top: 1px solid rgba(255,255,255,0.1);
+      background-color: var(--sidebar-hover);
+      border-top: 1px solid rgba(0,0,0,0.05);
       font-size: 10.5px;
       text-align: center;
-      color: #64748b;
+      color: var(--primary-dark);
+      font-weight: 500;
     }
 
     /* MAIN CONTENT AREA */
@@ -170,7 +174,7 @@
     .top-header {
       background: #fff;
       padding: 18px 30px;
-      border-bottom: 1px solid #e2e8f0;
+      border-bottom: 1px solid #f0d5da;
       font-weight: 600;
       color: var(--primary-dark);
       display: flex;
@@ -193,8 +197,8 @@
       background: white;
       padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-      border-top: 5px solid var(--accent-green);
+      box-shadow: 0 4px 20px rgba(76, 46, 53, 0.02);
+      border-top: 5px solid var(--accent-pink);
       display: none;
       animation: fadeIn 0.3s ease-out;
     }
@@ -209,11 +213,11 @@
     /* PORTAL HOMEPAGE UI */
     .portal-welcome-box {
       text-align: center;
-      padding: 40px 20px;
+      padding: 60px 20px;
     }
     .portal-welcome-box .grad-cap {
       font-size: 4.5rem;
-      color: var(--accent-green);
+      color: var(--accent-pink);
       margin-bottom: 15px;
     }
     .portal-welcome-box h1 {
@@ -227,7 +231,7 @@
       color: var(--primary-dark);
       margin-bottom: 20px;
       padding-bottom: 10px;
-      border-bottom: 2px solid #f1f5f9;
+      border-bottom: 2px solid #fff0f2;
       font-size: 1.6rem;
     }
 
@@ -240,10 +244,10 @@
     }
     .styled-table th, .styled-table td {
       padding: 12px 15px;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #f0d5da;
     }
     .styled-table th {
-      background-color: #f8fafc;
+      background-color: #fff5f6;
       color: var(--primary-dark);
       text-align: left;
       font-weight: 600;
@@ -253,20 +257,20 @@
     .exam-header {
       display: flex;
       justify-content: space-between;
-      background: #eff6ff;
+      background: #fff5f6;
       padding: 12px 20px;
       border-radius: 8px;
       margin-bottom: 25px;
-      border-left: 4px solid var(--accent-blue);
+      border-left: 4px solid var(--accent-pink);
       font-size: 13.5px;
-      color: #1e40af;
+      color: var(--primary-dark);
     }
     .question-box {
-      background-color: #f8fafc;
+      background-color: #fffbfb;
       padding: 20px;
       border-radius: 8px;
       margin-bottom: 15px;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #f0d5da;
     }
     .question-text {
       font-weight: 600;
@@ -282,7 +286,7 @@
       align-items: center;
       padding: 10px;
       background: white;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #f0d5da;
       border-radius: 6px;
       cursor: pointer;
       font-size: 13px;
@@ -291,7 +295,7 @@
 
     .btn-action {
       padding: 12px;
-      background: var(--sidebar-bg);
+      background: var(--primary-dark);
       color: white;
       border: none;
       border-radius: 6px;
@@ -299,7 +303,28 @@
       font-weight: 600;
       width: 100%;
     }
-    .btn-action:hover { background: var(--primary-dark); }
+    .btn-action:hover { background: #331e22; }
+
+    /* MATERI STYLING */
+    .materi-section {
+      margin-top: 25px;
+    }
+    .materi-bab {
+      background: #fffbfb;
+      border: 1px solid #f0d5da;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+    .materi-bab h4 {
+      color: var(--primary-dark);
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+    .materi-bab p {
+      font-size: 13px;
+      color: var(--text-main);
+    }
   </style>
 </head>
 <body>
@@ -309,7 +334,7 @@
     <div class="sidebar-profile">
       <div class="icon">🏛️</div>
       <h2>Nur Aulia Agustina</h2>
-      <p>Admin Perkantoran Digital - PNUP</p>
+      <p>Uji Kompetensi Administrasi Bisnis</p>
     </div>
     
     <div class="sidebar-scroll">
@@ -336,9 +361,9 @@
         <li class="dropdown-item" onclick="openModulGeneral()">E-Modul & Bahan Ajar</li>
       </ul>
 
-      <!-- DROPDOWN 3: KUIS & EVALUASI -->
+      <!-- DROPDOWN 3: KUIS MATA KULIAH (PERMINTAAN 3) -->
       <button class="dropdown-btn" onclick="toggleDropdown('drop-kuis')">
-        <span>📝 Kuis Mandiri</span> <span>▼</span>
+        <span>📝 Kuis Mata Kuliah</span> <span>▼</span>
       </button>
       <ul id="drop-kuis" class="dropdown-container"></ul>
 
@@ -352,7 +377,7 @@
     </div>
 
     <div class="sidebar-footer">
-      © 2026 - Nur Aulia Agustina<br>APD - PNUP
+      © 2026 - Nur Aulia Agustina<br> Uji Kompetensi Administrasi Bisnis
     </div>
   </nav>
 
@@ -364,26 +389,18 @@
 
     <main class="main-content">
 
-      <!-- TAB 1: PORTAL HOME (BERANDA SEPERTI SCREENSHOT 2026-06-18 004020.png) -->
+      <!-- TAB 1: PORTAL HOME (PERMINTAAN 1: MODIFIKASI DASHBOARD & HAPUS IDENTITAS) -->
       <div id="portal-root-tab" class="content-card active">
         <div class="portal-welcome-box">
           <div class="grad-cap">🎓</div>
           <h1>Selamat Datang</h1>
-          <p style="color: var(--text-muted); font-size:14px; margin-bottom: 25px;">
-            Portal Akademik, Asesor Kompetensi, & Portofolio P3M Mahasiswa Nur Aulia Agustina.
+          <p style="color: var(--text-muted); font-size:16px; font-weight: 500;">
+            Portal Mata Kuliah Program Studi Administrasi Bisnis
           </p>
-          <p style="font-size: 13px; color: var(--sidebar-bg); font-weight: 600;">Digital Class | Professional Portfolio</p>
         </div>
-
-        <h2 style="font-size:14px; margin-bottom:10px; color:var(--primary-dark)">Identitas Mahasiswa</h2>
-        <table class="styled-table">
-          <tr><td><strong>Nama Lengkap</strong></td><td>Nur Aulia Agustina</td></tr>
-          <tr><td><strong>NIM</strong></td><td>45223109</td></tr>
-          <tr><td><strong>Program Studi</strong></td><td>Administrasi Bisnis</td></tr>
-        </table>
       </div>
 
-      <!-- TAB 2: MATERI VIEW (10 MK DENGAN PENJELASAN RINGKAS) -->
+      <!-- TAB 2: MATERI VIEW WITH DETAILED EXPLANATIONS (PERMINTAAN 2) -->
       <div id="materi-tab" class="content-card">
         <h1 id="materi-title">Mata Kuliah</h1>
         <div id="materi-desc-container" style="line-height:1.6; font-size:14px; color:var(--text-main)"></div>
@@ -404,10 +421,10 @@
         </table>
       </div>
 
-      <!-- TAB 4: EVALUASI KUIS (20 SOAL PER MK) -->
+      <!-- TAB 4: EVALUASI KUIS -->
       <div id="kuis-tab" class="content-card">
         <div class="exam-header">
-          <div><strong id="kuis-headline-title">Kuis Perkuliahan</strong> — Mode Peninjauan Hasil (Bebas Navigasi)</div>
+          <div><strong id="kuis-headline-title">Kuis Perkuliahan</strong> — Mode Peninjauan Hasil</div>
         </div>
         <div id="questions-box-loader"></div>
         <button class="btn-action" style="background:var(--success);" onclick="processSubmitKuis()">Kirim Form Jawaban</button>
@@ -435,18 +452,98 @@
   </div>
 
   <script>
-    // DATA 10 MATA KULIAH DENGAN PENJELASAN RINGKAS (INSTRUKSI 3)
+    // DATA 10 MATA KULIAH DENGAN PENJELASAN RINGKAS DAN MATERI JELAS (PERMINTAAN 2)
     const dataMataKuliah = [
-      { nama: "Aplikasi Komputer Bisnis", desc: "Studi mengenai integrasi perangkat lunak perkantoran tingkat lanjut untuk otomatisasi administrasi, pengolahan data numerik finansial, dan penyusunan pelaporan korporasi secara digital." },
-      { nama: "English for Business Correspondence", desc: "Pengembangan keahlian komunikasi tertulis profesional dalam bahasa Inggris, mencakup penyusunan korespondensi formal, email bisnis, surat penawaran, serta pembuatan memorandum internal." },
-      { nama: "Kebijakan Bisnis", desc: "Analisis pengambilan keputusan strategis, formulasi arah kebijakan perusahaan, perencanaan jangka panjang, serta mitigasi risiko terhadap perubahan regulasi ekonomi makro." },
-      { nama: "Kepemimpinan", desc: "Kajian kepemimpinan organisasional, teknik pendelegasian tugas, manajemen konflik intern, strategi motivasi tim, dan pembentukan tata kelola budaya kerja yang inklusif." },
-      { nama: "Manajemen Portofolio dan Investasi", desc: "Pemahaman instrumen pasar modal, mekanisme valuasi aset keuangan, teori diversifikasi investasi modal, serta kalkulasi rasio pengembalian risiko portofolio saham." },
-      { nama: "Manajemen Sistem Informasi", desc: "Penerapan sistem basis data operasional, audit infrastruktur digital jaringan, proteksi tata kelola keamanan cyber informasi, serta pemanfaatan big data untuk kebutuhan ekspansi bisnis." },
-      { nama: "Pelayanan Prima", desc: "Standarisasi pelayanan kepuasan pelanggan (Service Excellence), teknik penanganan keluhan eksternal, manajemen komunikasi asertif, serta etika representasi citra korporasi." },
-      { nama: "Pendidikan Kewarganegaraan", desc: "Internalisasi nilai ideologi kebangsaan, wawasan geopolitik nusantara, hak dan kewajiban konstitusional warga negara, serta penguatan etika moral aparatur perkantoran." },
-      { nama: "Perilaku Konsumen", desc: "Analisis psikologis motivasi pembelian pasar, segmentasi target demografis, studi pola retensi loyalitas pelanggan, serta pemetaan tren perilaku pasar digital kontemporer." },
-      { nama: "Simulasi Bisnis", desc: "Praktek integratif simulasi pendirian model usaha, pengelolaan rantai pasok (supply chain), pengujian strategi pemasaran langsung, dan simulasi neraca keuangan operasional." }
+      { 
+        nama: "Aplikasi Komputer Bisnis", 
+        desc: "Studi mengenai integrasi perangkat lunak perkantoran tingkat lanjut untuk otomatisasi administrasi, pengolahan data numerik finansial, dan penyusunan pelaporan korporasi secara digital.",
+        materi: [
+          { bab: "Bab 1: Otomatisasi Dokumen Kantor", isi: "Mempelajari teknik pembuatan dokumen massal (Mail Merge), pembuatan format dokumen formal, sitasi otomatis, dan pengelolaan dokumen skala besar secara efisien." },
+          { bab: "Bab 2: Manajemen Data & Formula Spreadsheet", isi: "Penerapan logika advanced (VLOOKUP, INDEX-MATCH, IF Bertingkat) untuk pengolahan data mentah menjadi informasi bisnis yang siap pakai." },
+          { bab: "Bab 3: Analisis Data Finansial & Pivot Table", isi: "Teknik merangkum ribuan baris data transaksi penjualan, pembuatan grafik interaktif, dan summary report menggunakan fungsi Pivot Tables." }
+        ]
+      },
+      { 
+        nama: "English for Business Correspondence", 
+        desc: "Pengembangan keahlian komunikasi tertulis profesional dalam bahasa Inggris, mencakup penyusunan korespondensi formal, email bisnis, surat penawaran, serta pembuatan memorandum internal.",
+        materi: [
+          { bab: "Bab 1: Dasar-dasar Surel Bisnis Formal", isi: "Aturan penulisan subjek surel, sapaan formal, teknik menyampaikan maksud pesan secara direct, dan penutupan korespondensi yang sopan." },
+          { bab: "Bab 2: Surat Penawaran dan Negosiasi Dagang", isi: "Struktur penyusunan 'Inquiry Letter', 'Reply to Inquiry', serta penyusunan lembar penawaran harga produk/jasa (Quotation) untuk klien luar negeri." },
+          { bab: "Bab 3: Pembuatan Memorandum & Laporan Internal", isi: "Format penulisan memo antar divisi, pemberitahuan kebijakan internal perusahaan, dan struktur summary report mingguan dalam bahasa Inggris baku." }
+        ]
+      },
+      { 
+        nama: "Kebijakan Bisnis", 
+        desc: "Analisis pengambilan keputusan strategis, formulasi arah kebijakan perusahaan, perencanaan jangka panjang, serta mitigasi risiko terhadap perubahan regulasi ekonomi makro.",
+        materi: [
+          { bab: "Bab 1: Formulasi Strategi Korporat", isi: "Analisis lingkungan makro menggunakan metode PESTEL dan pemetaan internal kekuatan-kelemahan melalui matriks SWOT." },
+          { bab: "Bab 2: Struktur Regulasi & Kebijakan Pasar", isi: "Memahami dampak regulasi hukum pemerintah, undang-undang ketenagakerjaan, dan aturan pajak terhadap profitabilitas operasional bisnis." },
+          { bab: "Bab 3: Manajemen Krisis & Mitigasi Risiko Strategis", isi: "Langkah penanganan ketika terjadi disrupsi pasar, penyusunan rencana cadangan bisnis (Contingency Plan), dan evaluasi performa manajemen jangka panjang." }
+        ]
+      },
+      { 
+        nama: "Kepemimpinan", 
+        desc: "Kajian kepemimpinan organisasional, teknik pendelegasian tugas, manajemen konflik intern, strategi motivasi tim, dan pembentukan tata kelola budaya kerja yang inklusif.",
+        materi: [
+          { bab: "Bab 1: Teori dan Gaya Kepemimpinan", isi: "Eksplorasi gaya kepemimpinan Transformasional, Transaksional, Situasional, serta implementasi kecerdasan emosional dalam memimpin organisasi." },
+          { bab: "Bab 2: Resolusi Konflik dan Manajemen Tim", isi: "Teknik pemecahan perselisihan antar karyawan, metode negosiasi win-win solution, dan penentuan indikator performa tim (KPI)." },
+          { bab: "Bab 3: Komunikasi Strategis & Delegasi", isi: "Seni mendelegasikan wewenang tanpa kehilangan kontrol operasional, serta taktik komunikasi asertif untuk memotivasi produktivitas kerja." }
+        ]
+      },
+      { 
+        nama: "Manajemen Portofolio dan Investasi", 
+        desc: "Pemahaman instrumen pasar modal, mekanisme valuasi aset keuangan, teori diversifikasi investasi modal, serta kalkulasi rasio pengembalian risiko portofolio saham.",
+        materi: [
+          { bab: "Bab 1: Pengenalan Instrumen Pasar Modal", isi: "Perbedaan karakteristik investasi Saham, Obligasi, Reksa Dana, instrumen derivatif, serta cara kerja bursa efek nasional maupun global." },
+          { bab: "Bab 2: Analisis Fundamental & Teknikal Saham", isi: "Membaca laporan keuangan korporasi (Rasio PER, PBV, ROE) dan memanfaatkan grafik pergerakan harga historis untuk menentukan momentum beli/jual." },
+          { bab: "Bab 3: Teori Portofolio Modern (Diversifikasi)", isi: "Penerapan strategi investasi 'Don't put all your eggs in one basket' guna meminimalkan risiko pasar dan mengoptimalkan return portofolio." }
+        ]
+      },
+      { 
+        nama: "Manajemen Sistem Informasi", 
+        desc: "Penerapan sistem basis data operasional, audit infrastruktur digital jaringan, proteksi tata kelola keamanan cyber informasi, serta pemanfaatan big data untuk kebutuhan ekspansi bisnis.",
+        materi: [
+          { bab: "Bab 1: Arsitektur Sistem Informasi Perusahaan", isi: "Mengenal sistem ERP (Enterprise Resource Planning), CRM (Customer Relationship Management), dan peran basis data relasional dalam integrasi bisnis." },
+          { bab: "Bab 2: Keamanan Cyber & Tata Kelola Data", isi: "Prinsip perlindungan data sensitif perusahaan, enkripsi informasi, protokol pencegahan kebocoran data, dan manajemen hak akses pengguna." },
+          { bab: "Bab 3: Big Data & Pengambilan Keputusan Bisnis", isi: "Mempelajari bagaimana data log transaksi diolah menggunakan Business Intelligence (BI) untuk membaca tren pasar masa depan." }
+        ]
+      },
+      { 
+        nama: "Pelayanan Prima", 
+        desc: "Standarisasi pelayanan kepuasan pelanggan (Service Excellence), teknik penanganan keluhan eksternal, manajemen komunikasi asertif, serta etika representasi citra korporasi.",
+        materi: [
+          { bab: "Bab 1: Konsep Service Excellence", isi: "Prinsip dasar pelayanan prima berdasarkan aspek penampilan (appearance), sikap (attitude), perhatian (attention), dan tindakan (action)." },
+          { bab: "Bab 2: Penanganan Keluhan (Complaint Handling)", isi: "Metode meredam amarah konsumen, teknik mendengar aktif, pemberian solusi kompensasi, dan retensi agar pelanggan tetap loyal." },
+          { bab: "Bab 3: Pengukuran Indeks Kepuasan Konsumen", isi: "Pembuatan survei kepuasan pelanggan, metode Net Promoter Score (NPS), dan evaluasi feedback untuk peningkatan SOP layanan." }
+        ]
+      },
+      { 
+        nama: "Pendidikan Kewarganegaraan", 
+        desc: "Internalisasi nilai ideologi kebangsaan, wawasan geopolitik nusantara, hak dan kewajiban konstitusional warga negara, serta penguatan etika moral aparatur perkantoran.",
+        materi: [
+          { bab: "Bab 1: Geopolitik dan Wawasan Nusantara", isi: "Memahami posisi strategis wilayah Indonesia, integrasi nasional, serta tantangan dalam mempertahankan kedaulatan di era globalisasi." },
+          { bab: "Bab 2: Hak dan Kewajiban Konstitusional", isi: "Kajian mendalam mengenai UUD 1945, implementasi hak asasi manusia, serta tanggung jawab warga negara dalam ranah sosial-ekonomi." },
+          { bab: "Bab 3: Etika Moral Profesi dan Hukum", isi: "Penerapan nilai integritas, antikorupsi, dan kesadaran hukum dalam menjalankan aktivitas bisnis profesional." }
+        ]
+      },
+      { 
+        nama: "Perilaku Konsumen", 
+        desc: "Analisis psikologis motivasi pembelian pasar, segmentasi target demografis, studi pola retensi loyalitas pelanggan, serta pemetaan tren perilaku pasar digital kontemporer.",
+        materi: [
+          { bab: "Bab 1: Faktor Psikologis Pembelian", isi: "Menganalisis persepsi, motivasi internal, proses pembelajaran, dan sikap konsumen yang memicu keputusan membeli suatu produk." },
+          { bab: "Bab 2: Pengaruh Lingkungan dan Budaya", isi: "Studi mengenai bagaimana kelas sosial, kelompok referensi (influencer), dan sub-kebudayaan memengaruhi gaya hidup belanja masyarakat." },
+          { bab: "Bab 3: Model Pengambilan Keputusan Konsumen", isi: "Tahapan pengenalan masalah, pencarian informasi, evaluasi alternatif produk, transaksi pembelian, hingga perilaku pasca-pembelian." }
+        ]
+      },
+      { 
+        nama: "Simulasi Bisnis", 
+        desc: "Praktek integratif simulasi pendirian model usaha, pengelolaan rantai pasok (supply chain), pengujian strategi pemasaran langsung, dan simulasi neraca keuangan operasional.",
+        materi: [
+          { bab: "Bab 1: Perencanaan Model Bisnis Kanvas (BMC)", isi: "Menyusun peta rancangan bisnis mencakup value proposition, segmen pelanggan, jalur distribusi, hingga struktur biaya produksi." },
+          { bab: "Bab 2: Manajemen Operasional & Supply Chain", isi: "Simulasi pengelolaan stok bahan baku, proses produksi, negosiasi dengan vendor supply, dan manajemen distribusi barang jadi." },
+          { bab: "Bab 3: Analisis Laporan Laba Rugi Simulasi", isi: "Praktek pencatatan arus kas (Cash Flow) masuk-keluar, menghitung Break-Even Point (BEP), dan presentasi performa bisnis kepada investor." }
+        ]
+      }
     ];
 
     let currentTabId = "portal-root-tab";
@@ -465,7 +562,8 @@
       
       dataMataKuliah.forEach((mk, index) => {
         mkMenu.innerHTML += `<li class="dropdown-item" onclick="openMataKuliah(${index})">📘 ${mk.nama}</li>`;
-        kuisMenu.innerHTML += `<li class="dropdown-item" onclick="openKuisUjian(${index})">➔ Kuis ${index + 1}</li>`;
+        // PERMINTAAN 3: MENGGANTI NAMA KUIS MENGIKUTI NAMA MATA KULIAHNYA
+        kuisMenu.innerHTML += `<li class="dropdown-item" onclick="openKuisUjian(${index})">➔ Kuis ${mk.nama}</li>`;
       });
     }
 
@@ -498,13 +596,30 @@
       switchActiveTabView('portal-root-tab', '💻', 'Dashboard Portal');
     }
 
+    // PERMINTAAN 2: INTEGRASI PENJELASAN MATERI DI SETIAP MATA KULIAH
     function openMataKuliah(idx) {
       switchActiveTabView('materi-tab', '📘', `Mata Kuliah: ${dataMataKuliah[idx].nama}`);
       document.getElementById('materi-title').innerText = dataMataKuliah[idx].nama;
+      
+      let materiHtml = "";
+      dataMataKuliah[idx].materi.forEach(mat => {
+        materiHtml += `
+          <div class="materi-bab">
+            <h4>${mat.bab}</h4>
+            <p>${mat.isi}</p>
+          </div>
+        `;
+      });
+
       document.getElementById('materi-desc-container').innerHTML = `
-        <div style="background:#f8fafc; padding:20px; border-radius:8px; border-left:4px solid var(--sidebar-bg)">
-          <strong>Deskripsi Pokok Bahasan Kursus:</strong><br><br>
+        <div style="background:#fff5f6; padding:20px; border-radius:8px; border-left:4px solid var(--accent-pink); margin-bottom: 20px;">
+          <strong>Deskripsi Pokok Bahasan Kursus:</strong><br>
           ${dataMataKuliah[idx].desc}
+        </div>
+        
+        <h3>Materi Pembelajaran Berjalan:</h3>
+        <div class="materi-section">
+          ${materiHtml}
         </div>
         <br>
         <h3>Rencana Target Capaian Pembelajaran:</h3><br>
@@ -524,7 +639,7 @@
       switchActiveTabView('silabus-tab', '📚', 'Bahan Ajar Digital');
     }
 
-    // GENERATOR 20 SOAL KUIS PER MATA KULIAH
+    // GENERATOR KUIS
     function openKuisUjian(idx) {
       activeKuisIndex = idx;
       switchActiveTabView('kuis-tab', '📝', `Evaluasi Kuis: ${dataMataKuliah[idx].nama}`);
@@ -544,7 +659,7 @@
           <div class="options-group">
             <label class="option-label"><input type="radio" name="${answerKey}" value="A" ${previousSelection === 'A'?'checked':''} onchange="recordUserResponse('${answerKey}','A')"> A. Prosedur Standard Operating Procedure (SOP) Terverifikasi Industri</label>
             <label class="option-label"><input type="radio" name="${answerKey}" value="B" ${previousSelection === 'B'?'checked':''} onchange="recordUserResponse('${answerKey}','B')"> B. Metode Alternatif Eksperimental Tanpa Mitigasi Risiko</label>
-            <label class="option-label"><input type="radio" name="${answerKey}" value="C" ${previousSelection === 'C'?'checked':''} onchange="recordUserResponse('${answerKey}','C')"> C. Konsep Teoritis Pengenalan Tanpa Pengujian Kuantitatif</label>
+            <label class="option-label"><input type="radio" name="${answerKey}" value="C" ${previousSelection === 'C'?'checked':''} onchange="replaceUserResponse('${answerKey}','C')"> C. Konsep Teoritis Pengenalan Tanpa Pengujian Kuantitatif</label>
             <label class="option-label"><input type="radio" name="${answerKey}" value="D" ${previousSelection === 'D'?'checked':''} onchange="recordUserResponse('${answerKey}','D')"> D. Asumsi Hipotesis Dasar Berdasarkan Pengamatan Kasual</label>
           </div>
         `;
